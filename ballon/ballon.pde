@@ -1,26 +1,67 @@
 ArrayList<ParticleSystem> systems;
 int bubblewid = 30;
 int bubblehig = 30;
+int scenario; // control the start interface
+PImage bg;
 
+boolean rectOver = false;
+boolean circleOver = false;
 void setup() {
-  size(1000, 1280 );
+  size(1000, 1280, P3D);
   systems = new ArrayList<ParticleSystem>();
   systems.add(new ParticleSystem(5));
+  scenario=0;
+
+  bg = loadImage("dreamnight.jpg");
+  bg.resize(1000, 1280);
 }
 
 void draw() {
-  background(10);
-  for (ParticleSystem ps : systems) {
-    ps.run();
-    ps.addParticle();
+  switch(scenario)
+  {
+  case 0:
+    background(bg);
+    break;
+  case 1:
+
+    background(10);
+    for (ParticleSystem ps : systems) {
+      ps.run();
+      ps.addParticle();
+    }
+    //if (systems.isEmpty()) {
+    //  fill(255);
+    //  textAlign(CENTER);
+    //  text("click mouse to add particle systems", width/2, height/2);
+    //}
+
+    break;
   }
-  //if (systems.isEmpty()) {
-  //  fill(255);
-  //  textAlign(CENTER);
-  //  text("click mouse to add particle systems", width/2, height/2);
-  //}
 }
 
+void mouseClicked() {
+  
+}
+
+//judge the position of the click point
+boolean overRect(int x, int y, int width, int height)  {
+  if (mouseX >= x && mouseX <= x+width && 
+      mouseY >= y && mouseY <= y+height) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+boolean overCircle(int x, int y, int diameter) {
+  float disX = x - mouseX;
+  float disY = y - mouseY;
+  if (sqrt(sq(disX) + sq(disY)) < diameter/2 ) {
+    return true;
+  } else {
+    return false;
+  }
+}
 void mousePressed() {
 
   //systems.add(new ParticleSystem(1, new PVector(mouseX, mouseY)));
@@ -44,9 +85,9 @@ class Particle {
   }
 
   void applyForce(PVector force) {
-      // We could add mass here if we want A = F / M
-      acceleration.add(force);
-    }
+    // We could add mass here if we want A = F / M
+    acceleration.add(force);
+  }
   void run() {
     update();
     display();
@@ -93,7 +134,7 @@ class balloon extends Particle {
   // Separation
   // Method checks for nearby boids and steers away
   PVector separate (ArrayList<balloon> boids) {
-    
+
     PVector steer = new PVector(0, 0, 0);
     int count = 0;
     // For every boid in the system, check if it's too close
@@ -124,7 +165,6 @@ class balloon extends Particle {
       // Implement Reynolds: Steering = Desired - Velocity
       steer.normalize();     
       steer.sub(velocity);
-      
     }
     return steer;
   }
