@@ -14,3 +14,5 @@ time approaches, and discuss open problems and current trends in the field.
 Topics discussed will include real-time techniques for: physically-based
 lighting simulation, artificial intelligence (AI), sound simulation, character
 animation, and large-scale rendering.
+
+![](intro.jpg)
