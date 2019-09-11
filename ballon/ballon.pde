@@ -1,8 +1,10 @@
-ArrayList<ParticleSystem> systems;
+ArrayList<Bubblesys> systems; //<>//
+ArrayList<Ballonsys> Balloonsystems;
 
 int scenario; // control the start interface
 PImage bg;
 PImage gamebg;
+int tick;
 /*************Buttons size********************/
 int rectX, rectY;      // Position of square button
 int rectW = 270;     // width of rect
@@ -10,17 +12,22 @@ int rectH = 120;     // height of rect
 boolean rectOver = false;
 boolean circleOver = false;
 
+boolean IsPoping = false;
 
 
 void setup() {
   size(796, 1119, P3D);
   Init_max = width/(4*bubblewid);
   Init_pertumation();
-  systems = new ArrayList<ParticleSystem>();
-  systems.add(new ParticleSystem(0));
+  systems = new ArrayList<Bubblesys>();
+  systems.add(new Bubblesys(20));
+  Balloonsystems = new ArrayList<Ballonsys>();
+  Balloonsystems.add(new Ballonsys(0));
+  OImg = loadImage("popping_balloons.png");
+
   scenario=0;
-  
-  
+  tick = 0;
+
   bg = loadImage("dreamnight.jpg");
   gamebg = loadImage("tumblr.jpg");
   bg.resize(796, 1119);
@@ -34,19 +41,23 @@ void draw() {
   {
   case 0:
     background(bg);
-    Bar();
+
     for (ParticleSystem ps : systems) {
-      ps.addParticle();
-      ps.run();      
+      if (tick==0)
+        ps.addParticle();
+      ps.run();
     }
+    Bar();
+    tick = (tick+1)%10;
     break;
   case 1:
-
     background(gamebg);
-    for (ParticleSystem ps : systems) {
-      ps.addParticle();
-      ps.run();      
+    for (ParticleSystem ps : Balloonsystems) {
+      if (tick==0)
+        ps.addParticle();
+      ps.run();
     }
+    tick = (tick+1)%60;
     //if (systems.isEmpty()) {
     //  fill(255);
     //  textAlign(CENTER);
@@ -58,20 +69,48 @@ void draw() {
 }
 
 void mouseClicked() {
+  switch(scenario)
+  {
+  case 0:
+    break;
+  case 1:    
+    break;
+  }
 }
 
 void mousePressed() 
 {
-  if (overRect(rectX, rectY, rectW, rectH))
+
+  switch(scenario)
   {
-    rectOver = !rectOver;
-    scenario = 1;
+  case 0:
+    //start interface
+    if (overRect(rectX, rectY, rectW, rectH))
+    {
+      rectOver = !rectOver;
+      scenario = 1;
+      tick = 0;
+    }
+    break;
+  case 1:
+  for (Ballonsys ps : Balloonsystems) {
+      click_balloons(ps);
+    }
+    break;
   }
 }
 void mouseReleased() {
-  if (overRect(rectX, rectY, rectW, rectH))
+  switch(scenario)
   {
-    rectOver = !rectOver;
+  case 0:
+    //start interface
+    if (overRect(rectX, rectY, rectW, rectH))
+    {
+      rectOver = !rectOver;
+    }
+    break;
+  case 1:
+    break;
   }
 }
 //judge the position of the click point
@@ -97,14 +136,14 @@ void update(int x, int y) {
   if ( overRect(rectX, rectY, rectW, rectH) ) 
   {
     rectOver = true;
-  } 
-  else {
+  } else {
     rectOver = false;
   }
 }
+
 void Bar()
 {
-  update(mouseX,mouseY);
+  update(mouseX, mouseY);
   noStroke();
   PImage start_no_click = loadImage("start_not_click.png");
   start_no_click.resize(rectW, rectH);
@@ -121,4 +160,17 @@ void Bar()
   vertex(rectX+rectW, rectY+rectH, rectW, rectH);
   vertex(rectX, rectY+rectH, 0, rectH);
   endShape();
+}
+
+void click_balloons(Ballonsys sys)
+{
+  for (Particle p : sys.particles)
+  {
+    if (overRect(int(p.position.x-p.size.x/2), int(p.position.y - p.size.y/2), int(p.size.x), int(p.size.y)))
+    {
+      Ballon b = (Ballon)p;
+      b.pop = true;
+      //b.step = (b.step + 1)%8;
+    }
+  }
 }
