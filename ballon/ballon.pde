@@ -1,10 +1,13 @@
-ArrayList<Bubblesys> systems; //<>//
+import queasycam.*; //<>//
+
+ArrayList<Bubblesys> systems;
 ArrayList<Ballonsys> Balloonsystems;
 
 int scenario; // control the start interface
 PImage bg;
 PImage gamebg;
 int tick;
+QueasyCam cam;
 /*************Buttons size********************/
 int rectX, rectY;      // Position of square button
 int rectW = 270;     // width of rect
@@ -34,6 +37,15 @@ void setup() {
   gamebg.resize(796, 1119);
   rectX = width/2-rectW/2;
   rectY = height/2-rectH/2-300;
+  //camera(0, 0, 0.0, width/2, height/2.0, 0.0, 0.0, -1.0, 0.0);
+  //set cam
+  cam = new QueasyCam(this);
+  cam.speed = 3;              // default is 3
+  cam.sensitivity = 0.5;      // default is 2
+  cam.controllable = false;
+  cam.position = new PVector(width/2,height/2,400);
+  cam.pan = -PI/2;
+  perspective(PI/3, (float)width/height, 0.01, 10000);
 }
 
 void draw() {

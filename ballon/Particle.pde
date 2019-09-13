@@ -3,7 +3,7 @@ import java.util.Collections;
 int bubblewid = 30;
 int bubblehig = 30;
 int Init_max;
-
+float maxlif = 510;
 String Color[]={"RED", "GREEN", "BLUE", "YELLOW", "PINK"};
 List<Integer> list = new ArrayList<Integer>();
 PImage  OImg;
@@ -32,13 +32,13 @@ class Particle {
   float lifespan;
 
   Particle(PVector l) {
-    acceleration = new PVector(0, -0.5); // opposite gravity
-    velocity = new PVector(random(-1, 1), random(-2, 0));
+    acceleration = new PVector(0, -0.5, 0); // opposite gravity
+    velocity = new PVector(random(-1, 1), random(-2, 0),0);
     position = l.copy();
     pos_old = position.copy();
     maxspeed = 2;
     maxforce = 0.03;
-    lifespan = 510;
+    lifespan = maxlif;
     float s = random(bubblewid, 3*bubblewid);
     size =new PVector(s, s);
   }
@@ -176,7 +176,8 @@ class Particle {
 
   // Method to display
   void display() {
-    stroke(255, lifespan);
+    noStroke();
+    //stroke(255, lifespan);
     fill(255, 102, 255, lifespan);
     ellipse(position.x, position.y, 8, 8);
   }
@@ -199,7 +200,7 @@ class Bubble extends Particle {
 
   // This display() method overrides the parent class display() method
   void display() {
-    stroke(255, lifespan);
+    noStroke();
     fill(Color.x, Color.y, Color.z, lifespan);//255, 102, 255,
     ellipse(position.x, position.y, size.x, size.y);
   }
@@ -218,8 +219,8 @@ class Ballon extends Particle {
   void Init()
   {
     theta = 0;
-    baW = 120;
-    baH = 240;
+    baW = 240;
+    baH = 480;
     cellW = 79;
     cellH = 118;
     size.x = baW;
@@ -322,6 +323,7 @@ class Ballon extends Particle {
         break;
       }
       balImg.resize(baW, baH);
+      
     }
   }
   // This update() method overrides the parent class update() method
@@ -338,11 +340,13 @@ class Ballon extends Particle {
     noStroke();
     beginShape();
     texture(balImg);
-    vertex(position.x - baW/2, position.y - baH/2, 0, 0);
-    vertex(position.x + baW/2, position.y- baH/2, baW, 0);
-    vertex(position.x + baW/2, position.y + baH/2, baW, baH);
-    vertex(position.x- baW/2, position.y + baH/2, 0, baH);
+    tint(255, lifespan/maxlif*255);  // Apply transparency without changing color
+    vertex(position.x - baW/2, position.y - baH/2, position.z, 0, 0);
+    vertex(position.x + baW/2, position.y- baH/2, position.z,baW, 0);
+    vertex(position.x + baW/2, position.y + baH/2, position.z,baW, baH);
+    vertex(position.x- baW/2, position.y + baH/2, position.z,0, baH);
     endShape();
+    
   }
 }
 
@@ -368,7 +372,7 @@ class ParticleSystem {
   }
   PVector getorigin(float y)
   {
-    PVector origin = new PVector((1+list.get(pertindex))*bubblewid*4, y);
+    PVector origin = new PVector((1+list.get(pertindex))*bubblewid*4, y,random(-600,0));
     pertindex = pertindex+1;
     if (pertindex>=Init_max)
     {
