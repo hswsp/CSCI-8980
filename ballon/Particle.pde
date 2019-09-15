@@ -7,7 +7,7 @@ float maxlif = 510;
 String Color[]={"RED", "GREEN", "BLUE", "YELLOW", "PINK"};
 List<Integer> list = new ArrayList<Integer>();
 PImage  OImg;
-
+PImage Skeleton;
 void Init_pertumation()
 {
   for (int i=0; i<Init_max; ++i)
@@ -33,7 +33,7 @@ class Particle {
 
   Particle(PVector l) {
     acceleration = new PVector(0, -0.5, 0); // opposite gravity
-    velocity = new PVector(random(-1, 1), random(-2, 0),0);
+    velocity = new PVector(random(-1, 1), random(-2, 0), 0);
     position = l.copy();
     pos_old = position.copy();
     maxspeed = 2;
@@ -216,6 +216,7 @@ class Ballon extends Particle {
   int step;
   String COLOR;
   PImage balImg;
+  boolean Isdead;
   void Init()
   {
     theta = 0;
@@ -228,6 +229,7 @@ class Ballon extends Particle {
     step = 0;
     velocity = velocity.mult(3);
     pop = false;
+    Isdead = (random(0, 5)<1);
   }
   // The balloon constructor can call the parent class (super class) constructor
   Ballon(PVector l) {
@@ -289,6 +291,21 @@ class Ballon extends Particle {
       break;
     case 7:
       lifespan = -1;
+      if(Isdead)
+      {
+        scenario = 2;
+        tick = 0;
+      }
+      else if (COLOR.equals(lastCor))
+      {
+        comboscore = comboscore+1;       
+        curscore = 2*curscore;
+      } else
+      {
+        curscore = 1;
+      }
+      lastCor = lastCor.copyValueOf(COLOR.toCharArray());
+      score = score + curscore;
       break;
     default:
       break;
@@ -323,7 +340,6 @@ class Ballon extends Particle {
         break;
       }
       balImg.resize(baW, baH);
-      
     }
   }
   // This update() method overrides the parent class update() method
@@ -339,14 +355,15 @@ class Ballon extends Particle {
   void display() {
     noStroke();
     beginShape();
-    texture(balImg);
+    if (Isdead && step==0)
+      balImg.blend(Skeleton, 0, 0, Skeleton.width, Skeleton.height, int(baW/3.5), int(baH/3.5), Skeleton.width, Skeleton.height, BLEND );
+    texture(balImg); 
     tint(255, lifespan/maxlif*255);  // Apply transparency without changing color
     vertex(position.x - baW/2, position.y - baH/2, position.z, 0, 0);
-    vertex(position.x + baW/2, position.y- baH/2, position.z,baW, 0);
-    vertex(position.x + baW/2, position.y + baH/2, position.z,baW, baH);
-    vertex(position.x- baW/2, position.y + baH/2, position.z,0, baH);
+    vertex(position.x + baW/2, position.y- baH/2, position.z, baW, 0);
+    vertex(position.x + baW/2, position.y + baH/2, position.z, baW, baH);
+    vertex(position.x- baW/2, position.y + baH/2, position.z, 0, baH);
     endShape();
-    
   }
 }
 
@@ -372,7 +389,7 @@ class ParticleSystem {
   }
   PVector getorigin(float y)
   {
-    PVector origin = new PVector((1+list.get(pertindex))*bubblewid*4, y,random(-600,0));
+    PVector origin = new PVector((1+list.get(pertindex))*bubblewid*4, y, random(-600, 0));
     pertindex = pertindex+1;
     if (pertindex>=Init_max)
     {
