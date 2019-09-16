@@ -35,7 +35,7 @@ int score;
 int curscore;
 int comboscore;
 String lastCor;
-
+int TotalTime;
 
 
 void renew()
@@ -52,19 +52,22 @@ void setup() {
   Init_pertumation();
   systems = new ArrayList<Bubblesys>();
   systems.add(new Bubblesys(20));
-
-  OImg = loadImage("popping_balloons.png");
-  Skeleton = loadImage("skeleton.png");
-  Skeleton.resize(120,120);
   hint(DISABLE_DEPTH_MASK);
   scenario=0;
   tick = 0;
-
+  TotalTime = 10;
+  /**********************game image***********************************/
+  OImg = loadImage("popping_balloons.png");
+  Skeleton = loadImage("skeleton.png");
+  Skeleton.resize(120,120);
   bg = loadImage("dreamnight.jpg");
   gamebg = loadImage("tumblr.jpg");
   bg.resize(796, 1119);
   gamebg.resize(796, 1119);
-
+  ClockImg =loadImage("clock.png");
+  ClockImg.resize(120,120);
+  Timeleft = loadImage("timeleft.png");
+  Timeleft.resize(120,120);
   rectX = width/2-rectW/2;
   rectY = height/2-rectH/2-300;
   startX = (width-W)/2;
@@ -110,13 +113,16 @@ void draw() {
   case 1:
     int curtime = millis();
     float sconds = (curtime - starttime)/1000;
-    if (sconds>=10)
+    if (sconds>=TotalTime)
     {
       scenario = 2;
       tick = 0;
     } else
     {
       background(gamebg);
+      textquad(Timeleft,width/2, 50, Timeleft.width, Timeleft.height);
+      String s = String.valueOf(TotalTime - sconds);
+      words(s, width/2+2*Timeleft.width,120, Timeleft.height/2);
       for (ParticleSystem ps : Balloonsystems) {
         if (tick==0)
           ps.addParticle();
@@ -251,6 +257,8 @@ void Gameover()
   words(Score, startX + 30 + PW + 65, startY + H + PH + 30, PH);
   textquad(combo, startX + 30, startY + H +PH + 60, CW, CH);
   words(ComboScore, startX + 30 + CW + 65, startY + H +PH + 60 + CH, CH);
+  
+  
 }
 void textquad(PImage I, int startX, int startY, int W, int H)
 {

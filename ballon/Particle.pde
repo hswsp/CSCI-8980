@@ -8,6 +8,8 @@ String Color[]={"RED", "GREEN", "BLUE", "YELLOW", "PINK"};
 List<Integer> list = new ArrayList<Integer>();
 PImage  OImg;
 PImage Skeleton;
+PImage ClockImg;
+PImage Timeleft;
 void Init_pertumation()
 {
   for (int i=0; i<Init_max; ++i)
@@ -216,7 +218,9 @@ class Ballon extends Particle {
   int step;
   String COLOR;
   PImage balImg;
+  /********special balloon*********/
   boolean Isdead;
+  boolean Isclock;
   void Init()
   {
     theta = 0;
@@ -230,6 +234,7 @@ class Ballon extends Particle {
     velocity = velocity.mult(3);
     pop = false;
     Isdead = (random(0, 5)<1);
+    Isclock = (random(0, 10)<1);
   }
   // The balloon constructor can call the parent class (super class) constructor
   Ballon(PVector l) {
@@ -291,10 +296,14 @@ class Ballon extends Particle {
       break;
     case 7:
       lifespan = -1;
-      if(Isdead)
+      if (Isdead)
       {
         scenario = 2;
         tick = 0;
+      }
+      else if(Isclock)
+      {
+        TotalTime += 2;
       }
       else if (COLOR.equals(lastCor))
       {
@@ -357,6 +366,8 @@ class Ballon extends Particle {
     beginShape();
     if (Isdead && step==0)
       balImg.blend(Skeleton, 0, 0, Skeleton.width, Skeleton.height, int(baW/3.5), int(baH/3.5), Skeleton.width, Skeleton.height, BLEND );
+    else if (Isclock && step ==0)
+      balImg.blend(ClockImg, 0, 0, ClockImg.width, ClockImg.height, int(baW/3.5), int(baH/3.5), ClockImg.width, ClockImg.height, BLEND );
     texture(balImg); 
     tint(255, lifespan/maxlif*255);  // Apply transparency without changing color
     vertex(position.x - baW/2, position.y - baH/2, position.z, 0, 0);
