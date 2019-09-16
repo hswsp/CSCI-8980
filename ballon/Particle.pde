@@ -38,7 +38,7 @@ class Particle {
     velocity = new PVector(random(-1, 1), random(-2, 0), 0);
     position = l.copy();
     pos_old = position.copy();
-    maxspeed = 2;
+    maxspeed = 3;
     maxforce = 0.03;
     lifespan = maxlif;
     float s = random(bubblewid, 3*bubblewid);

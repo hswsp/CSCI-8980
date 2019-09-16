@@ -1,5 +1,5 @@
 import queasycam.*; //<>//
-
+import java.text.DecimalFormat;
 ArrayList<Bubblesys> systems;
 ArrayList<Ballonsys> Balloonsystems;
 float starttime;
@@ -14,7 +14,7 @@ PImage points;
 PImage combo;
 PImage play_again;
 PImage over;
-
+PImage RuleImg;
 /*************Buttons size********************/
 int rectX, rectY;      // Position of square button
 int rectW = 270;     // width of rect
@@ -36,7 +36,7 @@ int curscore;
 int comboscore;
 String lastCor;
 int TotalTime;
-
+String Showtime;
 
 void renew()
 {
@@ -59,21 +59,27 @@ void setup() {
   /**********************game image***********************************/
   OImg = loadImage("popping_balloons.png");
   Skeleton = loadImage("skeleton.png");
-  Skeleton.resize(120,120);
+  Skeleton.resize(120, 120);
   bg = loadImage("dreamnight.jpg");
   gamebg = loadImage("tumblr.jpg");
   bg.resize(796, 1119);
   gamebg.resize(796, 1119);
+  
   ClockImg =loadImage("clock.png");
-  ClockImg.resize(120,120);
+  ClockImg.resize(120, 120);
   Timeleft = loadImage("timeleft.png");
-  Timeleft.resize(120,120);
+  Timeleft.resize(120, 120);
+  
+  RuleImg = loadImage("rules.jpg");
+  RuleImg.resize(rectW, rectH);
+  
   rectX = width/2-rectW/2;
   rectY = height/2-rectH/2-300;
   startX = (width-W)/2;
   startY = 75;
   paX = startX + 30 ;
   paY = width-50;
+  Showtime = String.valueOf(TotalTime);
   //set cam
   cam = new QueasyCam(this);
   cam.speed = 3;              // default is 3
@@ -113,6 +119,12 @@ void draw() {
   case 1:
     int curtime = millis();
     float sconds = (curtime - starttime)/1000;
+    if (tick==0)
+    {
+      double time = TotalTime - sconds;
+      DecimalFormat df=new DecimalFormat("#.00");
+      Showtime = df.format(time);
+    }
     if (sconds>=TotalTime)
     {
       scenario = 2;
@@ -120,9 +132,9 @@ void draw() {
     } else
     {
       background(gamebg);
-      textquad(Timeleft,width/2, 50, Timeleft.width, Timeleft.height);
-      String s = String.valueOf(TotalTime - sconds);
-      words(s, width/2+2*Timeleft.width,120, Timeleft.height/2);
+      textquad(Timeleft, width/2, 50, Timeleft.width, Timeleft.height);
+      //String s = String.valueOf(Showtime);
+      words(Showtime, width/2+2*Timeleft.width, 120, Timeleft.height/2);
       for (ParticleSystem ps : Balloonsystems) {
         if (tick==0)
           ps.addParticle();
@@ -244,6 +256,8 @@ void Bar()
   vertex(rectX+rectW, rectY+rectH, rectW, rectH);
   vertex(rectX, rectY+rectH, 0, rectH);
   endShape();
+  // rule button
+  textquad(RuleImg,rectX,rectY+2*rectH,RuleImg.width,RuleImg.height);
 }
 
 void Gameover()
@@ -257,8 +271,6 @@ void Gameover()
   words(Score, startX + 30 + PW + 65, startY + H + PH + 30, PH);
   textquad(combo, startX + 30, startY + H +PH + 60, CW, CH);
   words(ComboScore, startX + 30 + CW + 65, startY + H +PH + 60 + CH, CH);
-  
-  
 }
 void textquad(PImage I, int startX, int startY, int W, int H)
 {
@@ -280,17 +292,21 @@ void words(String s, int startX, int startY, int size)
 }
 void click_balloons(Ballonsys sys)
 {
-  int minzindex = 0;
+  int maxzindex = -1;
   for (int i = 0; i< sys.particles.size(); ++i)
   {
     Particle p  = sys.particles.get(i);
     if (overRect(int(p.position.x-p.size.x/2), int(p.position.y - p.size.y/2), int(p.size.x), int(p.size.y)))
     {
-      if (p.position.z<sys.particles.get(minzindex).position.z)
-        minzindex = i;
+      if (maxzindex==-1)
+        maxzindex=i;
+      else if (p.position.z>sys.particles.get(maxzindex).position.z)
+        maxzindex = i;
     }
   }
-  Ballon b = (Ballon)sys.particles.get(minzindex);
-  b.pop = true;
-  //b.step = (b.step + 1)%8;
+  if (maxzindex>=0)
+  {
+    Ballon b = (Ballon)sys.particles.get(maxzindex);
+    b.pop = true;
+  }
 }
