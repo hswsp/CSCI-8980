@@ -277,6 +277,13 @@ class Ballon extends Particle {
     switch(step)
     {
     case 1:
+      if (Isdead)
+      {
+        OVersound.play();
+      } else
+      {
+        popsound.play();
+      }
       balImg = OImg.get(237 + int(0.9*cellW), y, cellW, cellH);
       break;
     case 2:
@@ -300,12 +307,10 @@ class Ballon extends Particle {
       {
         scenario = 2;
         tick = 0;
-      }
-      else if(Isclock)
+      } else if (Isclock)
       {
         TotalTime += 2;
-      }
-      else if (COLOR.equals(lastCor))
+      } else if (COLOR.equals(lastCor))
       {
         comboscore = comboscore+1;       
         curscore = 2*curscore;

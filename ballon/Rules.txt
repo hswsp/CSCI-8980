@@ -1,0 +1,11 @@
+1. Basically we have 6 different colors
+2. Combo will get the double scores 
+relative to the previous scores
+(1->2->4….).
+3. You must tap the  balloon before it 
+disappears.
+4. Total time is 60 seconds.
+5. Special balloons:
+(1) If you tap the skeleton, you will die 
+immediately
+(2) Clock balloon will add you 2s. 

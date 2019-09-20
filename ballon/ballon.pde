@@ -1,11 +1,13 @@
 import queasycam.*; //<>//
 import java.text.DecimalFormat;
+
 ArrayList<Bubblesys> systems;
 ArrayList<Ballonsys> Balloonsystems;
 float starttime;
 int scenario; // control the start interface
 int tick;
 QueasyCam cam;
+String [] lines;
 /********************image********************************/
 PImage bg;
 PImage gamebg;
@@ -15,6 +17,7 @@ PImage combo;
 PImage play_again;
 PImage over;
 PImage RuleImg;
+PImage ReturnImg;
 /*************Buttons size********************/
 int rectX, rectY;      // Position of square button
 int rectW = 270;     // width of rect
@@ -56,6 +59,12 @@ void setup() {
   scenario=0;
   tick = 0;
   TotalTime = 10;
+  popsound = new SoundFile(this, "BalloonPopping.mp3");
+  OVersound = new SoundFile(this, "gameOver.mp3");
+  /******************start image******************************/
+  ReturnImg = loadImage("return.png");
+  ReturnImg.resize(150, 150);
+
   /**********************game image***********************************/
   OImg = loadImage("popping_balloons.png");
   Skeleton = loadImage("skeleton.png");
@@ -64,15 +73,15 @@ void setup() {
   gamebg = loadImage("tumblr.jpg");
   bg.resize(796, 1119);
   gamebg.resize(796, 1119);
-  
+
   ClockImg =loadImage("clock.png");
   ClockImg.resize(120, 120);
   Timeleft = loadImage("timeleft.png");
   Timeleft.resize(120, 120);
-  
+
   RuleImg = loadImage("rules.jpg");
   RuleImg.resize(rectW, rectH);
-  
+
   rectX = width/2-rectW/2;
   rectY = height/2-rectH/2-300;
   startX = (width-W)/2;
@@ -149,6 +158,11 @@ void draw() {
     tint(255, 255);
     Gameover();
     break;
+  case 3:
+    background(bg);
+    ShowText(lines);
+    textquad(ReturnImg, width - ReturnImg.width-20, 20, ReturnImg.width, ReturnImg.height);
+    break;
   }
 }
 
@@ -175,9 +189,13 @@ void mousePressed()
       scenario = 1;
       tick = 0;
       starttime = millis();
-
       Balloonsystems = new ArrayList<Ballonsys>();
       Balloonsystems.add(new Ballonsys(0));
+    } else if (overRect(rectX, rectY+2*rectH, RuleImg.width, RuleImg.height))
+    {
+      scenario = 3;
+      tick = 0;
+      lines = readFile("Rules.txt");
     }
     break;
   case 1:
@@ -187,6 +205,15 @@ void mousePressed()
     break;
   case 2:
     if (overRect(paX, paY, paW, paH))
+    {
+      scenario = 0;
+      systems = new ArrayList<Bubblesys>();
+      systems.add(new Bubblesys(20));      
+      renew();
+    }
+    break;
+  case 3:
+    if (overRect( width - ReturnImg.width-20, 20, ReturnImg.width, ReturnImg.height))
     {
       scenario = 0;
       systems = new ArrayList<Bubblesys>();
@@ -257,7 +284,7 @@ void Bar()
   vertex(rectX, rectY+rectH, 0, rectH);
   endShape();
   // rule button
-  textquad(RuleImg,rectX,rectY+2*rectH,RuleImg.width,RuleImg.height);
+  textquad(RuleImg, rectX, rectY+2*rectH, RuleImg.width, RuleImg.height);
 }
 
 void Gameover()
