@@ -30,7 +30,6 @@ class Particle {
 
   float maxforce;    // Maximum steering force
   float maxspeed;    // Maximum speed
-
   float lifespan;
 
   Particle(PVector l) {
@@ -44,12 +43,21 @@ class Particle {
     float s = random(bubblewid, 3*bubblewid);
     size =new PVector(s, s);
   }
-
+  Particle(PVector l,PVector acc) {
+    acceleration = acc.copy();  // opposite gravity new PVector(0, -0.5, 0);
+    velocity = new PVector(random(-1, 1), random(-20, -10), 0); //
+    position = l.copy();
+    pos_old = position.copy();
+    maxspeed = 30;
+    maxforce = 0.03;
+    lifespan = maxlif;
+    float s = random(bubblewid, 3*bubblewid);
+    size =new PVector(s, s);
+  }
   void applyForce(PVector force) {
     // We could add mass here if we want A = F / M
     acceleration.add(force);
   }
-
   // Separation
   // Method checks for nearby boids and steers away
   PVector separate (ArrayList<Particle> boids) {
@@ -199,11 +207,15 @@ class Bubble extends Particle {
     super(l); 
     Color = new PVector(random(255), random(255), random(255));
   }
-
+   Bubble(PVector l,PVector acc) {
+    // "super" means do everything from the constructor in Particle
+    super(l,acc); 
+    Color = new PVector(random(255), random(255), random(255));
+  }
   // This display() method overrides the parent class display() method
   void display() {
     noStroke();
-    fill(Color.x, Color.y, Color.z, lifespan);//255, 102, 255,
+    fill(Color.x, Color.y, Color.z, lifespan/2);//255, 102, 255,
     ellipse(position.x, position.y, size.x, size.y);
   }
 }
@@ -272,6 +284,32 @@ class Ballon extends Particle {
     }
     balImg.resize(baW, baH);
   }
+   Ballon(PVector l,String Col,PVector acc) {
+    super(l,acc); 
+    Init();
+    COLOR = Col;
+    int cellW = 79;
+    int cellH = 118;    
+    switch(Col)
+    {
+    case "BLUE":
+      balImg = OImg.get(237, 10, cellW, cellH);
+      break;
+    case "RED":
+      balImg = OImg.get(237, 202, cellW, cellH);
+      break;
+    case "GREEN":
+      balImg = OImg.get(237, 395, cellW, cellH);
+      break;
+    case "YELLOW":
+      balImg = OImg.get(237, 590, cellW, cellH);
+      break;
+    case "PINK":
+      balImg = OImg.get(237, 790, cellW, cellH);
+      break;
+    }
+    balImg.resize(baW, baH);
+  }
   void Find_Pop_by_step(int y)
   {
     switch(step)
@@ -280,8 +318,11 @@ class Ballon extends Particle {
       if (Isdead)
       {
         OVersound.play();
-      } else
+      } else if(Isclock)
       {
+        clockSound.play();
+      }
+      else{
         popsound.play();
       }
       balImg = OImg.get(237 + int(0.9*cellW), y, cellW, cellH);
@@ -307,19 +348,8 @@ class Ballon extends Particle {
       {
         scenario = 2;
         tick = 0;
-      } else if (Isclock)
-      {
-        TotalTime += 2;
-      } else if (COLOR.equals(lastCor))
-      {
-        comboscore = comboscore+1;       
-        curscore = 2*curscore;
-      } else
-      {
-        curscore = 1;
-      }
-      lastCor = lastCor.copyValueOf(COLOR.toCharArray());
-      score = score + curscore;
+      } 
+      
       break;
     default:
       break;
@@ -383,8 +413,10 @@ class Ballon extends Particle {
   }
 }
 
-// An ArrayList is used to manage the list of Particles
 
+
+
+/*************************particle system***********************/
 class ParticleSystem {
   ArrayList<Particle> particles;    // An arraylist for all the particles
   //PVector origin;                   // An origin point for where particles are birthed
@@ -394,6 +426,13 @@ class ParticleSystem {
     particles = new ArrayList<Particle>();   // Initialize the arraylist
     pertindex = 0;
     number = num;
+    Init();
+  }
+  ParticleSystem(int num,PVector acc) {
+    particles = new ArrayList<Particle>();   // Initialize the arraylist
+    pertindex = 0;
+    number = num;
+    Init(acc);
   }
   void Init()
   {
@@ -403,6 +442,15 @@ class ParticleSystem {
       particles.add(new Particle(origin));    // Add "num" amount of particles to the arraylist
     }
   }
+  void Init(PVector acc)
+  {
+    for (int i = 0; i < number; i++) {
+      float y=random(height - 2*bubblewid, height);
+      PVector origin = getorigin(y);
+      particles.add(new Particle(origin,acc));    // Add "num" amount of particles to the arraylist
+    }
+  }
+  
   PVector getorigin(float y)
   {
     PVector origin = new PVector((1+list.get(pertindex))*bubblewid*4, y, random(-600, 0));
@@ -414,8 +462,6 @@ class ParticleSystem {
     }
     return origin;
   }
-
-
   void run() {
     // Cycle through the ArrayList backwards, because we are deleting while iterating
     for (int i = particles.size()-1; i >= 0; i--) {
@@ -438,6 +484,13 @@ class ParticleSystem {
     p = new Particle(origin);
     particles.add(p);
   }
+  void addParticle(PVector acc) {
+     Particle p;
+    float y=random(height - 2*bubblewid, height);
+    PVector origin = getorigin(y);
+    p = new Particle(origin,acc);
+    particles.add(p);
+  }
   // A method to test if the particle system still has particles
   boolean dead() {
     return particles.isEmpty();
@@ -448,7 +501,6 @@ class Bubblesys extends ParticleSystem
 {
   Bubblesys(int num) {
     super(num);
-    Init();
   }
   // overwrite Init()
   void Init()
@@ -473,7 +525,9 @@ class Ballonsys extends ParticleSystem
 {
   Ballonsys(int num) {
     super(num);
-    Init();
+  }
+  Ballonsys(int num,PVector acc) {
+    super(num,acc);
   }
   // overwrite Init()
   void Init()
@@ -481,10 +535,22 @@ class Ballonsys extends ParticleSystem
     for (int i = 0; i < number; i++) {
       float y=random(height + 2*bubblewid, height);
       PVector origin = getorigin(y);
-      particles.add(new Ballon(origin));    // Add "num" amount of particles to the arraylist
+      // random color
+    int col = int(random(5)) ;
+      particles.add(new Ballon(origin,Color[col]));    // Add "num" amount of particles to the arraylist
     }
   }
-  // overwrite Init()
+  // overwrite Init(PVector acc)
+  void Init(PVector acc)
+  {
+    for (int i = 0; i < number; i++) {
+      float y=random(height + 2*bubblewid, height);
+      PVector origin = getorigin(y);
+      // random color
+      int col = int(random(5)) ;
+      particles.add(new Ballon(origin,Color[col],acc));    // Add "num" amount of particles to the arraylist
+    }
+  }
   void addParticle() {
     Particle p;
     float y=random(height + 2*bubblewid, height);
@@ -493,6 +559,14 @@ class Ballonsys extends ParticleSystem
     // random color
     int col = int(random(5)) ;
     p = new Ballon(origin, Color[col]);
+    particles.add(p);
+  }
+  void addParticle(PVector acc) {
+    Particle p;
+    float y=random(height + 2*bubblewid, height);
+    PVector origin = getorigin(y);
+    int col = int(random(5)) ;
+    p = new Ballon(origin, Color[col],acc);
     particles.add(p);
   }
 }

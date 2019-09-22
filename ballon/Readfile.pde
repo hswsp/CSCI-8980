@@ -9,6 +9,7 @@ String[] readFile(String pathname) {
   //}
   return lines;
 }
+
 void ShowText(String[] lines)
 {
   int lineX = 10;
