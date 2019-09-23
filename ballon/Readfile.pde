@@ -13,16 +13,15 @@ String[] readFile(String pathname) {
 void ShowText(String[] lines)
 {
   int lineX = 10;
-  int lineY = height/4;
-  int lineH = 38;
+  int lineY = height/4 - 50;
+  int lineH = 30;
   //TextJustification tj = new TextJustification();
   for (int i = 0; i < lines.length; i++) {
     String Line = lines[i];
     //ArrayList<String> result = tj.fullJustify(Line, 20);
-    fill(51, 0, 25);
+    fill(153, 0, 76);
     textSize(lineH);
     textAlign(LEFT);
-    //textLeading(35);
     text(Line, lineX, lineY+i*(lineH+30));
   }
 }

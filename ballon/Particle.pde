@@ -189,7 +189,7 @@ class Particle {
   void display() {
     noStroke();
     //stroke(255, lifespan);
-    fill(255, 102, 255, lifespan);
+    fill(255, 102, 255, map(lifespan, 0, maxlif, 0, 255));
     ellipse(position.x, position.y, 8, 8);
   }
 
@@ -216,7 +216,7 @@ class Bubble extends Particle {
   // This display() method overrides the parent class display() method
   void display() {
     noStroke();
-    fill(Color.x, Color.y, Color.z, lifespan/2);//255, 102, 255,
+    fill(Color.x, Color.y, Color.z, map(lifespan/2, 0, maxlif, 0, 255));//255, 102, 255,lifespan/2
     ellipse(position.x, position.y, size.x, size.y);
   }
 }
@@ -254,6 +254,8 @@ class Ballon extends Particle {
     velocity = velocity.mult(3);
     pop = false;
     Type = int(random(0, 10));
+    if (DiffLv==0&&Type==3)
+      Type=0;
   }
   // The balloon constructor can call the parent class (super class) constructor
   Ballon(PVector l) {
@@ -331,7 +333,7 @@ class Ballon extends Particle {
         OVersound.play();
         break;
       case 3:
-      if(DiffLv==2)
+        //if(DiffLv==2)
         BombAd.Playsound(1.0);
         break;
       case 4:
@@ -416,22 +418,22 @@ class Ballon extends Particle {
     beginShape();
     if (step == 0)
       switch(Type)
-      {
-        case 1:
-        case 2:
-          balImg.blend(Skeleton, 0, 0, Skeleton.width, Skeleton.height, int(baW/3.5), int(baH/3.5), Skeleton.width, Skeleton.height, BLEND );
-          break;
-        case 3:
-        if(DiffLv==2)
-          balImg.blend(BombImg, 0, 0, BombImg.width, BombImg.height, int(baW/3.5), int(baH/3.5), BombImg.width, BombImg.height, BLEND );
-          break;
-        case 4:
-          
-          balImg.blend(ClockImg, 0, 0, ClockImg.width, ClockImg.height, int(baW/3.5), int(baH/3.5), ClockImg.width, ClockImg.height, BLEND );
-          break;
-      }
+    {
+    case 1:
+    case 2:
+      balImg.blend(Skeleton, 0, 0, Skeleton.width, Skeleton.height, int(baW/3.5), int(baH/3.5), Skeleton.width, Skeleton.height, BLEND );
+      break;
+    case 3:
+      //if(DiffLv==2)
+      balImg.blend(BombImg, 0, 0, BombImg.width, BombImg.height, int(baW/3.5), int(baH/3.5), BombImg.width, BombImg.height, BLEND );
+      break;
+    case 4:
+
+      balImg.blend(ClockImg, 0, 0, ClockImg.width, ClockImg.height, int(baW/3.5), int(baH/3.5), ClockImg.width, ClockImg.height, BLEND );
+      break;
+    }
     texture(balImg); 
-    tint(255, lifespan/maxlif*255);  // Apply transparency without changing color
+    tint(255, map(lifespan, 0, maxlif, 0, 255));  // Apply transparency without changing color  lifespan/maxlif*255
     vertex(position.x - baW/2, position.y - baH/2, position.z, 0, 0);
     vertex(position.x + baW/2, position.y- baH/2, position.z, baW, 0);
     vertex(position.x + baW/2, position.y + baH/2, position.z, baW, baH);

@@ -66,7 +66,7 @@ void setup() {
   Tapping = loadImage("tapping.png");
   your = loadImage("your.png");
   balloon = loadImage("balloons.png");
-  
+
   hint(DISABLE_DEPTH_MASK);
   bgsound =false;
   //progress bar
@@ -98,7 +98,7 @@ void Init()
   PrepbgAd = new Audio(PrepbgSound);
   bgsound = true;
   popsound = new SoundFile(this, "BalloonPopping.mp3");
-  bombSound = new SoundFile(this,"bomb.wav");
+  bombSound = new SoundFile(this, "bomb.wav");
   BombAd = new Audio(bombSound);
   OVersound = new SoundFile(this, "gameOver.mp3");
   clockSound = new SoundFile(this, "clock.mp3");
@@ -126,7 +126,7 @@ void Init()
   Timeleft = loadImage("timeleft.png");
   Timeleft.resize(120, 120);
   BombImg = loadImage("bomb.png");
-  BombImg.resize(120,120);
+  BombImg.resize(120, 120);
 
   RuleImg = loadImage("rules.jpg");
   RuleImg.resize(rectW, rectH);
@@ -160,7 +160,6 @@ void Init()
 
   //finish start to play
   scenario = 0;
-  
 }
 void drawbubbles()
 {
@@ -175,15 +174,14 @@ void draw() {
   switch(scenario)
   {
   case -1:
-      background(Facebg);
-      textquad(Tapping, 200, 20, Tapping.width, Tapping.height);
-      textquad(your, 250, 200, your.width, your.height);
-      textquad(balloon, 200, 400, balloon.width, balloon.height);
+    background(Facebg);
+    textquad(Tapping, 200, 20, Tapping.width, Tapping.height);
+    textquad(your, 250, 200, your.width, your.height);
+    textquad(balloon, 200, 400, balloon.width, balloon.height);
     if (bgsound)
     {
       PrepbgAd.Loopsound(0.5);
     }
-
     drawbubbles();
     String process = "0.0";
     if (counter-startTime < maxTime) 
@@ -203,7 +201,6 @@ void draw() {
     noStroke();
     rect(width/2 - BarW/2, 2*height/3, map(counter-startTime, 0, maxTime, 0, BarW), BarH );
     words("Loading......"+" "+ process+"%", width/2, 2*height/3 + 2*BarH, 50);
-    //text(counter- startTime+" " + int(maxTime) +  " " + int ( map(counter-startTime, 0, maxTime, 0, 200)), 20, 160);
     noFill();
     stroke(0);
     rect(width/2 - 250, 2*height/3, BarW, BarH);
@@ -244,16 +241,15 @@ void draw() {
         ps = (Ballonsys)ps;
         if (tick==0)
         {
-          if(DiffLv==2)
+          if (DiffLv==2)
           {
             ps.addParticle(new PVector(0, DifficultAcc, 0));
-          }
-          else
+          } else
           {
             ps.addParticle();
           }
         }
-          
+
         ps.run();
         ComputeScore(ps);
       }
@@ -263,15 +259,7 @@ void draw() {
       case 0:
         break;
       case 1:
-        newswithcT = millis();
-        if ((newswithcT - oldswitchT)% SwitchInterval <5)
-        {
-          renewTar();
-          oldswitchT = newswithcT;
-        }
-        ShowTarget(OImg);
-        break;
-        case 2:
+      case 2:
         newswithcT = millis();
         if ((newswithcT - oldswitchT)% SwitchInterval <5)
         {
@@ -304,7 +292,6 @@ void draw() {
     BasicbgAd.Loopsound(0.5);
     background(Facebg);//clean the screen 
     drawbubbles();
-
     textquad(DiffLeveImg, LevelX, LevelY, DiffLeveImg.width, DiffLeveImg.height);
     //return button
     textquad(ReturnImg, width - ReturnImg.width-20, 20, ReturnImg.width, ReturnImg.height);
@@ -386,7 +373,6 @@ void mousePressed()
       DiffLv = 2;
       InitGame();
       oldswitchT =millis();
-      
     } else if (overRect( width - ReturnImg.width-20, 20, ReturnImg.width, ReturnImg.height))
     {
       scenario = 0;
@@ -510,11 +496,10 @@ void click_balloons(Ballonsys sys)
   {
     Ballon b = (Ballon)sys.particles.get(maxzindex);
     b.pop = true;
-    if(b.Type==3)
+    if (b.Type==3)
     {
       sys.NeighborPop(b);
     }
-    
   }
 }
 
@@ -525,13 +510,11 @@ void InitGame()
   tick = 0;
   starttime = millis();
   Balloonsystems = new ArrayList<Ballonsys>();
-  if(DiffLv==2)
+  if (DiffLv==2)
   {
-    Balloonsystems.add(new Ballonsys(0,new PVector(0, DifficultAcc, 0)));//new PVector(random(-1, 1), random(-50, -30), 0)
-  }
-  else
+    Balloonsystems.add(new Ballonsys(0, new PVector(0, DifficultAcc, 0)));//new PVector(random(-1, 1), random(-50, -30), 0)
+  } else
   {
     Balloonsystems.add(new Ballonsys(0));
   }
-  
 }
