@@ -22,6 +22,10 @@ int TargetBallon;
 int SwitchInterval = 2000;//in millisecond
 int oldswitchT;
 int newswithcT;
+
+float DifficultAcc = -2;
+float Bombdis = 500;
+
 void ShowTarget(PImage  OImg)
 {
   int cellW = 35;
@@ -60,7 +64,7 @@ void ComputeScore(ParticleSystem ps)
      Ballon p = (Ballon)P;
      if(p.pop&&p.step==6)
      {
-       if (p.Isclock)
+       if (p.Type==4)
       {
         TotalTime += 2;
       } else if (p.COLOR.equals(lastCor))
@@ -86,6 +90,10 @@ void ComputeScore(ParticleSystem ps)
         if(p.COLOR==Color[TargetBallon])
         {
           curscore = 2*curscore;
+        }
+        if(p.Type==3)//bomb
+        {
+          curscore = -1;
         }
         break;
       }

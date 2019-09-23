@@ -72,7 +72,7 @@ void setup() {
   //progress bar
   counter = 0; 
   startTime= millis(); 
-  maxTime= 24000; 
+  maxTime= 24500; 
   done=false;
 
   scenario = -1;
@@ -98,6 +98,8 @@ void Init()
   PrepbgAd = new Audio(PrepbgSound);
   bgsound = true;
   popsound = new SoundFile(this, "BalloonPopping.mp3");
+  bombSound = new SoundFile(this,"bomb.wav");
+  BombAd = new Audio(bombSound);
   OVersound = new SoundFile(this, "gameOver.mp3");
   clockSound = new SoundFile(this, "clock.mp3");
   GamebgSound = new SoundFile(this, "Seriously_-_David_Fesliyan.mp3");
@@ -123,6 +125,8 @@ void Init()
   ClockImg.resize(120, 120);
   Timeleft = loadImage("timeleft.png");
   Timeleft.resize(120, 120);
+  BombImg = loadImage("bomb.png");
+  BombImg.resize(120,120);
 
   RuleImg = loadImage("rules.jpg");
   RuleImg.resize(rectW, rectH);
@@ -149,7 +153,7 @@ void Init()
   paY = width-50;
   Showtime = String.valueOf(TotalTime);
   /**********************game logic*************************************/
-  TotalTime = 10;
+  TotalTime = 60;
   renew();
   renewTar();
   oldswitchT = newswithcT =0;
@@ -242,7 +246,7 @@ void draw() {
         {
           if(DiffLv==2)
           {
-            ps.addParticle(new PVector(0, -5, 0));
+            ps.addParticle(new PVector(0, DifficultAcc, 0));
           }
           else
           {
@@ -506,6 +510,11 @@ void click_balloons(Ballonsys sys)
   {
     Ballon b = (Ballon)sys.particles.get(maxzindex);
     b.pop = true;
+    if(b.Type==3)
+    {
+      sys.NeighborPop(b);
+    }
+    
   }
 }
 
@@ -518,7 +527,7 @@ void InitGame()
   Balloonsystems = new ArrayList<Ballonsys>();
   if(DiffLv==2)
   {
-    Balloonsystems.add(new Ballonsys(0,new PVector(0, -5, 0)));//new PVector(random(-1, 1), random(-50, -30), 0)
+    Balloonsystems.add(new Ballonsys(0,new PVector(0, DifficultAcc, 0)));//new PVector(random(-1, 1), random(-50, -30), 0)
   }
   else
   {

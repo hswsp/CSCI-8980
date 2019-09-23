@@ -5,6 +5,7 @@ SoundFile clockSound;
 SoundFile GamebgSound;
 SoundFile BasicbgSound;
 SoundFile PrepbgSound;
+SoundFile bombSound;
 void Playsound(SoundFile file, float amplitude)
 {
   // Load a soundfile from the /data folder of the sketch and play it back
@@ -59,3 +60,4 @@ public class Audio
 Audio GamebgAd;
 Audio BasicbgAd;
 Audio PrepbgAd;
+Audio BombAd;
