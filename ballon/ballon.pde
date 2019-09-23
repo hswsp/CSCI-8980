@@ -72,7 +72,7 @@ void setup() {
   //progress bar
   counter = 0; 
   startTime= millis(); 
-  maxTime= 24500; 
+  maxTime= 23500; 
   done=false;
 
   scenario = -1;
