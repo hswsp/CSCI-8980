@@ -6,7 +6,7 @@ the previous scores(1->2->4….).
 5. Special balloons:
 (1) If you tap the skeleton, you will die immediately
 (2) Clock balloon will add you 2s. 
-(3) Bomb balloon will help popoing the nearby 
+(3) Bomb balloon will help popping the nearby 
 balloons, but it self is worth -1 score.
 6. There are 3 different levels. Easy level only has 
 special balloons of (1),(2)

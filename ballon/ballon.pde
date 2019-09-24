@@ -462,6 +462,7 @@ void Gameover()
 void textquad(PImage I, int startX, int startY, int W, int H)
 {
   noStroke(); 
+  noTint();
   //stroke(204, 102, 0);
   beginShape();
   texture(I);
