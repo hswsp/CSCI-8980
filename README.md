@@ -19,4 +19,4 @@ animation, and large-scale rendering.
 
 Website
 ---------------------
-![Real-time Game Engine Technology](https://sites.google.com/umn.edu/csci8980/home)
+[Real-time Game Engine Technology](https://sites.google.com/umn.edu/csci8980/home)
