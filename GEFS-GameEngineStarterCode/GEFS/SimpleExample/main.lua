@@ -19,6 +19,7 @@ CameraUpZ = 0.0
 animatedModels = {}
 velModel = {}
 rotYVelModel = {}
+fps = getframeRate()
 
 function frameUpdate(dt)
   for modelID,v in pairs(animatedModels) do
@@ -44,10 +45,12 @@ function keyHandler(keys)
     translateModel(piller,0,0,0.1)
   end
   if keys.up then
-    translateModel(piller,0.1,0,0)
+    --translateModel(piller,0.1,0,0)
+    CameraPosX = CameraPosX + 0.01*fps
   end
   if keys.down then
-    translateModel(piller,-0.1,0,0)
+    --translateModel(piller,-0.1,0,0)
+    CameraPosX = CameraPosX - 0.01*fps
   end
 end
 

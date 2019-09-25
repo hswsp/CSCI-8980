@@ -1,551 +1,611 @@
-arguments: E:\\UMN\\GameEngine\\GEFS-GameEngineStarterCode\\GEFS\\Debug\\engine.exe SimpleExample/
-Current dir: E:\UMN\GameEngine\GEFS-GameEngineStarterCode\GEFS
+arguments: D:\\Github_repository\\CSCI-8980\\GEFS-GameEngineStarterCode\\GEFS\\Debug\\engine.exe SimpleExample/
+Current dir: D:\Github_repository\CSCI-8980\GEFS-GameEngineStarterCode\GEFS
 File verbosity level: 9
 date       time         ( uptime  ) [ thread name/id ]                   file:line     v| 
-2019-09-25 15:27:39.579 (   0.143s) [main thread     ]             loguru.cpp:761   INFO| Logging to 'latest_fullLog.log', mode: 'w', verbosity: 9
-2019-09-25 15:27:39.608 (   0.171s) [main thread     ]             loguru.cpp:761   INFO| Logging to 'latest_readable.log', mode: 'w', verbosity: 0
-2019-09-25 15:27:39.627 (   0.191s) [main thread     ]               main.cpp:87    INFO| Loading game folder SimpleExample/
-2019-09-25 15:27:39.640 (   0.203s) [main thread     ]               main.cpp:358   INFO| { configEngine
-2019-09-25 15:27:39.647 (   0.210s) [main thread     ]               main.cpp:366   INFO| .   Loading Config File: settings.cfg
-2019-09-25 15:27:39.670 (   0.234s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #You can set defaults here (outide of any [] blocks)
+2019-09-25 18:12:08.013 (   0.077s) [main thread     ]             loguru.cpp:761   INFO| Logging to 'latest_fullLog.log', mode: 'w', verbosity: 9
+2019-09-25 18:12:08.027 (   0.092s) [main thread     ]             loguru.cpp:761   INFO| Logging to 'latest_readable.log', mode: 'w', verbosity: 0
+2019-09-25 18:12:08.039 (   0.104s) [main thread     ]               main.cpp:87    INFO| Loading game folder SimpleExample/
+2019-09-25 18:12:08.097 (   0.161s) [main thread     ]               main.cpp:358   INFO| { configEngine
+2019-09-25 18:12:08.113 (   0.178s) [main thread     ]               main.cpp:366   INFO| .   Loading Config File: settings.cfg
+2019-09-25 18:12:08.160 (   0.225s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #You can set defaults here (outide of any [] blocks)
 
-2019-09-25 15:27:39.672 (   0.235s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #startFullscreen = 1  #default to full screen
+2019-09-25 18:12:08.160 (   0.225s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #startFullscreen = 1  #default to full screen
 
-2019-09-25 15:27:39.672 (   0.235s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #rawColliders = 1
+2019-09-25 18:12:08.161 (   0.225s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #rawColliders = 1
 
-2019-09-25 15:27:39.672 (   0.235s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #useBloom = 1
+2019-09-25 18:12:08.161 (   0.226s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #useBloom = 1
 
-2019-09-25 15:27:39.672 (   0.235s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #startFullscreen = 1
+2019-09-25 18:12:08.161 (   0.226s) [main thread     ]               main.cpp:435      1| .   Setting Target Framerate to 35
+2019-09-25 18:12:08.161 (   0.226s) [main thread     ]               main.cpp:374      2| .   Skipping comment: #startFullscreen = 1
 
-2019-09-25 15:27:39.673 (   0.236s) [main thread     ]               main.cpp:374      2| .   Skipping comment: # A low-def version that enables all the rendering components to make sure they work together
+2019-09-25 18:12:08.161 (   0.226s) [main thread     ]               main.cpp:374      2| .   Skipping comment: # A low-def version that enables all the rendering components to make sure they work together
 
-2019-09-25 15:27:39.673 (   0.236s) [main thread     ]               main.cpp:358   INFO| } 0.033 s: configEngine
-2019-09-25 15:27:41.042 (   1.606s) [main thread     ]          Materials.cpp:21    INFO| { loadMaterials
-2019-09-25 15:27:41.069 (   1.633s) [main thread     ]          Materials.cpp:34       2| .   File 'SimpleExample/materials.txt' is 1017 bytes long.
-2019-09-25 15:27:41.070 (   1.633s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #This is the material file, here we specify all the materials needed by the game scene
+2019-09-25 18:12:08.161 (   0.226s) [main thread     ]               main.cpp:358   INFO| } 0.065 s: configEngine
+2019-09-25 18:12:08.602 (   0.667s) [main thread     ]          Materials.cpp:21    INFO| { loadMaterials
+2019-09-25 18:12:08.609 (   0.674s) [main thread     ]          Materials.cpp:34       2| .   File 'SimpleExample/materials.txt' is 1017 bytes long.
+2019-09-25 18:12:08.609 (   0.674s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #This is the material file, here we specify all the materials needed by the game scene
 
-2019-09-25 15:27:41.071 (   1.634s) [main thread     ]          Materials.cpp:109      1| .   Setting texture directory to: ./textures/
-2019-09-25 15:27:41.071 (   1.634s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Aluminium
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.800000
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.510000
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.910000, 0.920000, 0.920000
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Nickel
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.900000
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.640000
-2019-09-25 15:27:41.072 (   1.635s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
-2019-09-25 15:27:41.072 (   1.636s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.660000, 0.600000, 0.500000
-2019-09-25 15:27:41.072 (   1.636s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Steel
-2019-09-25 15:27:41.072 (   1.636s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.900000
-2019-09-25 15:27:41.073 (   1.636s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.640000
-2019-09-25 15:27:41.073 (   1.636s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
-2019-09-25 15:27:41.073 (   1.636s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.600000, 0.620000, 0.620000
-2019-09-25 15:27:41.073 (   1.636s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Gold
-2019-09-25 15:27:41.073 (   1.636s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.900000
-2019-09-25 15:27:41.073 (   1.636s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.360000
-2019-09-25 15:27:41.073 (   1.637s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
-2019-09-25 15:27:41.073 (   1.637s) [main thread     ]          Materials.cpp:92       1| .   reflectiveness of 0.010000
-2019-09-25 15:27:41.074 (   1.637s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 0.800000, 0.140000
-2019-09-25 15:27:41.074 (   1.637s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.850000, 0.650000, 0.130000
-2019-09-25 15:27:41.074 (   1.637s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Polished Wood
-2019-09-25 15:27:41.074 (   1.637s) [main thread     ]          Materials.cpp:130      1| .   New texture named: ./textures/wood.jpg
-2019-09-25 15:27:41.074 (   1.637s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
-2019-09-25 15:27:41.074 (   1.637s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.190000
-2019-09-25 15:27:41.074 (   1.638s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.400000
-2019-09-25 15:27:41.074 (   1.638s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #color = 0.8 0.4 0.2
+2019-09-25 18:12:08.610 (   0.674s) [main thread     ]          Materials.cpp:109      1| .   Setting texture directory to: ./textures/
+2019-09-25 18:12:08.610 (   0.674s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Aluminium
+2019-09-25 18:12:08.610 (   0.674s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.800000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.510000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.910000, 0.920000, 0.920000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Nickel
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.900000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.640000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.660000, 0.600000, 0.500000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Steel
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.900000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.640000
+2019-09-25 18:12:08.610 (   0.675s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
+2019-09-25 18:12:08.611 (   0.675s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.600000, 0.620000, 0.620000
+2019-09-25 18:12:08.611 (   0.675s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Gold
+2019-09-25 18:12:08.611 (   0.675s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.900000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.360000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:87       1| .   ior property of 2.000000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:92       1| .   reflectiveness of 0.010000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 0.800000, 0.140000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.850000, 0.650000, 0.130000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Polished Wood
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:130      1| .   New texture named: ./textures/wood.jpg
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.190000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.400000
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #color = 0.8 0.4 0.2
 
-2019-09-25 15:27:41.074 (   1.638s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Dark Polished Wood
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:123      1| .   Reusing existing texture: ./textures/wood.jpg
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.190000
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.400000
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #color = 0.8 0.4 0.2
+2019-09-25 18:12:08.611 (   0.676s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
+2019-09-25 18:12:08.612 (   0.676s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Dark Polished Wood
+2019-09-25 18:12:08.612 (   0.676s) [main thread     ]          Materials.cpp:123      1| .   Reusing existing texture: ./textures/wood.jpg
+2019-09-25 18:12:08.612 (   0.676s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.190000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.400000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #color = 0.8 0.4 0.2
 
-2019-09-25 15:27:41.075 (   1.638s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.750000, 0.200000, 0.200000
-2019-09-25 15:27:41.075 (   1.639s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Shiny Red Plastic
-2019-09-25 15:27:41.075 (   1.639s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
-2019-09-25 15:27:41.075 (   1.639s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.190000
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.500000
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.900000, 0.050000, 0.050000
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #emissive = 2 1 1
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.750000, 0.200000, 0.200000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Shiny Red Plastic
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.190000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.500000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.900000, 0.050000, 0.050000
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #emissive = 2 1 1
 
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #texture = brick.jpg
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #texture = brick.jpg
 
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #color = 1 1 1 
+2019-09-25 18:12:08.612 (   0.677s) [main thread     ]          Materials.cpp:43       2| .   Skipping comment: #color = 1 1 1 
 
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Clay
-2019-09-25 15:27:41.076 (   1.639s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
-2019-09-25 15:27:41.076 (   1.640s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.840000
-2019-09-25 15:27:41.076 (   1.640s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.500000
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.600000, 0.400000, 0.200000
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Warm Light
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:97       1| .   Emissve color of: 30.000000, 20.000000, 1.000000
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Glowly White
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
-2019-09-25 15:27:41.077 (   1.640s) [main thread     ]          Materials.cpp:97       1| .   Emissve color of: 10.000000, 10.000000, 10.000000
-2019-09-25 15:27:41.077 (   1.641s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Red Light
-2019-09-25 15:27:41.077 (   1.641s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
-2019-09-25 15:27:41.078 (   1.641s) [main thread     ]          Materials.cpp:97       1| .   Emissve color of: 50.000000, 3.000000, 2.000000
-2019-09-25 15:27:41.078 (   1.641s) [main thread     ]          Materials.cpp:21    INFO| } 0.036 s: loadMaterials
-2019-09-25 15:27:41.098 (   1.661s) [main thread     ]               main.cpp:104   INFO| Read 11 materials
+2019-09-25 18:12:08.613 (   0.677s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Clay
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:71       1| .   Metalic property of 0.000000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:81       1| .   Roughness property of 0.840000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:87       1| .   ior property of 1.500000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:103      1| .   Color of: 0.600000, 0.400000, 0.200000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Warm Light
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:97       1| .   Emissve color of: 30.000000, 20.000000, 1.000000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Glowly White
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:97       1| .   Emissve color of: 10.000000, 10.000000, 10.000000
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:65       1| .   Creating material with name: Red Light
+2019-09-25 18:12:08.613 (   0.678s) [main thread     ]          Materials.cpp:103      1| .   Color of: 1.000000, 1.000000, 1.000000
+2019-09-25 18:12:08.614 (   0.678s) [main thread     ]          Materials.cpp:97       1| .   Emissve color of: 50.000000, 3.000000, 2.000000
+2019-09-25 18:12:08.614 (   0.678s) [main thread     ]          Materials.cpp:21    INFO| } 0.012 s: loadMaterials
+2019-09-25 18:12:08.620 (   0.685s) [main thread     ]               main.cpp:104   INFO| Read 11 materials
 
-2019-09-25 15:27:41.111 (   1.675s) [main thread     ]             Models.cpp:72    INFO| { loadModel
-2019-09-25 15:27:41.129 (   1.692s) [main thread     ]             Models.cpp:81    INFO| .   Loading Model File: SimpleExample/Prefabs.txt
-2019-09-25 15:27:41.140 (   1.703s) [main thread     ]             Models.cpp:87    INFO| .   File 'SimpleExample/Prefabs.txt' is 943 bytes long.
-2019-09-25 15:27:41.152 (   1.716s) [main thread     ]             Models.cpp:157      1| .   Setting model directory to: ./models/
-2019-09-25 15:27:41.153 (   1.716s) [main thread     ]             Models.cpp:97       2| .   Skipping comment: #teapot knot sphere teapotLowPoly teapot cube
+2019-09-25 18:12:08.657 (   0.722s) [main thread     ]             Models.cpp:72    INFO| { loadModel
+2019-09-25 18:12:08.687 (   0.752s) [main thread     ]             Models.cpp:81    INFO| .   Loading Model File: SimpleExample/Prefabs.txt
+2019-09-25 18:12:08.737 (   0.802s) [main thread     ]             Models.cpp:87    INFO| .   File 'SimpleExample/Prefabs.txt' is 943 bytes long.
+2019-09-25 18:12:08.777 (   0.841s) [main thread     ]             Models.cpp:157      1| .   Setting model directory to: ./models/
+2019-09-25 18:12:08.777 (   0.842s) [main thread     ]             Models.cpp:97       2| .   Skipping comment: #teapot knot sphere teapotLowPoly teapot cube
 
-2019-09-25 15:27:41.153 (   1.716s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: TeapotLowPoly
-2019-09-25 15:27:41.164 (   1.727s) [main thread     ]             Models.cpp:138      1| .   Rotating by 90.000000 around axis 1.000000 0.000000 0.000000
-2019-09-25 15:27:41.164 (   1.727s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.900000
-2019-09-25 15:27:41.164 (   1.727s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/teapotLowPoly.txt as ID: 0
-2019-09-25 15:27:41.374 (   1.937s) [main thread     ]             Models.cpp:174      1| .   Loaded 23808 lines
-2019-09-25 15:27:41.376 (   1.939s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: TeapotHighPoly
-2019-09-25 15:27:41.396 (   1.959s) [main thread     ]             Models.cpp:145      1| .   Transling by (0.000000, 0.250000, 0.000000)
-2019-09-25 15:27:41.396 (   1.960s) [main thread     ]             Models.cpp:138      1| .   Rotating by 90.000000 around axis -1.000000 0.000000 0.000000
-2019-09-25 15:27:41.396 (   1.960s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/teapot.txt as ID: 1
-2019-09-25 15:27:42.628 (   3.191s) [main thread     ]             Models.cpp:174      1| .   Loaded 218880 lines
-2019-09-25 15:27:42.628 (   3.191s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Teapot
-2019-09-25 15:27:42.643 (   3.206s) [main thread     ]             Models.cpp:331      1| .   Adding Child with name TeapotHighPoly to model 2
-2019-09-25 15:27:42.643 (   3.206s) [main thread     ]             Models.cpp:66       1| .   Adding child TeapotHighPoly
-2019-09-25 15:27:42.643 (   3.206s) [main thread     ]             Models.cpp:97       2| .   Skipping comment: #child [TeapotLowPoly]
+2019-09-25 18:12:08.777 (   0.842s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: TeapotLowPoly
+2019-09-25 18:12:08.835 (   0.900s) [main thread     ]             Models.cpp:138      1| .   Rotating by 90.000000 around axis 1.000000 0.000000 0.000000
+2019-09-25 18:12:08.835 (   0.900s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.900000
+2019-09-25 18:12:08.835 (   0.900s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/teapotLowPoly.txt as ID: 0
+2019-09-25 18:12:08.939 (   1.004s) [main thread     ]             Models.cpp:174      1| .   Loaded 23808 lines
+2019-09-25 18:12:08.939 (   1.004s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: TeapotHighPoly
+2019-09-25 18:12:08.952 (   1.017s) [main thread     ]             Models.cpp:145      1| .   Transling by (0.000000, 0.250000, 0.000000)
+2019-09-25 18:12:08.952 (   1.017s) [main thread     ]             Models.cpp:138      1| .   Rotating by 90.000000 around axis -1.000000 0.000000 0.000000
+2019-09-25 18:12:08.952 (   1.017s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/teapot.txt as ID: 1
+2019-09-25 18:12:09.962 (   2.027s) [main thread     ]             Models.cpp:174      1| .   Loaded 218880 lines
+2019-09-25 18:12:09.962 (   2.027s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Teapot
+2019-09-25 18:12:09.970 (   2.035s) [main thread     ]             Models.cpp:331      1| .   Adding Child with name TeapotHighPoly to model 2
+2019-09-25 18:12:09.970 (   2.035s) [main thread     ]             Models.cpp:66       1| .   Adding child TeapotHighPoly
+2019-09-25 18:12:09.970 (   2.035s) [main thread     ]             Models.cpp:97       2| .   Skipping comment: #child [TeapotLowPoly]
 
-2019-09-25 15:27:42.643 (   3.206s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Sphere
-2019-09-25 15:27:42.660 (   3.223s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/sphere.txt as ID: 3
-2019-09-25 15:27:42.805 (   3.368s) [main thread     ]             Models.cpp:174      1| .   Loaded 23040 lines
-2019-09-25 15:27:42.805 (   3.369s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Cube
-2019-09-25 15:27:42.822 (   3.385s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/cube.txt as ID: 4
-2019-09-25 15:27:42.826 (   3.389s) [main thread     ]             Models.cpp:174      1| .   Loaded 288 lines
-2019-09-25 15:27:42.826 (   3.390s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: FancyCube
-2019-09-25 15:27:42.846 (   3.409s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.390000
-2019-09-25 15:27:42.846 (   3.410s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/fancyCube.obj starting at ID: 5
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 11 with name 'fancyCube.obj-Material'
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 12 with name 'fancyCube.obj-Material.001'
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model fancyCube.obj-Child-0 as IDs: 6
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material.001' (Material ID 12) to Model 6
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:261      3| .   CurMat: 1, LastMat: 1
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-0
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-1 as IDs: 6
-2019-09-25 15:27:42.872 (   3.435s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material.001' (Material ID 12) to Model 5
-2019-09-25 15:27:42.872 (   3.436s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 7
-2019-09-25 15:27:42.872 (   3.436s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.872 (   3.436s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.872 (   3.436s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-1
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-2 as IDs: 7
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 8
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-2
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-3 as IDs: 8
-2019-09-25 15:27:42.873 (   3.436s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.873 (   3.437s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 9
-2019-09-25 15:27:42.873 (   3.437s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.873 (   3.437s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.873 (   3.437s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-3
-2019-09-25 15:27:42.873 (   3.437s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-4 as IDs: 9
-2019-09-25 15:27:42.873 (   3.437s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 10
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-4
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-5 as IDs: 10
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 11
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-5
-2019-09-25 15:27:42.874 (   3.437s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-6 as IDs: 11
-2019-09-25 15:27:42.874 (   3.438s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.874 (   3.438s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 12
-2019-09-25 15:27:42.874 (   3.438s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.874 (   3.438s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-6
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-7 as IDs: 12
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 13
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-7
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-8 as IDs: 13
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 14
-2019-09-25 15:27:42.875 (   3.438s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.875 (   3.439s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.875 (   3.439s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-8
-2019-09-25 15:27:42.875 (   3.439s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-9 as IDs: 14
-2019-09-25 15:27:42.875 (   3.439s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 15
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-9
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-10 as IDs: 15
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 16
-2019-09-25 15:27:42.876 (   3.439s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.876 (   3.440s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.876 (   3.440s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-10
-2019-09-25 15:27:42.876 (   3.440s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-11 as IDs: 16
-2019-09-25 15:27:42.876 (   3.440s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.877 (   3.440s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 17
-2019-09-25 15:27:42.877 (   3.440s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.877 (   3.440s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.877 (   3.440s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-11
-2019-09-25 15:27:42.877 (   3.440s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-12 as IDs: 17
-2019-09-25 15:27:42.878 (   3.441s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.878 (   3.441s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 18
-2019-09-25 15:27:42.878 (   3.441s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:42.878 (   3.442s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.878 (   3.442s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-12
-2019-09-25 15:27:42.878 (   3.442s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-13 as IDs: 18
-2019-09-25 15:27:42.878 (   3.442s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
-2019-09-25 15:27:42.879 (   3.442s) [main thread     ]             Models.cpp:324      1| .   Loaded 36 vertices
-2019-09-25 15:27:42.879 (   3.442s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-13
-2019-09-25 15:27:42.879 (   3.442s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Cube2
-2019-09-25 15:27:42.907 (   3.470s) [main thread     ]             Models.cpp:124      1| .   Scaling by 1.000000
-2019-09-25 15:27:42.907 (   3.470s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/knot.txt as ID: 20
-2019-09-25 15:27:43.476 (   4.040s) [main thread     ]             Models.cpp:174      1| .   Loaded 103680 lines
-2019-09-25 15:27:43.477 (   4.040s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: CubeOuter
-2019-09-25 15:27:43.504 (   4.068s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Dark Polished Wood' (Material ID 5) to Model 21
-2019-09-25 15:27:43.504 (   4.068s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/cubeOuter.obj starting at ID: 21
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 13 with name 'cubeOuter.obj-Material'
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model cubeOuter.obj-Child-0 as IDs: 22
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 22
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-0
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-1 as IDs: 22
-2019-09-25 15:27:43.543 (   4.106s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.543 (   4.107s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 23
-2019-09-25 15:27:43.543 (   4.107s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.543 (   4.107s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.543 (   4.107s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-1
-2019-09-25 15:27:43.543 (   4.107s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-2 as IDs: 23
-2019-09-25 15:27:43.543 (   4.107s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 24
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-2
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-3 as IDs: 24
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 25
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-3
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-4 as IDs: 25
-2019-09-25 15:27:43.544 (   4.107s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.544 (   4.108s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 26
-2019-09-25 15:27:43.544 (   4.108s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.544 (   4.108s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.544 (   4.108s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-4
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-5 as IDs: 26
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 27
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-5
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-6 as IDs: 27
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 28
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.545 (   4.108s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-6
-2019-09-25 15:27:43.545 (   4.109s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-7 as IDs: 28
-2019-09-25 15:27:43.545 (   4.109s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 29
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-7
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-8 as IDs: 29
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 30
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-8
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-9 as IDs: 30
-2019-09-25 15:27:43.546 (   4.109s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.546 (   4.110s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 31
-2019-09-25 15:27:43.546 (   4.110s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.546 (   4.110s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.546 (   4.110s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-9
-2019-09-25 15:27:43.546 (   4.110s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-10 as IDs: 31
-2019-09-25 15:27:43.546 (   4.110s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 32
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-10
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-11 as IDs: 32
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 33
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.547 (   4.110s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.547 (   4.111s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-11
-2019-09-25 15:27:43.547 (   4.111s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-12 as IDs: 33
-2019-09-25 15:27:43.548 (   4.111s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
-2019-09-25 15:27:43.548 (   4.111s) [main thread     ]             Models.cpp:324      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.548 (   4.111s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-12
-2019-09-25 15:27:43.549 (   4.112s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: CubeInner
-2019-09-25 15:27:43.575 (   4.138s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Glowly White' (Material ID 9) to Model 35
-2019-09-25 15:27:43.575 (   4.139s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/simpleCube.obj starting at ID: 35
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 14 with name 'simpleCube.obj-Material.001'
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model simpleCube.obj-Child-0 as IDs: 36
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'simpleCube.obj-Material.001' (Material ID -1) to Model 36
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:66       1| .   Adding child simpleCube.obj-Child-0
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model simpleCube.obj-Child-1 as IDs: 36
-2019-09-25 15:27:43.587 (   4.150s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'simpleCube.obj-Material.001' (Material ID -1) to Model 35
-2019-09-25 15:27:43.587 (   4.151s) [main thread     ]             Models.cpp:324      1| .   Loaded 36 vertices
-2019-09-25 15:27:43.587 (   4.151s) [main thread     ]             Models.cpp:66       1| .   Adding child simpleCube.obj-Child-1
-2019-09-25 15:27:43.588 (   4.151s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: VeryFancyCube
-2019-09-25 15:27:43.618 (   4.182s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.390000
-2019-09-25 15:27:43.619 (   4.182s) [main thread     ]             Models.cpp:331      1| .   Adding Child with name CubeOuter to model 38
-2019-09-25 15:27:43.619 (   4.183s) [main thread     ]             Models.cpp:66       1| .   Adding child CubeOuter
-2019-09-25 15:27:43.620 (   4.183s) [main thread     ]             Models.cpp:331      1| .   Adding Child with name CubeInner to model 38
-2019-09-25 15:27:43.620 (   4.183s) [main thread     ]             Models.cpp:66       1| .   Adding child CubeInner
-2019-09-25 15:27:43.621 (   4.184s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Knot
-2019-09-25 15:27:43.669 (   4.232s) [main thread     ]             Models.cpp:151      1| .   Wrapping texture by 2.000000X in u and 1.500000X in v
-2019-09-25 15:27:43.669 (   4.232s) [main thread     ]             Models.cpp:131      1| .   Scaling by 0.900000 0.900000 0.750000
-2019-09-25 15:27:43.669 (   4.232s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/knot.txt as ID: 39
-2019-09-25 15:27:44.354 (   4.917s) [main thread     ]             Models.cpp:174      1| .   Loaded 103680 lines
-2019-09-25 15:27:44.354 (   4.917s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Tile
-2019-09-25 15:27:44.378 (   4.942s) [main thread     ]             Models.cpp:131      1| .   Scaling by 1.000000 1.000000 0.100000
-2019-09-25 15:27:44.378 (   4.942s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/cube.txt as ID: 40
-2019-09-25 15:27:44.380 (   4.943s) [main thread     ]             Models.cpp:174      1| .   Loaded 288 lines
-2019-09-25 15:27:44.380 (   4.943s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Floor
-2019-09-25 15:27:44.424 (   4.988s) [main thread     ]             Models.cpp:131      1| .   Scaling by 1.000000 1.000000 0.500000
-2019-09-25 15:27:44.425 (   4.988s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Clay' (Material ID 7) to Model 41
-2019-09-25 15:27:44.425 (   4.989s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/cube.txt as ID: 41
-2019-09-25 15:27:44.428 (   4.992s) [main thread     ]             Models.cpp:174      1| .   Loaded 288 lines
-2019-09-25 15:27:44.429 (   4.992s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: FloorPart
-2019-09-25 15:27:44.476 (   5.040s) [main thread     ]             Models.cpp:131      1| .   Scaling by 0.500000 0.500000 0.500000
-2019-09-25 15:27:44.477 (   5.040s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Clay' (Material ID 7) to Model 42
-2019-09-25 15:27:44.477 (   5.040s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/Floor_Modular.obj starting at ID: 42
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 15 with name 'Floor_Modular.obj-Grey_Floor'
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model Floor_Modular.obj-Child-0 as IDs: 43
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'Floor_Modular.obj-Grey_Floor' (Material ID -1) to Model 43
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:66       1| .   Adding child Floor_Modular.obj-Child-0
-2019-09-25 15:27:44.555 (   5.118s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Floor_Modular.obj-Child-1 as IDs: 43
-2019-09-25 15:27:44.555 (   5.119s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Floor_Modular.obj-Grey_Floor' (Material ID -1) to Model 42
-2019-09-25 15:27:44.571 (   5.134s) [main thread     ]             Models.cpp:324      1| .   Loaded 3528 vertices
-2019-09-25 15:27:44.571 (   5.135s) [main thread     ]             Models.cpp:66       1| .   Adding child Floor_Modular.obj-Child-1
-2019-09-25 15:27:44.571 (   5.135s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Dino
-2019-09-25 15:27:44.590 (   5.153s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.100000
-2019-09-25 15:27:44.590 (   5.153s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/Trex.obj starting at ID: 45
-2019-09-25 15:27:44.660 (   5.223s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 16 with name 'Trex.obj-Black'
-2019-09-25 15:27:44.660 (   5.224s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 17 with name 'Trex.obj-Green'
-2019-09-25 15:27:44.660 (   5.224s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 18 with name 'Trex.obj-LightGreen'
-2019-09-25 15:27:44.660 (   5.224s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 19 with name 'Trex.obj-LightYellow'
-2019-09-25 15:27:44.660 (   5.224s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 20 with name 'Trex.obj-Red'
-2019-09-25 15:27:44.660 (   5.224s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model Trex.obj-Child-0 as IDs: 46
-2019-09-25 15:27:44.660 (   5.224s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'Trex.obj-Green' (Material ID 17) to Model 46
-2019-09-25 15:27:44.661 (   5.224s) [main thread     ]             Models.cpp:261      3| .   CurMat: 1, LastMat: 1
-2019-09-25 15:27:44.661 (   5.224s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
-2019-09-25 15:27:44.661 (   5.224s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-0
-2019-09-25 15:27:44.661 (   5.224s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-1 as IDs: 46
-2019-09-25 15:27:44.661 (   5.224s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-Green' (Material ID 17) to Model 45
-2019-09-25 15:27:44.672 (   5.235s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 1
-2019-09-25 15:27:44.672 (   5.235s) [main thread     ]             Models.cpp:268      1| .   Loaded 2982 vertices
-2019-09-25 15:27:44.672 (   5.236s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-1
-2019-09-25 15:27:44.672 (   5.236s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-2 as IDs: 47
-2019-09-25 15:27:44.672 (   5.236s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-Black' (Material ID 16) to Model 45
-2019-09-25 15:27:44.673 (   5.237s) [main thread     ]             Models.cpp:261      3| .   CurMat: 2, LastMat: 0
-2019-09-25 15:27:44.673 (   5.237s) [main thread     ]             Models.cpp:268      1| .   Loaded 360 vertices
-2019-09-25 15:27:44.674 (   5.237s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-2
-2019-09-25 15:27:44.674 (   5.237s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-3 as IDs: 48
-2019-09-25 15:27:44.674 (   5.237s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-LightGreen' (Material ID 18) to Model 45
-2019-09-25 15:27:44.675 (   5.238s) [main thread     ]             Models.cpp:261      3| .   CurMat: 4, LastMat: 2
-2019-09-25 15:27:44.675 (   5.238s) [main thread     ]             Models.cpp:268      1| .   Loaded 468 vertices
-2019-09-25 15:27:44.675 (   5.238s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-3
-2019-09-25 15:27:44.675 (   5.238s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-4 as IDs: 49
-2019-09-25 15:27:44.675 (   5.238s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-Red' (Material ID 20) to Model 45
-2019-09-25 15:27:44.677 (   5.240s) [main thread     ]             Models.cpp:261      3| .   CurMat: 3, LastMat: 4
-2019-09-25 15:27:44.677 (   5.240s) [main thread     ]             Models.cpp:268      1| .   Loaded 726 vertices
-2019-09-25 15:27:44.677 (   5.240s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-4
-2019-09-25 15:27:44.677 (   5.240s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-5 as IDs: 50
-2019-09-25 15:27:44.677 (   5.241s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-LightYellow' (Material ID 19) to Model 45
-2019-09-25 15:27:44.680 (   5.243s) [main thread     ]             Models.cpp:324      1| .   Loaded 924 vertices
-2019-09-25 15:27:44.680 (   5.243s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-5
-2019-09-25 15:27:44.680 (   5.243s) [main thread     ]             Models.cpp:72    INFO| } 3.569 s: loadModel
-2019-09-25 15:27:44.694 (   5.258s) [main thread     ]               main.cpp:107   INFO| Read 52 models
+2019-09-25 18:12:09.970 (   2.035s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Sphere
+2019-09-25 18:12:09.997 (   2.062s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/sphere.txt as ID: 3
+2019-09-25 18:12:10.156 (   2.221s) [main thread     ]             Models.cpp:174      1| .   Loaded 23040 lines
+2019-09-25 18:12:10.156 (   2.221s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Cube
+2019-09-25 18:12:10.170 (   2.235s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/cube.txt as ID: 4
+2019-09-25 18:12:10.172 (   2.237s) [main thread     ]             Models.cpp:174      1| .   Loaded 288 lines
+2019-09-25 18:12:10.172 (   2.237s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: FancyCube
+2019-09-25 18:12:10.185 (   2.250s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.390000
+2019-09-25 18:12:10.186 (   2.250s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/fancyCube.obj starting at ID: 5
+2019-09-25 18:12:10.199 (   2.263s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 11 with name 'fancyCube.obj-Material'
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 12 with name 'fancyCube.obj-Material.001'
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model fancyCube.obj-Child-0 as IDs: 6
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material.001' (Material ID 12) to Model 6
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:261      3| .   CurMat: 1, LastMat: 1
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-0
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-1 as IDs: 6
+2019-09-25 18:12:10.199 (   2.264s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material.001' (Material ID 12) to Model 5
+2019-09-25 18:12:10.200 (   2.264s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 7
+2019-09-25 18:12:10.200 (   2.264s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.200 (   2.265s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.201 (   2.265s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-1
+2019-09-25 18:12:10.201 (   2.266s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-2 as IDs: 7
+2019-09-25 18:12:10.202 (   2.266s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.202 (   2.267s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 8
+2019-09-25 18:12:10.202 (   2.267s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.202 (   2.267s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.202 (   2.267s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-2
+2019-09-25 18:12:10.203 (   2.267s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-3 as IDs: 8
+2019-09-25 18:12:10.203 (   2.267s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.203 (   2.268s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 9
+2019-09-25 18:12:10.203 (   2.268s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.203 (   2.268s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.203 (   2.268s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-3
+2019-09-25 18:12:10.203 (   2.268s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-4 as IDs: 9
+2019-09-25 18:12:10.203 (   2.268s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.204 (   2.268s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 10
+2019-09-25 18:12:10.204 (   2.268s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.204 (   2.269s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.204 (   2.269s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-4
+2019-09-25 18:12:10.204 (   2.269s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-5 as IDs: 10
+2019-09-25 18:12:10.204 (   2.269s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.206 (   2.270s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 11
+2019-09-25 18:12:10.206 (   2.271s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.206 (   2.271s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.207 (   2.272s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-5
+2019-09-25 18:12:10.207 (   2.272s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-6 as IDs: 11
+2019-09-25 18:12:10.207 (   2.272s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.208 (   2.272s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 12
+2019-09-25 18:12:10.208 (   2.273s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.208 (   2.273s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.208 (   2.273s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-6
+2019-09-25 18:12:10.208 (   2.273s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-7 as IDs: 12
+2019-09-25 18:12:10.209 (   2.273s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.209 (   2.274s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 13
+2019-09-25 18:12:10.209 (   2.274s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.209 (   2.274s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.210 (   2.275s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-7
+2019-09-25 18:12:10.212 (   2.277s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-8 as IDs: 13
+2019-09-25 18:12:10.212 (   2.277s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.212 (   2.277s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 14
+2019-09-25 18:12:10.212 (   2.277s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.213 (   2.277s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.213 (   2.277s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-8
+2019-09-25 18:12:10.213 (   2.278s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-9 as IDs: 14
+2019-09-25 18:12:10.213 (   2.278s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.213 (   2.278s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 15
+2019-09-25 18:12:10.213 (   2.278s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.214 (   2.278s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.214 (   2.279s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-9
+2019-09-25 18:12:10.214 (   2.279s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-10 as IDs: 15
+2019-09-25 18:12:10.214 (   2.279s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.214 (   2.279s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 16
+2019-09-25 18:12:10.214 (   2.279s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.215 (   2.279s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.215 (   2.279s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-10
+2019-09-25 18:12:10.215 (   2.279s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-11 as IDs: 16
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 17
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-11
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-12 as IDs: 17
+2019-09-25 18:12:10.215 (   2.280s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 18
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-12
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model fancyCube.obj-Child-13 as IDs: 18
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'fancyCube.obj-Material' (Material ID 11) to Model 5
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:324      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.216 (   2.281s) [main thread     ]             Models.cpp:66       1| .   Adding child fancyCube.obj-Child-13
+2019-09-25 18:12:10.217 (   2.282s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Cube2
+2019-09-25 18:12:10.227 (   2.292s) [main thread     ]             Models.cpp:124      1| .   Scaling by 1.000000
+2019-09-25 18:12:10.227 (   2.292s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/knot.txt as ID: 20
+2019-09-25 18:12:10.736 (   2.801s) [main thread     ]             Models.cpp:174      1| .   Loaded 103680 lines
+2019-09-25 18:12:10.736 (   2.801s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: CubeOuter
+2019-09-25 18:12:10.746 (   2.811s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Dark Polished Wood' (Material ID 5) to Model 21
+2019-09-25 18:12:10.746 (   2.811s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/cubeOuter.obj starting at ID: 21
+2019-09-25 18:12:10.755 (   2.820s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 13 with name 'cubeOuter.obj-Material'
+2019-09-25 18:12:10.755 (   2.820s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model cubeOuter.obj-Child-0 as IDs: 22
+2019-09-25 18:12:10.755 (   2.820s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 22
+2019-09-25 18:12:10.755 (   2.820s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.755 (   2.820s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
+2019-09-25 18:12:10.755 (   2.820s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-0
+2019-09-25 18:12:10.756 (   2.820s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-1 as IDs: 22
+2019-09-25 18:12:10.756 (   2.820s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 23
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-1
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-2 as IDs: 23
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 24
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-2
+2019-09-25 18:12:10.756 (   2.821s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-3 as IDs: 24
+2019-09-25 18:12:10.757 (   2.821s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 25
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-3
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-4 as IDs: 25
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 26
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-4
+2019-09-25 18:12:10.757 (   2.822s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-5 as IDs: 26
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 27
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-5
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-6 as IDs: 27
+2019-09-25 18:12:10.758 (   2.823s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.759 (   2.823s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 28
+2019-09-25 18:12:10.759 (   2.823s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.759 (   2.823s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-6
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-7 as IDs: 28
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 29
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-7
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-8 as IDs: 29
+2019-09-25 18:12:10.759 (   2.824s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.760 (   2.824s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 30
+2019-09-25 18:12:10.760 (   2.824s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.760 (   2.824s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.760 (   2.824s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-8
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-9 as IDs: 30
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 31
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-9
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-10 as IDs: 31
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 32
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-10
+2019-09-25 18:12:10.760 (   2.825s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-11 as IDs: 32
+2019-09-25 18:12:10.761 (   2.825s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 33
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:268      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-11
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model cubeOuter.obj-Child-12 as IDs: 33
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'cubeOuter.obj-Material' (Material ID -1) to Model 21
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:324      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.761 (   2.826s) [main thread     ]             Models.cpp:66       1| .   Adding child cubeOuter.obj-Child-12
+2019-09-25 18:12:10.762 (   2.826s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: CubeInner
+2019-09-25 18:12:10.785 (   2.850s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Glowly White' (Material ID 9) to Model 35
+2019-09-25 18:12:10.785 (   2.850s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/simpleCube.obj starting at ID: 35
+2019-09-25 18:12:10.787 (   2.851s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 14 with name 'simpleCube.obj-Material.001'
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model simpleCube.obj-Child-0 as IDs: 36
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'simpleCube.obj-Material.001' (Material ID -1) to Model 36
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:66       1| .   Adding child simpleCube.obj-Child-0
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model simpleCube.obj-Child-1 as IDs: 36
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'simpleCube.obj-Material.001' (Material ID -1) to Model 35
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:324      1| .   Loaded 36 vertices
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:66       1| .   Adding child simpleCube.obj-Child-1
+2019-09-25 18:12:10.787 (   2.852s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: VeryFancyCube
+2019-09-25 18:12:10.846 (   2.911s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.390000
+2019-09-25 18:12:10.846 (   2.911s) [main thread     ]             Models.cpp:331      1| .   Adding Child with name CubeOuter to model 38
+2019-09-25 18:12:10.846 (   2.911s) [main thread     ]             Models.cpp:66       1| .   Adding child CubeOuter
+2019-09-25 18:12:10.846 (   2.911s) [main thread     ]             Models.cpp:331      1| .   Adding Child with name CubeInner to model 38
+2019-09-25 18:12:10.847 (   2.911s) [main thread     ]             Models.cpp:66       1| .   Adding child CubeInner
+2019-09-25 18:12:10.847 (   2.912s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Knot
+2019-09-25 18:12:10.901 (   2.965s) [main thread     ]             Models.cpp:151      1| .   Wrapping texture by 2.000000X in u and 1.500000X in v
+2019-09-25 18:12:10.901 (   2.965s) [main thread     ]             Models.cpp:131      1| .   Scaling by 0.900000 0.900000 0.750000
+2019-09-25 18:12:10.901 (   2.966s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/knot.txt as ID: 39
+2019-09-25 18:12:11.358 (   3.422s) [main thread     ]             Models.cpp:174      1| .   Loaded 103680 lines
+2019-09-25 18:12:11.358 (   3.423s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Tile
+2019-09-25 18:12:11.366 (   3.431s) [main thread     ]             Models.cpp:131      1| .   Scaling by 1.000000 1.000000 0.100000
+2019-09-25 18:12:11.366 (   3.431s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/cube.txt as ID: 40
+2019-09-25 18:12:11.368 (   3.432s) [main thread     ]             Models.cpp:174      1| .   Loaded 288 lines
+2019-09-25 18:12:11.368 (   3.433s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Floor
+2019-09-25 18:12:11.398 (   3.463s) [main thread     ]             Models.cpp:131      1| .   Scaling by 1.000000 1.000000 0.500000
+2019-09-25 18:12:11.399 (   3.463s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Clay' (Material ID 7) to Model 41
+2019-09-25 18:12:11.399 (   3.463s) [main thread     ]             Models.cpp:164      1| .   Loading flat model file ./models/cube.txt as ID: 41
+2019-09-25 18:12:11.400 (   3.465s) [main thread     ]             Models.cpp:174      1| .   Loaded 288 lines
+2019-09-25 18:12:11.400 (   3.465s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: FloorPart
+2019-09-25 18:12:11.449 (   3.514s) [main thread     ]             Models.cpp:131      1| .   Scaling by 0.500000 0.500000 0.500000
+2019-09-25 18:12:11.449 (   3.514s) [main thread     ]             Models.cpp:339      1| .   Binding material: 'Clay' (Material ID 7) to Model 42
+2019-09-25 18:12:11.449 (   3.514s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/Floor_Modular.obj starting at ID: 42
+2019-09-25 18:12:11.484 (   3.549s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 15 with name 'Floor_Modular.obj-Grey_Floor'
+2019-09-25 18:12:11.485 (   3.549s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model Floor_Modular.obj-Child-0 as IDs: 43
+2019-09-25 18:12:11.485 (   3.549s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'Floor_Modular.obj-Grey_Floor' (Material ID -1) to Model 43
+2019-09-25 18:12:11.485 (   3.549s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 0
+2019-09-25 18:12:11.485 (   3.549s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
+2019-09-25 18:12:11.485 (   3.550s) [main thread     ]             Models.cpp:66       1| .   Adding child Floor_Modular.obj-Child-0
+2019-09-25 18:12:11.485 (   3.550s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Floor_Modular.obj-Child-1 as IDs: 43
+2019-09-25 18:12:11.485 (   3.550s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Floor_Modular.obj-Grey_Floor' (Material ID -1) to Model 42
+2019-09-25 18:12:11.495 (   3.560s) [main thread     ]             Models.cpp:324      1| .   Loaded 3528 vertices
+2019-09-25 18:12:11.495 (   3.560s) [main thread     ]             Models.cpp:66       1| .   Adding child Floor_Modular.obj-Child-1
+2019-09-25 18:12:11.495 (   3.560s) [main thread     ]             Models.cpp:114   INFO| .   Creating PreFab Model with name: Dino
+2019-09-25 18:12:11.506 (   3.570s) [main thread     ]             Models.cpp:124      1| .   Scaling by 0.100000
+2019-09-25 18:12:11.506 (   3.571s) [main thread     ]             Models.cpp:182      1| .   Loading obj model ./models/Trex.obj starting at ID: 45
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 16 with name 'Trex.obj-Black'
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 17 with name 'Trex.obj-Green'
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 18 with name 'Trex.obj-LightGreen'
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 19 with name 'Trex.obj-LightYellow'
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:225      1| .   Creating Material ID 20 with name 'Trex.obj-Red'
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:232      1| .   Loading obj child model Trex.obj-Child-0 as IDs: 46
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:248      1| .   Binding material: 'Trex.obj-Green' (Material ID 17) to Model 46
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:261      3| .   CurMat: 1, LastMat: 1
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:268      1| .   Loaded 0 vertices
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-0
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-1 as IDs: 46
+2019-09-25 18:12:11.553 (   3.618s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-Green' (Material ID 17) to Model 45
+2019-09-25 18:12:11.563 (   3.628s) [main thread     ]             Models.cpp:261      3| .   CurMat: 0, LastMat: 1
+2019-09-25 18:12:11.563 (   3.628s) [main thread     ]             Models.cpp:268      1| .   Loaded 2982 vertices
+2019-09-25 18:12:11.563 (   3.628s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-1
+2019-09-25 18:12:11.563 (   3.628s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-2 as IDs: 47
+2019-09-25 18:12:11.563 (   3.628s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-Black' (Material ID 16) to Model 45
+2019-09-25 18:12:11.564 (   3.629s) [main thread     ]             Models.cpp:261      3| .   CurMat: 2, LastMat: 0
+2019-09-25 18:12:11.564 (   3.629s) [main thread     ]             Models.cpp:268      1| .   Loaded 360 vertices
+2019-09-25 18:12:11.564 (   3.629s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-2
+2019-09-25 18:12:11.564 (   3.629s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-3 as IDs: 48
+2019-09-25 18:12:11.564 (   3.629s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-LightGreen' (Material ID 18) to Model 45
+2019-09-25 18:12:11.566 (   3.630s) [main thread     ]             Models.cpp:261      3| .   CurMat: 4, LastMat: 2
+2019-09-25 18:12:11.566 (   3.630s) [main thread     ]             Models.cpp:268      1| .   Loaded 468 vertices
+2019-09-25 18:12:11.566 (   3.630s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-3
+2019-09-25 18:12:11.566 (   3.631s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-4 as IDs: 49
+2019-09-25 18:12:11.566 (   3.631s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-Red' (Material ID 20) to Model 45
+2019-09-25 18:12:11.568 (   3.632s) [main thread     ]             Models.cpp:261      3| .   CurMat: 3, LastMat: 4
+2019-09-25 18:12:11.568 (   3.632s) [main thread     ]             Models.cpp:268      1| .   Loaded 726 vertices
+2019-09-25 18:12:11.568 (   3.632s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-4
+2019-09-25 18:12:11.568 (   3.632s) [main thread     ]             Models.cpp:274      1| .   Loading obj child model Trex.obj-Child-5 as IDs: 50
+2019-09-25 18:12:11.568 (   3.633s) [main thread     ]             Models.cpp:283      1| .   Binding material: 'Trex.obj-LightYellow' (Material ID 19) to Model 45
+2019-09-25 18:12:11.570 (   3.635s) [main thread     ]             Models.cpp:324      1| .   Loaded 924 vertices
+2019-09-25 18:12:11.570 (   3.635s) [main thread     ]             Models.cpp:66       1| .   Adding child Trex.obj-Child-5
+2019-09-25 18:12:11.570 (   3.635s) [main thread     ]             Models.cpp:72    INFO| } 2.913 s: loadModel
+2019-09-25 18:12:11.580 (   3.645s) [main thread     ]               main.cpp:107   INFO| Read 52 models
 
-2019-09-25 15:27:44.712 (   5.275s) [main thread     ]              Scene.cpp:19    INFO| { loadScene
-2019-09-25 15:27:44.758 (   5.322s) [main thread     ]              Scene.cpp:26    INFO| .   Opening Scene/Environment File: SimpleExample/Scene.txt
-2019-09-25 15:27:44.806 (   5.369s) [main thread     ]              Scene.cpp:34       1| .   File 'SimpleExample/Scene.txt' is 440 bytes long.
-2019-09-25 15:27:44.806 (   5.370s) [main thread     ]              Scene.cpp:129      1| .   Setting environment map to: ./SkyBoxes/Teide/
-2019-09-25 15:27:44.807 (   5.370s) [main thread     ]              Scene.cpp:151      1| .   Setting skybox up to: (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:44.807 (   5.370s) [main thread     ]              Scene.cpp:42       2| .   Skipping comment: #skyColor = 1 1 10
+2019-09-25 18:12:11.608 (   3.672s) [main thread     ]              Scene.cpp:19    INFO| { loadScene
+2019-09-25 18:12:11.640 (   3.705s) [main thread     ]              Scene.cpp:26    INFO| .   Opening Scene/Environment File: SimpleExample/Scene.txt
+2019-09-25 18:12:11.707 (   3.772s) [main thread     ]              Scene.cpp:34       1| .   File 'SimpleExample/Scene.txt' is 440 bytes long.
+2019-09-25 18:12:11.707 (   3.772s) [main thread     ]              Scene.cpp:129      1| .   Setting environment map to: ./SkyBoxes/Teide/
+2019-09-25 18:12:11.707 (   3.772s) [main thread     ]              Scene.cpp:151      1| .   Setting skybox up to: (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:11.707 (   3.772s) [main thread     ]              Scene.cpp:42       2| .   Skipping comment: #skyColor = 1 1 10
 
-2019-09-25 15:27:44.807 (   5.370s) [main thread     ]              Scene.cpp:157      1| .   Camera FOV set to: 50.000000
-2019-09-25 15:27:44.807 (   5.370s) [main thread     ]              Scene.cpp:115      1| .   Setting ambient light to: 0.300000 0.300000 0.300000
-2019-09-25 15:27:44.807 (   5.370s) [main thread     ]              Scene.cpp:60       1| .   Light Name is: Sun
-2019-09-25 15:27:44.807 (   5.371s) [main thread     ]              Scene.cpp:67       1| .   Setting light direction to: -0.300000 -1.000000 0.400000
-2019-09-25 15:27:44.807 (   5.371s) [main thread     ]              Scene.cpp:73       1| .   Setting light distance to: 5.000000
-2019-09-25 15:27:44.807 (   5.371s) [main thread     ]              Scene.cpp:79       1| .   Setting light color to: 0.900000 0.900000 1.000000
-2019-09-25 15:27:44.808 (   5.371s) [main thread     ]              Scene.cpp:85       1| .   Setting light intensity to: 4.000000
-2019-09-25 15:27:44.808 (   5.371s) [main thread     ]              Scene.cpp:109      1| .   Casting Shadow with current light
-2019-09-25 15:27:44.808 (   5.371s) [main thread     ]              Scene.cpp:99       1| .   Shadow bias set to: 0.004000
-2019-09-25 15:27:44.808 (   5.372s) [main thread     ]              Scene.cpp:93       1| .   Setting shadow frustum to: -6.000000 6.000000 -6.000000 6.000000 1.000000 10.000000
-2019-09-25 15:27:44.808 (   5.372s) [main thread     ]              Scene.cpp:19    INFO| } 0.097 s: loadScene
-2019-09-25 15:27:44.855 (   5.419s) [main thread     ]               main.cpp:110   INFO| Loaded scene file
+2019-09-25 18:12:11.707 (   3.772s) [main thread     ]              Scene.cpp:157      1| .   Camera FOV set to: 50.000000
+2019-09-25 18:12:11.707 (   3.772s) [main thread     ]              Scene.cpp:115      1| .   Setting ambient light to: 0.300000 0.300000 0.300000
+2019-09-25 18:12:11.708 (   3.772s) [main thread     ]              Scene.cpp:60       1| .   Light Name is: Sun
+2019-09-25 18:12:11.708 (   3.772s) [main thread     ]              Scene.cpp:67       1| .   Setting light direction to: -0.300000 -1.000000 0.400000
+2019-09-25 18:12:11.708 (   3.772s) [main thread     ]              Scene.cpp:73       1| .   Setting light distance to: 5.000000
+2019-09-25 18:12:11.708 (   3.773s) [main thread     ]              Scene.cpp:79       1| .   Setting light color to: 0.900000 0.900000 1.000000
+2019-09-25 18:12:11.708 (   3.773s) [main thread     ]              Scene.cpp:85       1| .   Setting light intensity to: 4.000000
+2019-09-25 18:12:11.708 (   3.773s) [main thread     ]              Scene.cpp:109      1| .   Casting Shadow with current light
+2019-09-25 18:12:11.708 (   3.773s) [main thread     ]              Scene.cpp:99       1| .   Shadow bias set to: 0.004000
+2019-09-25 18:12:11.708 (   3.773s) [main thread     ]              Scene.cpp:93       1| .   Setting shadow frustum to: -6.000000 6.000000 -6.000000 6.000000 1.000000 10.000000
+2019-09-25 18:12:11.708 (   3.773s) [main thread     ]              Scene.cpp:19    INFO| } 0.100 s: loadScene
+2019-09-25 18:12:11.735 (   3.800s) [main thread     ]               main.cpp:110   INFO| Loaded scene file
 
-2019-09-25 15:27:45.713 (   6.276s) [main thread     ]      WindowManager.cpp:47    INFO| 
+2019-09-25 18:12:12.025 (   4.090s) [main thread     ]      WindowManager.cpp:47    INFO| 
 OpenGL loaded
 
-2019-09-25 15:27:45.729 (   6.292s) [main thread     ]      WindowManager.cpp:48    INFO| Vendor:   Intel
+2019-09-25 18:12:12.059 (   4.124s) [main thread     ]      WindowManager.cpp:48    INFO| Vendor:   Intel
 
-2019-09-25 15:27:45.769 (   6.333s) [main thread     ]      WindowManager.cpp:49    INFO| Renderer: Intel(R) HD Graphics 520
+2019-09-25 18:12:12.096 (   4.161s) [main thread     ]      WindowManager.cpp:49    INFO| Renderer: Intel(R) HD Graphics 520
 
-2019-09-25 15:27:45.831 (   6.394s) [main thread     ]      WindowManager.cpp:50    INFO| Version:  3.3.0 - Build 25.20.100.6373
+2019-09-25 18:12:12.215 (   4.280s) [main thread     ]      WindowManager.cpp:50    INFO| Version:  3.3.0 - Build 25.20.100.6373
 
 
-2019-09-25 15:27:45.921 (   6.484s) [main thread     ]      WindowManager.cpp:19    INFO| { setWindowSize
-2019-09-25 15:27:45.955 (   6.518s) [main thread     ]      WindowManager.cpp:20    INFO| .   Attempting to create a Windowed display of size 1120x700
-2019-09-25 15:27:46.014 (   6.577s) [main thread     ]      WindowManager.cpp:25    INFO| .   Created a window of size 1120x700
-2019-09-25 15:27:46.066 (   6.630s) [main thread     ]      WindowManager.cpp:19    INFO| } 0.145 s: setWindowSize
-2019-09-25 15:27:46.093 (   6.656s) [main thread     ]    RenderingSystem.cpp:132      1| Loading Texture ./textures/wood.jpg
-2019-09-25 15:27:46.670 (   7.233s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
-2019-09-25 15:27:46.726 (   7.290s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
-2019-09-25 15:27:46.758 (   7.321s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
-2019-09-25 15:27:46.777 (   7.341s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
-2019-09-25 15:27:46.835 (   7.399s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
-2019-09-25 15:27:46.972 (   7.536s) [main thread     ]    RenderingSystem.cpp:359   INFO| Created Colider Circle with 360 verts
-2019-09-25 15:27:46.982 (   7.546s) [main thread     ]             Skybox.cpp:37    INFO| { loadCubemap
-2019-09-25 15:27:50.125 (  10.688s) [main thread     ]             Skybox.cpp:37    INFO| } 3.143 s: loadCubemap
-2019-09-25 15:27:50.176 (  10.739s) [main thread     ]               main.cpp:133   INFO| Loading Gamescript: 'SimpleExample/main.lua'
-2019-09-25 15:27:50.203 (  10.767s) [main thread     ]         luaSupport.cpp:151      1| Adding model Teapot at (0.000000, 0.000000, 0.000000)
-2019-09-25 15:27:50.204 (  10.767s) [main thread     ]             Models.cpp:66       1| Adding child Teapot
-2019-09-25 15:27:50.204 (  10.767s) [main thread     ]         luaSupport.cpp:378      1| Setting model Teapot0 material to 'Shiny Red Plastic'
-2019-09-25 15:27:50.204 (  10.767s) [main thread     ]         luaSupport.cpp:151      1| Adding model FloorPart at (0.000000, 0.000000, 0.000000)
-2019-09-25 15:27:50.204 (  10.767s) [main thread     ]             Models.cpp:66       1| Adding child FloorPart
-2019-09-25 15:27:50.204 (  10.767s) [main thread     ]         luaSupport.cpp:409      1| Placing model FloorPart1 at (0.000000, -0.020000, 0.000000)
-2019-09-25 15:27:50.204 (  10.767s) [main thread     ]         luaSupport.cpp:365      1| Scaling model FloorPart1 at (3.000000, 1.000000, 3.000000)
-2019-09-25 15:27:50.204 (  10.768s) [main thread     ]         luaSupport.cpp:378      1| Setting model FloorPart1 material to 'Gold'
-2019-09-25 15:27:50.204 (  10.768s) [main thread     ]         luaSupport.cpp:151      1| Adding model Dino at (0.000000, 0.000000, -0.150000)
-2019-09-25 15:27:50.205 (  10.768s) [main thread     ]             Models.cpp:66       1| Adding child Dino
-2019-09-25 15:27:50.205 (  10.768s) [main thread     ]               main.cpp:141   INFO| Script Loaded without Error.
-2019-09-25 15:27:50.237 (  10.800s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 10.547000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.337 (  10.900s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.100000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.352 (  10.916s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.015000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.375 (  10.938s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.023000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.406 (  10.970s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.442 (  11.006s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.036000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.474 (  11.037s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.508 (  11.072s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.540 (  11.103s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.573 (  11.137s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.605 (  11.168s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.639 (  11.202s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.673 (  11.236s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.708 (  11.271s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.742 (  11.305s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.776 (  11.340s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.810 (  11.373s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.843 (  11.406s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.877 (  11.440s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.910 (  11.473s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.944 (  11.507s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:50.978 (  11.541s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.011 (  11.575s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.045 (  11.608s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.079 (  11.642s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.113 (  11.676s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.145 (  11.708s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.180 (  11.743s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.213 (  11.776s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.248 (  11.811s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.282 (  11.845s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.314 (  11.877s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.347 (  11.910s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.381 (  11.944s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.414 (  11.977s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.448 (  12.012s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.482 (  12.045s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.516 (  12.079s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.550 (  12.113s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.584 (  12.147s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.619 (  12.182s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.654 (  12.217s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.688 (  12.251s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.721 (  12.284s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.754 (  12.317s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.788 (  12.351s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.822 (  12.385s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.855 (  12.418s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.889 (  12.453s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.922 (  12.486s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.956 (  12.520s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:51.991 (  12.555s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.025 (  12.588s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.057 (  12.621s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.091 (  12.654s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.134 (  12.697s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.043000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.158 (  12.721s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.024000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.190 (  12.754s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.224 (  12.787s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.272 (  12.835s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.048000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.293 (  12.856s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.021000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.325 (  12.888s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.359 (  12.923s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.392 (  12.956s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.426 (  12.990s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.460 (  13.023s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.493 (  13.056s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.527 (  13.090s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.561 (  13.124s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.595 (  13.159s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.628 (  13.192s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.661 (  13.224s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.695 (  13.258s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.729 (  13.292s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.763 (  13.326s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.797 (  13.361s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.833 (  13.396s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.036000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.864 (  13.427s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.898 (  13.461s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.932 (  13.495s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.969 (  13.533s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.037000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:52.998 (  13.562s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.030 (  13.593s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.064 (  13.627s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.101 (  13.664s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.037000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.135 (  13.698s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.171 (  13.734s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.036000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.204 (  13.767s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.238 (  13.801s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.271 (  13.835s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.306 (  13.869s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.338 (  13.901s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.372 (  13.935s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.406 (  13.970s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.440 (  14.003s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.474 (  14.037s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.506 (  14.070s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.541 (  14.105s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.574 (  14.138s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.607 (  14.170s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.638 (  14.201s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.672 (  14.235s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.706 (  14.269s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.742 (  14.305s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.036000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.776 (  14.339s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.809 (  14.372s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.842 (  14.405s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.878 (  14.441s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.036000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.908 (  14.471s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.942 (  14.505s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:53.976 (  14.540s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.010 (  14.574s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.046 (  14.609s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.036000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.080 (  14.644s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.118 (  14.682s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.038000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.145 (  14.709s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.027000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.177 (  14.740s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.211 (  14.774s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.245 (  14.808s) [main thread     ]         luaSupport.cpp:465      1| Rotating model Teapot0 at by angle 0.034000 along (0.000000, 1.000000, 0.000000)
-2019-09-25 15:27:54.375 (  14.938s) [main thread     ]             loguru.cpp:477   INFO| atexit
+2019-09-25 18:12:12.284 (   4.349s) [main thread     ]      WindowManager.cpp:19    INFO| { setWindowSize
+2019-09-25 18:12:12.331 (   4.395s) [main thread     ]      WindowManager.cpp:20    INFO| .   Attempting to create a Windowed display of size 1120x700
+2019-09-25 18:12:12.364 (   4.429s) [main thread     ]      WindowManager.cpp:25    INFO| .   Created a window of size 1120x700
+2019-09-25 18:12:12.426 (   4.491s) [main thread     ]      WindowManager.cpp:19    INFO| } 0.142 s: setWindowSize
+2019-09-25 18:12:12.459 (   4.524s) [main thread     ]    RenderingSystem.cpp:132      1| Loading Texture ./textures/wood.jpg
+2019-09-25 18:12:12.509 (   4.574s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
+2019-09-25 18:12:12.528 (   4.593s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
+2019-09-25 18:12:12.540 (   4.605s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
+2019-09-25 18:12:12.550 (   4.614s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
+2019-09-25 18:12:12.581 (   4.646s) [main thread     ]             Shader.cpp:49       1| Compiling against GLSL version: 3.30 - Build 25.20.100.6373
+2019-09-25 18:12:12.665 (   4.730s) [main thread     ]    RenderingSystem.cpp:359   INFO| Created Colider Circle with 360 verts
+2019-09-25 18:12:12.673 (   4.737s) [main thread     ]             Skybox.cpp:37    INFO| { loadCubemap
+2019-09-25 18:12:14.928 (   6.993s) [main thread     ]             Skybox.cpp:37    INFO| } 2.255 s: loadCubemap
+2019-09-25 18:12:14.972 (   7.036s) [main thread     ]               main.cpp:133   INFO| Loading Gamescript: 'SimpleExample/main.lua'
+2019-09-25 18:12:15.015 (   7.080s) [main thread     ]         luaSupport.cpp:156      1| Adding model Teapot at (0.000000, 0.000000, 0.000000)
+2019-09-25 18:12:15.016 (   7.080s) [main thread     ]             Models.cpp:66       1| Adding child Teapot
+2019-09-25 18:12:15.016 (   7.081s) [main thread     ]         luaSupport.cpp:383      1| Setting model Teapot0 material to 'Shiny Red Plastic'
+2019-09-25 18:12:15.016 (   7.081s) [main thread     ]         luaSupport.cpp:156      1| Adding model FloorPart at (0.000000, 0.000000, 0.000000)
+2019-09-25 18:12:15.016 (   7.081s) [main thread     ]             Models.cpp:66       1| Adding child FloorPart
+2019-09-25 18:12:15.016 (   7.081s) [main thread     ]         luaSupport.cpp:414      1| Placing model FloorPart1 at (0.000000, -0.020000, 0.000000)
+2019-09-25 18:12:15.017 (   7.081s) [main thread     ]         luaSupport.cpp:370      1| Scaling model FloorPart1 at (3.000000, 1.000000, 3.000000)
+2019-09-25 18:12:15.017 (   7.082s) [main thread     ]         luaSupport.cpp:383      1| Setting model FloorPart1 material to 'Gold'
+2019-09-25 18:12:15.017 (   7.082s) [main thread     ]         luaSupport.cpp:156      1| Adding model Dino at (0.000000, 0.000000, -0.150000)
+2019-09-25 18:12:15.017 (   7.082s) [main thread     ]             Models.cpp:66       1| Adding child Dino
+2019-09-25 18:12:15.017 (   7.082s) [main thread     ]               main.cpp:141   INFO| Script Loaded without Error.
+2019-09-25 18:12:15.049 (   7.114s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 6.847000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.147 (   7.212s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.101000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.164 (   7.229s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.017000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.179 (   7.244s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.015000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.213 (   7.277s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.246 (   7.310s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.277 (   7.342s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.304 (   7.369s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.027000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.329 (   7.394s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.025000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.360 (   7.424s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.389 (   7.453s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.417 (   7.482s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.446 (   7.511s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.477 (   7.541s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.507 (   7.572s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.536 (   7.601s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.564 (   7.629s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.594 (   7.659s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.627 (   7.691s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.659 (   7.724s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.684 (   7.749s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.024000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.714 (   7.779s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.745 (   7.809s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.777 (   7.841s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.805 (   7.870s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.835 (   7.900s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.865 (   7.929s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.894 (   7.959s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.926 (   7.990s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.956 (   8.020s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:15.984 (   8.049s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.014 (   8.079s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.044 (   8.109s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.078 (   8.142s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.105 (   8.170s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.027000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.135 (   8.200s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.164 (   8.229s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.193 (   8.257s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.223 (   8.288s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.253 (   8.318s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.282 (   8.347s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.312 (   8.377s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.343 (   8.407s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.373 (   8.437s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.402 (   8.467s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.432 (   8.496s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.462 (   8.526s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.492 (   8.557s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.521 (   8.586s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.550 (   8.614s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.580 (   8.644s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.610 (   8.675s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.641 (   8.706s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.669 (   8.734s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.699 (   8.764s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.729 (   8.794s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.759 (   8.824s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.788 (   8.853s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.818 (   8.882s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.852 (   8.917s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.035000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.878 (   8.943s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.026000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.908 (   8.973s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.937 (   9.002s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.968 (   9.033s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:16.996 (   9.061s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.025 (   9.090s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.054 (   9.118s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.084 (   9.149s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.113 (   9.178s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.142 (   9.207s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.171 (   9.236s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.201 (   9.266s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.230 (   9.294s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.260 (   9.324s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.291 (   9.356s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.320 (   9.385s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.349 (   9.414s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.378 (   9.443s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.409 (   9.474s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.438 (   9.503s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.468 (   9.532s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.497 (   9.562s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.527 (   9.592s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.557 (   9.621s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.585 (   9.649s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.614 (   9.679s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.643 (   9.708s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.674 (   9.739s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.703 (   9.768s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.732 (   9.797s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.762 (   9.827s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.793 (   9.857s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.823 (   9.888s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.852 (   9.917s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.882 (   9.947s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.913 (   9.978s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.942 (  10.007s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:17.970 (  10.035s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.000 (  10.065s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.029 (  10.094s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.059 (  10.124s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.088 (  10.153s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.117 (  10.181s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.146 (  10.211s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.177 (  10.242s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.206 (  10.271s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.236 (  10.301s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.265 (  10.330s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.296 (  10.361s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.327 (  10.391s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.355 (  10.420s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.383 (  10.448s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.412 (  10.477s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.443 (  10.508s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.471 (  10.536s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.501 (  10.566s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.533 (  10.598s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.033000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.562 (  10.627s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.589 (  10.654s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.619 (  10.684s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.648 (  10.713s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.677 (  10.742s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.705 (  10.770s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.735 (  10.800s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.765 (  10.830s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.795 (  10.860s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.825 (  10.890s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.853 (  10.917s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.882 (  10.947s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.912 (  10.977s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.942 (  11.006s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:18.971 (  11.035s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.000 (  11.065s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.030 (  11.094s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.060 (  11.124s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.090 (  11.155s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.119 (  11.184s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.148 (  11.213s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.177 (  11.242s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.206 (  11.271s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.236 (  11.301s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.268 (  11.332s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.032000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.296 (  11.361s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.326 (  11.391s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.356 (  11.421s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.386 (  11.451s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.416 (  11.481s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.446 (  11.511s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.476 (  11.540s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.505 (  11.569s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.533 (  11.598s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.562 (  11.627s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.592 (  11.656s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.622 (  11.687s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.650 (  11.715s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.679 (  11.744s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.708 (  11.773s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.738 (  11.803s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.768 (  11.833s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.797 (  11.862s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.827 (  11.891s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.858 (  11.922s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.887 (  11.952s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.916 (  11.981s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.028000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.946 (  12.010s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:19.976 (  12.041s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.005 (  12.070s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.035 (  12.100s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.064 (  12.129s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.094 (  12.159s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.125 (  12.189s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.155 (  12.220s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.182 (  12.247s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.027000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.212 (  12.277s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.242 (  12.307s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.271 (  12.336s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.030000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.301 (  12.366s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.029000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.331 (  12.396s) [main thread     ]         luaSupport.cpp:470      1| Rotating model Teapot0 at by angle 0.031000 along (0.000000, 1.000000, 0.000000)
+2019-09-25 18:12:20.449 (  12.514s) [main thread     ]             loguru.cpp:477   INFO| atexit
