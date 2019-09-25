@@ -15,7 +15,7 @@ Mac OS X:
 
  -Download Mac OS X Development Libraries (not the runtime libraries!):  
  
-    !(http://www.libsdl.org/download-2.0.php#source)
+    [](http://www.libsdl.org/download-2.0.php#source)
     
  -Open the .dmg file, move SDL2.framework to /Library/Frameworks
  
@@ -31,7 +31,7 @@ Windows:
 
 -Download Windows Development Libraries (not the runtime libraries!):  
 
-    !(http://www.libsdl.org/download-2.0.php#source)
+    [](http://www.libsdl.org/download-2.0.php#source)
 -Open the .zip file and place it in a known directory. The cmake files here assume the contents of the folder are placed in the C:/SDL2/ directory.
 
 -Place the file SDL2.dll in the GEFS-GameEngineStarterCode/GEFS/ directory (where the executable will be built to) or in C:\WINDOWS\SYSTEM32 (for 32 bit builds) or C:\Windows\SysWOW64 (for 64 bit builds). It just needs to be in one of these locations.
