@@ -8,9 +8,9 @@ You must first install the SDL2 Libraries for your system.
 For getting started, I like the tutorials here: [https://lazyfoo.net/tutorials/SDL/01_hello_SDL/](https://lazyfoo.net/tutorials/SDL/01_hello_SDL/), but to summarize:
 
 Linux:
-
+```
   apt install libsdl2-dev
-
+```
 Mac OS X:
 
  -Download Mac OS X Development Libraries (not the runtime libraries!):  
@@ -25,7 +25,7 @@ Mac OS X:
  
  Goto /Library/Frameworks/SDL2.framework/ in terminal
  
- Type: codesign -f -s - SDL2
+ Type: ```codesign -f -s - SDL2```
 
 Windows:
 
@@ -42,20 +42,20 @@ Windows:
 Compile & Run - All Systems
 -------------------------------
 After you finish the above steps go to GEFS-GameEngineStarterCode/build/ directory in the terminal. Now run:
-
+```
   cmake ..   
-  
+```  
 Then, for Linux or OS X command line, run make
-
+```
   make
-  
+```  
 Or for MS Visual Studios or X Code compile by selecting build from the menu.
 
 Lastly, in a terminal, navigate  to the directory  GEFS-GameEngineStarterCode/GEFS/ and run:
-
+```
    ./engine SimpleExample/ [Linux or OS X command line]
    
   Debug/engine.exe SimpleExample/ [Windows MSVS]
   
   ./Debug/engine SimpleExample/ [X Code]
-    
+ ```   
