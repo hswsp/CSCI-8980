@@ -17,6 +17,8 @@ animatedModels = {}
 velModel = {}
 rotYVelModel = {}
 
+targetFrameRate = getTargetFPS();
+
 function frameUpdate(dt)
   for modelID,v in pairs(animatedModels) do
     --print("ID",modelID)
@@ -41,10 +43,14 @@ function keyHandler(keys)
     translateModel(dinoID,0,0,0.1)
   end
   if keys.up then
-    translateModel(dinoID,0.1,0,0)
+    --translateModel(dinoID,0.1,0,0)
+    CameraPosX = CameraPosX + targetFrameRate *0.01;
+
   end
   if keys.down then
-    translateModel(dinoID,-0.1,0,0)
+    --translateModel(dinoID,-0.1,0,0)
+    CameraPosX = CameraPosX - targetFrameRate *0.01;
+
   end
 end
 

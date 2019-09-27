@@ -4,7 +4,7 @@
 #include <external/loguru.hpp>
 
 #pragma GCC diagnostic ignored "-Wunused-variable" //TODO: Delete this line, this is hacky =/
-
+extern int targetFrameRate;
 void luaSetup(lua_State * L){
 	//open all libraries
 	luaL_openlibs(L);
@@ -29,8 +29,16 @@ void luaSetup(lua_State * L){
 	lua_register(L, "unpauseSound", unpauseSound);
 	lua_register(L, "playSoundEffect", playSoundEffect);
 	lua_register(L, "loadAudio", loadAudio);
+	lua_register(L, "getTargetFPS", getTargetFPS);
 }
+//------------------------------------------
 
+int getTargetFPS(lua_State * L)
+{
+	//lua_getglobal(L, "targetFrameRate");
+	lua_pushnumber(L, targetFrameRate);
+	return 1;
+}
 //----------- Camera ----------
 
 glm::vec3 getCameraPosFromLau(lua_State * L){

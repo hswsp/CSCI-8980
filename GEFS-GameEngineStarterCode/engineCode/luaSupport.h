@@ -9,7 +9,7 @@ extern "C" {
 }
 
 void luaSetup(lua_State * L);
-
+int getTargetFPS(lua_State * L);
 //TODO: Maybe move related lua functions to the .h/.cpp files that provide them
 //      e.g. move laodAudio, playSound, and playSoundEffect lua calls to Audiomanager
 
