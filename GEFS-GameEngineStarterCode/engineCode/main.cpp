@@ -17,6 +17,8 @@ bool drawColliders = false;
 
 int targetFrameRate = 30;
 float secondsPerFrame = 1.0f / (float)targetFrameRate;
+float nearPlane = 0.2;
+float farPlane = 20;
 
 #include "luaSupport.h"
 
@@ -149,25 +151,27 @@ int main(int argc, char *argv[]){
 		//LOG_F(3,"New Frame.");
 		while (SDL_PollEvent(&windowEvent)){  //inspect all events in the queue
 			if (windowEvent.type == SDL_QUIT) quit = true;
+
+			bool altPressed = (windowEvent.key.keysym.mod & KMOD_LALT) || (windowEvent.key.keysym.mod & KMOD_RALT);
 			
-			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE) 
-			quit = true; //Exit event loop
-			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_f){ //If "f" is pressed
+			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE) quit = true; //Exit event loop
+			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_f && altPressed){ //If "f" is pressed
 				fullscreen = !fullscreen;
 				setWindowSize(targetScreenWidth, targetScreenHeight,fullscreen);
 			}
 
+			if (windowEvent.type == SDL_KEYDOWN && windowEvent.key.keysym.sym == SDLK_s && altPressed){ //If "s" is pressed
+				saveOutput = true;
+			}
 			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_s){ //If "s" is released
 				saveOutput = false;
 			}
-			if (windowEvent.type == SDL_KEYDOWN && windowEvent.key.keysym.sym == SDLK_s){ //If "s" is released
-				saveOutput = true;
-			}
-			if (windowEvent.type == SDL_KEYDOWN && windowEvent.key.keysym.sym == SDLK_x){ 
+			
+			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_x && altPressed){ 
 				xxx = !xxx;
 			}
 			
-			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_SPACE){ 
+			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_SPACE && altPressed){ 
 				if (timeSpeed != 1){
 					 timeSpeed = 1;
 					 audioManager.unpause();
@@ -180,7 +184,7 @@ int main(int argc, char *argv[]){
 				} 
 			}
 
-			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_r){
+			if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_r && altPressed){
 				printf("Re-loading Materials file!\n");
 				resetMaterials();
 				loadMaterials(gameFolder+materialsFile);
@@ -279,7 +283,7 @@ int main(int argc, char *argv[]){
 		mat4 view = glm::lookAt(camPos, //Camera Position
 																lookatPoint, //Point to look at (camPos + camDir)
 		  													camUp);     //Camera Up direction
-		mat4 proj = glm::perspective(FOV * 3.14f/180, screenWidth / (float) screenHeight, .2f, 20.0f); //FOV, aspect, near, far
+		mat4 proj = glm::perspective(FOV * 3.14f/180, screenWidth / (float) screenHeight, nearPlane, farPlane); //FOV, aspect, near, far
 		//view = lightViewMatrix; proj = lightProjectionMatrix;  //This was useful to visualize the shadowmap
 
 		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap);
@@ -290,6 +294,7 @@ int main(int argc, char *argv[]){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		drawSceneGeometry(curScene.toDraw); //Pass 2A: Draw Scene Geometry
+		//drawSceneGeometry(curScene.toDraw, camDir, camPos); //Pass 2A: Draw Scene Geometry
 		//TODO: Add a pass which draws some items without depth culling (e.g. keys, items)
 		if (drawColliders) drawColliderGeometry(); //Pass 2B: Draw Colliders
 		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
@@ -330,6 +335,7 @@ int main(int argc, char *argv[]){
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text("%d Objects in Scene Graph, %d being drawn", numModels, (int)curScene.toDraw.size());
 		ImGui::Text("Total Triangles: %d", totalTriangles);
+		ImGui::Text("Total Shadow Triangles: %d", totalShadowTriangles);
 		ImGui::Text("Camera Pos %f %f %f",camPos.x,camPos.y,camPos.z);
 		ImGui::End();
 
@@ -433,6 +439,18 @@ void configEngine(string configFile, string configName){
 			targetFrameRate = val;
 			secondsPerFrame = 1.0f / val;
       LOG_F(1,"Setting Target Framerate to %d",(int)targetFrameRate);
+    }
+		else if (commandStr == "nearPlane"){ 
+			float val;
+			sscanf(rawline,"nearPlane = %f", &val);
+			nearPlane = val;
+      LOG_F(1,"Setting Near Plane to %f",nearPlane);
+    }
+		else if (commandStr == "farPlane"){ 
+			float val;
+			sscanf(rawline,"farPlane = %f", &val);
+			farPlane = val;
+      LOG_F(1,"Setting Fear Plane to %f",farPlane);
     }
 		else if (commandStr == "startFullscreen"){ 
 			int val;

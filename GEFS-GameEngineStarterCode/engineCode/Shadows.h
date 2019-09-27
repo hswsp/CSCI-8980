@@ -4,6 +4,8 @@
 #include "Materials.h"
 #include "Models.h"
 
+extern int totalShadowTriangles;
+
 //Shadow mapping functions
 void initShadowMapping();
 void initShadowBuffers();

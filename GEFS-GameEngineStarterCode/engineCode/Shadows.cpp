@@ -10,6 +10,8 @@ unsigned int shadowMapWidth = 1024, shadowMapHeight = 1024;
 
 using std::vector;
 
+int totalShadowTriangles = 0;
+
 void initShadowMapping(){
 	depthShader = Shader("shaders/depth-vert.glsl", "shaders/depth-frag.glsl");
 	depthShader.init();
@@ -74,6 +76,7 @@ void drawGeometryShadow(int shaderProgram, Model model, Material material, glm::
 	glUniformMatrix4fv(uniModelMatrixShadow, 1, GL_FALSE, glm::value_ptr(transform));
 
 	//printf("start/end %d %d\n",model.startVertex, model.numVerts);
+	totalShadowTriangles += model.numVerts/3;
 	glDrawArrays(GL_TRIANGLES, model.startVertex, model.numVerts); //(Primitive Type, Start Vertex, End Vertex) //Draw only 1st object
 }
 
@@ -86,6 +89,8 @@ void computeShadowDepthMap(glm::mat4 lightView, glm::mat4 lightProjection, vecto
 	glViewport(0, 0, shadowMapWidth, shadowMapHeight);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
+
+	totalShadowTriangles = 0;
 	
 	//TODO: Let the user enable front-face culling for shadows if all models are closed
 	//glEnable(GL_CULL_FACE); glCullFace(GL_FRONT);

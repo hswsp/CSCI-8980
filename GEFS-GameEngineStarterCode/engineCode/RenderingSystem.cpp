@@ -407,6 +407,23 @@ void drawSceneGeometry(vector<Model*> toDraw){
 	}
 }
 
+void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPos){
+	glBindVertexArray(modelsVAO);
+
+	float radius = 1;
+
+	glm::mat4 I;
+	totalTriangles = 0;
+	for (size_t i = 0; i < toDraw.size(); i++){
+		//printf("%s - %d\n",toDraw[i]->name.c_str(),i);
+		glm::vec4 pos4 = models[toDraw[i]->ID].transform*glm::vec4(0,0,0,1);
+		float d = glm::dot(glm::vec3(pos4)-camPos,forward);
+		if (d < radius) continue;
+
+		drawGeometry(*toDraw[i], -1, I);
+	}
+}
+
 //-------------  Final Composite --------------
 
 Shader compositeShader;

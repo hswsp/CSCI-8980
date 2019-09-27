@@ -1,9 +1,6 @@
 --Simple Example
 print("Starting Lua for Simple Example")
 
---Todo:
--- Lua modules (for better organization, and maybe reloading?)
-
 CameraPosX = -3.0
 CameraPosY = 1.0
 CameraPosZ = 0.0
@@ -19,7 +16,6 @@ CameraUpZ = 0.0
 animatedModels = {}
 velModel = {}
 rotYVelModel = {}
-fps = getframeRate()
 
 function frameUpdate(dt)
   for modelID,v in pairs(animatedModels) do
@@ -39,32 +35,28 @@ end
 
 function keyHandler(keys)
   if keys.left then
-    translateModel(piller,0,0,-0.1)
+    translateModel(dinoID,0,0,-0.1)
   end
   if keys.right then
-    translateModel(piller,0,0,0.1)
+    translateModel(dinoID,0,0,0.1)
   end
   if keys.up then
-    --translateModel(piller,0.1,0,0)
-    CameraPosX = CameraPosX + 0.01*fps
+    translateModel(dinoID,0.1,0,0)
   end
   if keys.down then
-    --translateModel(piller,-0.1,0,0)
-    CameraPosX = CameraPosX - 0.01*fps
+    translateModel(dinoID,-0.1,0,0)
   end
 end
 
-id = addModel("Teapot",0,0,0)
-setModelMaterial(id,"Shiny Red Plastic")
---setModelMaterial(id,"Steel")
-animatedModels[id] = true
-rotYVelModel[id] = 1
-id = addModel("FloorPart",0,0,0)
-placeModel(id,0,-.02,0)
-scaleModel(id,3,1,3)
-setModelMaterial(id,"Gold")
-piller = addModel("Dino",0,0,-.15)  --VeryFancyCube
---placeModel(piller,-1.5,1.5,0.5)
---scaleModel(piller,.5,0.5,1.5)
---animatedModels[piller] = true
---rotZVelModel[piller] = 1
+teapotID = addModel("Teapot",0,0,0)
+setModelMaterial(teapotID,"Shiny Red Plastic")
+--setModelMaterial(teapotID,"Steel")
+animatedModels[teapotID] = true
+rotYVelModel[teapotID] = 1
+
+floorID = addModel("FloorPart",0,0,0)
+placeModel(floorID,0,-.02,0)
+scaleModel(floorID,3,1,3)
+setModelMaterial(floorID,"Gold")
+
+dinoID = addModel("Dino",0,0,-.15)

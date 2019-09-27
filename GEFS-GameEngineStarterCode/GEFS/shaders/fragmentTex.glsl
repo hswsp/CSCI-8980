@@ -165,14 +165,14 @@ void main() {
     }    
     specC = lightCol[i]*GGXSpec(normal,viewDir,-lDir,roughness,F0);
 
-    float ref = reflectiveness; //A simple reflectivness hack,  really this should be part of sampling the BRDF
+    float ref = reflectiveness; //A simple reflectivness hack, really this should be part of sampling the BRDF
     specC += ref*envColor;
 
     oColor += (1-shadow)*(lightCol[i]*diffuseC+specC);
   }
+  if (xxx) oColor = oColor.gbr; //Just to demonstrate how to use the boolean for debugging
   outColor = vec4(modelColor*oColor, 1.0);
 
-  //brightColor = 5*clamp(oColor-vec3(1,1,1),vec3(0,0,0),vec3(1,1,1)); //My own hack, maybe works better wth no HDR?
 
   float brightness = dot(oColor, vec3(0.3, 0.6, 0.1));
   brightColor = outColor;

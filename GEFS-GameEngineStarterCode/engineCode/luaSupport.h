@@ -51,6 +51,4 @@ glm::vec3 getCameraUpFromLau(lua_State * L);
 int addCollider(lua_State * L);
 int getCollisionsWithLayer(lua_State * L);
 
-int getframeRate(lua_State * L);
-
 #endif //LUASUPPORT_H
