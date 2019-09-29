@@ -41,6 +41,7 @@ float farPlane = 20;
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 using std::swap; //fast delete
@@ -60,10 +61,16 @@ bool fullscreen = false;
 void Win2PPM(int width, int height);
 
 AudioManager audioManager = AudioManager();
-
+vec3 camPos;
+vec3 camDir;
 
 void configEngine(string configFile, string configName);
-
+// order in distance
+bool comp(const Model* a, const Model* b) {
+	glm::vec3 posa = glm::vec3(models[a->ID].transform*glm::vec4(0, 0, 0, 1));
+	glm::vec3 posb = glm::vec3(models[b->ID].transform*glm::vec4(0, 0, 0, 1));
+	return glm::dot(posa - camPos, camDir) < glm::dot(posb - camPos, camDir);
+}
 
 int main(int argc, char *argv[]){
 	loguru::g_stderr_verbosity = 0; // Only show most relevant messages on stderr
@@ -234,8 +241,8 @@ int main(int argc, char *argv[]){
 		lastTime = (long long) SDL_GetTicks();
 
 		//Get the camera state from the Lua Script
-		vec3 camPos = getCameraPosFromLau(L);
-		vec3 camDir = getCameraDirFromLau(L);
+		camPos = getCameraPosFromLau(L);
+		camDir = getCameraDirFromLau(L);
 		vec3 camUp = getCameraUpFromLau(L);
 		vec3 lookatPoint = camPos + camDir;
 
@@ -294,6 +301,7 @@ int main(int argc, char *argv[]){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//drawSceneGeometry(curScene.toDraw); //Pass 2A: Draw Scene Geometry
+		sort(curScene.toDraw.begin(), curScene.toDraw.end(), comp);
 		drawSceneGeometry(curScene.toDraw, camDir, camPos, nearPlane, farPlane);
 		//TODO: Add a pass which draws some items without depth culling (e.g. keys, items)
 		if (drawColliders) drawColliderGeometry(); //Pass 2B: Draw Colliders

@@ -11,7 +11,7 @@
 #include <external/loguru.hpp>
 #include <external/stb_image.h>
 #include <glm/gtx/vector_angle.hpp> 
-
+#include <iostream>
 
 using std::vector;
 
@@ -409,6 +409,7 @@ void drawSceneGeometry(vector<Model*> toDraw){
 	}
 }
 
+
 void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPos, float nearPlane, float farPlane){
 	glBindVertexArray(modelsVAO);
 
@@ -424,8 +425,7 @@ void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPo
 		radius = std::max(sx, std::max(sy, sz));
 		float d = glm::dot(glm::vec3(pos4)-camPos,forward);
 		//frustrum culling
-		float objangle = asin((double)radius / glm::length(glm::vec3(pos4) - camPos));
-		
+		float objangle = asin((double)radius / glm::length(glm::vec3(pos4) - camPos));	
 		if (d < nearPlane - radius || d > farPlane + radius ||
 			glm::angle(glm::vec3(pos4) - camPos, forward) > objangle + curScene.mainCam.FOV* 3.14f / 360) continue;
 
