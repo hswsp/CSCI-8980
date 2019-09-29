@@ -112,3 +112,7 @@ scaleModel(floorID,300,1,300)
 setModelMaterial(floorID,"Gold")
 
 dinoID = addModel("Dino",0,0,-.15)
+
+RimID = addModel("Bigmax",0,0,0)
+placeModel(RimID,-1,0.5,1)
+scaleModel(RimID,0.01,0.01,0.01)

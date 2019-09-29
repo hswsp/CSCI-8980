@@ -66,3 +66,17 @@ objModel = Floor_Modular.obj
 [Dino]
 scale .1
 objModel = Trex.obj #Triceratops
+
+[Rim]
+objModel = BMW_Rim_Completed.obj
+
+[Wheel]
+scalexyz 0.5 0.5 0.5
+child [Rim]
+
+[Robot]
+scalexyz 0.5 0.5 0.5
+
+[Bigmax]
+child [Robot]
+objModel = Bigmax_White_OBJ.obj

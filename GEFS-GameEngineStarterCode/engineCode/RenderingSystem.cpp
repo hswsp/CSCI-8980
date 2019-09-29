@@ -7,8 +7,10 @@
 #include "Shadows.h"
 #include "CollisionSystem.h"
 #include "Shader.h"
+#include <algorithm>
 #include <external/loguru.hpp>
 #include <external/stb_image.h>
+#include <glm/gtx/vector_angle.hpp> 
 
 
 using std::vector;
@@ -407,18 +409,25 @@ void drawSceneGeometry(vector<Model*> toDraw){
 	}
 }
 
-void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPos){
+void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPos, float nearPlane, float farPlane){
 	glBindVertexArray(modelsVAO);
 
 	float radius = 1;
-
 	glm::mat4 I;
 	totalTriangles = 0;
 	for (size_t i = 0; i < toDraw.size(); i++){
 		//printf("%s - %d\n",toDraw[i]->name.c_str(),i);
 		glm::vec4 pos4 = models[toDraw[i]->ID].transform*glm::vec4(0,0,0,1);
+		int sx = models[toDraw[i]->ID].transform[0][0];
+		int sy = models[toDraw[i]->ID].transform[1][1];
+		int sz = models[toDraw[i]->ID].transform[2][2];
+		radius = std::max(sx, std::max(sy, sz));
 		float d = glm::dot(glm::vec3(pos4)-camPos,forward);
-		if (d < radius) continue;
+		//frustrum culling
+		float objangle = asin((double)radius / glm::length(glm::vec3(pos4) - camPos));
+		
+		if (d < nearPlane - radius || d > farPlane + radius ||
+			glm::angle(glm::vec3(pos4) - camPos, forward) > objangle + curScene.mainCam.FOV* 3.14f / 360) continue;
 
 		drawGeometry(*toDraw[i], -1, I);
 	}
