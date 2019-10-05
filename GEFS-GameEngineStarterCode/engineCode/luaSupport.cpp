@@ -39,6 +39,16 @@ int getTargetFPS(lua_State * L)
 	lua_pushnumber(L, targetFrameRate);
 	return 1;
 }
+
+bool getDebugCamFromLua(lua_State * L)
+{
+	bool DebugC;
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "DebugCam");
+	DebugC = (bool)lua_toboolean(L, -1);
+	lua_pop(L, 1);
+	return DebugC;
+}
 //----------- Camera ----------
 
 glm::vec3 getCameraPosFromLau(lua_State * L){
@@ -79,7 +89,45 @@ glm::vec3 getCameraUpFromLau(lua_State * L){
 	lua_pop(L, 3);
 	return cameraUp;
 }
+//----------------------------Debug Camera-------------------------------------//
+glm::vec3 getDebugCameraPosFromLau(lua_State * L) {
+	glm::vec3 cameraPos;
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "DebugCameraPosX");
+	cameraPos.x = (float)lua_tonumber(L, 1);
+	lua_getglobal(L, "DebugCameraPosY");
+	cameraPos.y = (float)lua_tonumber(L, 2);
+	lua_getglobal(L, "DebugCameraPosZ");
+	cameraPos.z = (float)lua_tonumber(L, 3);
+	lua_pop(L, 3);
+	return cameraPos;
+}
 
+glm::vec3 getDebugCameraDirFromLau(lua_State * L) {
+	glm::vec3 cameraDir;
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "DebugCameraDirX");
+	cameraDir.x = (float)lua_tonumber(L, 1);
+	lua_getglobal(L, "DebugCameraDirY");
+	cameraDir.y = (float)lua_tonumber(L, 2);
+	lua_getglobal(L, "DebugCameraDirZ");
+	cameraDir.z = (float)lua_tonumber(L, 3);
+	lua_pop(L, 3);
+	return cameraDir;
+}
+
+glm::vec3 getDebugCameraUpFromLau(lua_State * L) {
+	glm::vec3 cameraUp;
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "DebugCameraUpX");
+	cameraUp.x = (float)lua_tonumber(L, 1);
+	lua_getglobal(L, "DebugCameraUpY");
+	cameraUp.y = (float)lua_tonumber(L, 2);
+	lua_getglobal(L, "DebugCameraUpZ");
+	cameraUp.z = (float)lua_tonumber(L, 3);
+	lua_pop(L, 3);
+	return cameraUp;
+}
 
 //------------------- Audio ------------------------
 
@@ -176,7 +224,7 @@ int addModel(lua_State * L){
 	}
 
 	if (!pooledModel){
-		//printf("No pooled %s resource found (%d available), adding model",childModelName.c_str(),modelPool.size());
+		//printf("No pooled %s resource found (%d available), adding model \n",childModelName.c_str(),modelPool.size());
 		string modelName = childModelName + std::to_string(luaModelCount);
 		luaModelCount++;
 		myModelID = addModel(modelName);

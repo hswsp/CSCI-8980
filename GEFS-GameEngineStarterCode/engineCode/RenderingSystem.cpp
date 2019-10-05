@@ -16,13 +16,13 @@
 using std::vector;
 
 GLuint tex[1000];
-
+extern bool useDebugcam;
 bool xxx; //Just an unspecified bool that gets passed to shader for debugging
 
 int sphereVerts; //Number of verts in the colliders spheres
 
 int totalTriangles = 0;
-
+float LODStartDis = 5;
 GLint uniColorID, uniEmissiveID, uniUseTextureID, modelColorID;
 GLint metallicID, roughnessID, iorID, reflectivenessID;
 GLint uniModelMatrix, colorTextureID, texScaleID, biasID, pcfID;
@@ -37,7 +37,7 @@ void drawGeometry(Model model, int materialID, glm::mat4 transform, glm::vec2 te
 	//printf("Material ID: %d (passed in id = %d)\n", model.materialID,materialID);
 	//printf("xyx %f %f %f %f\n",model.transform[0][0],model.transform[0][1],model.transform[0][2],model.transform[0][3]);
 	//if (model.materialID >= 0) material = materials[model.materialID];
-
+	
 	Material material;
 	if (materialID < 0){
 		materialID = model.materialID; 
@@ -50,9 +50,15 @@ void drawGeometry(Model model, int materialID, glm::mat4 transform, glm::vec2 te
 	transform *= model.transform;
 	modelColor *= model.modelColor;
 	//textureWrap *= model.textureWrap; //TODO: Where best to apply textureWrap transform?
-	
-	for (int i = 0; i < model.numChildren; i++){
-		drawGeometry(*model.childModel[i], materialID, transform,textureWrap, modelColor);
+	glm::vec4 pos4 = transform*glm::vec4(0, 0, 0, 1);
+	float d = glm::dot(glm::vec3(pos4) - curScene.mainCam.pos, curScene.mainCam.forward);
+	if (!useDebugcam && d > LODStartDis && !model.lodModel.empty())//
+		drawGeometry(*model.lodModel[0], materialID, transform, textureWrap, modelColor);
+	else
+	{
+		for (int i = 0; i < model.numChildren; i++) {
+			drawGeometry(*model.childModel[i], materialID, transform, textureWrap, modelColor);
+		}
 	}
 	if (!model.modelData) return;
 	
@@ -409,27 +415,52 @@ void drawSceneGeometry(vector<Model*> toDraw){
 	}
 }
 
-
+bool IsOuterPlane(glm::vec3 PlaneN, glm::vec3 pos, glm::vec3 plane_point, float distance)
+{
+	glm::vec3 Dir = pos - plane_point;
+	float DirectedDis = glm::dot(Dir, PlaneN);
+	return DirectedDis > distance;
+}
 void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPos, float nearPlane, float farPlane){
 	glBindVertexArray(modelsVAO);
 
 	float radius = 1;
 	glm::mat4 I;
 	totalTriangles = 0;
+	float g = tan(curScene.mainCam.FOV* 3.1415926f / 360);
+	//compute 8 points
+	glm::vec3 nearO = camPos + nearPlane * curScene.mainCam.forward;
+	glm::vec3 farO = camPos + farPlane * curScene.mainCam.forward;
+	glm::vec3 nearur = nearO + nearPlane * g*curScene.mainCam.up + nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 nearul = nearO + nearPlane * g*curScene.mainCam.up - nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 nearbr = nearO - nearPlane * g*curScene.mainCam.up + nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 nearbl = nearO - nearPlane * g*curScene.mainCam.up - nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 farur = farO + farPlane * g*curScene.mainCam.up + farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 farul = farO + farPlane * g*curScene.mainCam.up - farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 farbr = farO - farPlane * g*curScene.mainCam.up + farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	glm::vec3 farbl = farO - farPlane * g*curScene.mainCam.up - farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	//compute 6 normal
+	glm::vec3 nearN = -curScene.mainCam.forward;
+	glm::vec3 farN = curScene.mainCam.forward;
+	glm::vec3 leftN = glm::normalize(glm::cross(farul - nearul, nearbl - nearul));
+	glm::vec3 rightN = glm::normalize(glm::cross(nearbr - nearur, farur - nearur));
+	glm::vec3 upN = glm::normalize(glm::cross(farur - nearur, nearul - nearur));
+	glm::vec3 downN = glm::normalize(glm::cross(nearbl - nearbr, farbr - nearbr));
 	for (size_t i = 0; i < toDraw.size(); i++){
 		//printf("%s - %d\n",toDraw[i]->name.c_str(),i);
+		//printf("%s - %d\n", toDraw[i]->childModel[0]->name.c_str(), i);
 		glm::vec4 pos4 = models[toDraw[i]->ID].transform*glm::vec4(0,0,0,1);
-		int sx = models[toDraw[i]->ID].transform[0][0];
-		int sy = models[toDraw[i]->ID].transform[1][1];
-		int sz = models[toDraw[i]->ID].transform[2][2];
-		radius = std::max(sx, std::max(sy, sz));
-		float d = glm::dot(glm::vec3(pos4)-camPos,forward);
-		//frustrum culling
-		float objangle = asin((double)radius / glm::length(glm::vec3(pos4) - camPos));	
-		if (d < nearPlane - radius || d > farPlane + radius ||
-			glm::angle(glm::vec3(pos4) - camPos, forward) > objangle + curScene.mainCam.FOV* 3.14f / 360) continue;
-
-		drawGeometry(*toDraw[i], -1, I);
+		glm::vec4 size = models[toDraw[i]->ID].transform*glm::vec4(1, 1, 1, 0);
+		radius = std::max(size[0], std::max(size[1], size[2]));
+		//frustrum culling	
+		if(IsOuterPlane(nearN, glm::vec3(pos4),nearO, radius)||
+			IsOuterPlane(farN, glm::vec3(pos4), farO, radius)||
+			IsOuterPlane(leftN, glm::vec3(pos4), nearul, radius)||
+			IsOuterPlane(rightN, glm::vec3(pos4), nearur, radius)||
+			IsOuterPlane(upN, glm::vec3(pos4), nearur, radius)||
+			IsOuterPlane(downN, glm::vec3(pos4), nearbl, radius))
+			continue;
+			drawGeometry(*toDraw[i], -1, I);
 	}
 }
 

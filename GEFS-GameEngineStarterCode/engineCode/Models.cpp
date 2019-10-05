@@ -67,6 +67,19 @@ void addChild(string childName, int curModelID){
 	models[curModelID].childModel.push_back(&models[childModel]);
 	models[curModelID].numChildren++;
 }
+void addLod(string LodName, int curModelID) {
+	int childModel = -1;
+	for (int i = 0; i < numModels; i++) {
+		if (models[i].name == LodName) {
+			childModel = i;
+			continue;
+		}
+	}
+	CHECK_F(childModel >= 0, "No model of name '%s' found to be added as a LOD child model!", LodName.c_str());
+
+	LOG_F(1, "Adding LOD child %s", LodName.c_str());
+	models[curModelID].lodModel.push_back(&models[childModel]);
+}
 
 void loadModel(string fileName){
 	LOG_SCOPE_FUNCTION(INFO);
@@ -113,7 +126,7 @@ void loadModel(string fileName){
 			curModelID = addModel(modelName);
 			LOG_F(INFO,"Creating PreFab Model with name: %s",modelName.c_str());
     }
-		else if (commandStr == "identity"){ 
+	else if (commandStr == "identity"){ 
 			models[curModelID].transform = glm::mat4();
       LOG_F(1,"Reseting to Indentity Transform");
     }
@@ -331,6 +344,13 @@ void loadModel(string fileName){
 			LOG_F(1,"Adding Child with name %s to model %d",childName.c_str(), curModelID);
 			addChild(childName, curModelID);
     }
+		else if (commandStr == "lodchild") {
+		int openBracket = line.find("[") + 1;
+		int modelNameLength = line.find("]") - openBracket;
+		string childName = line.substr(openBracket, modelNameLength);
+		LOG_F(1, "Adding LOD Child with name %s to model %d", childName.c_str(), curModelID);
+		addLod(childName, curModelID);
+	}
 		else if (commandStr == "material"){ 
 			int openBracket = line.find("[")+1;
 		  int modelNameLength = line.find("]")-openBracket;

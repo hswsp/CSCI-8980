@@ -13,9 +13,9 @@ struct Light{
 	float distance = 10;
 	float intensity = 3;
 	bool castShadow = false; //TODO: Only 1 light can cast a shadow
-	float frustLeft = -5.0f, frustRight = 5.0f;
-	float frustBot = -5.0f, frustTop = 5.0f;
-	float frustNear = 0.6f, frustFar = 20.0f;
+	float frustLeft = -50.0f, frustRight = 50.0f;
+	float frustBot = -50.0f, frustTop = 50.0f;
+	float frustNear = 0.6f, frustFar = 50.0f;
 	float shadowBias = 0.001;
 	int pcfWidth = 1;
 	std::string name = "**UNNAMED LIGHT***";
@@ -24,6 +24,11 @@ struct Light{
 
 struct Camera{
 	float FOV = 50;
+	float aspect;
+	glm::vec3 pos;
+	glm::vec3 up;
+	glm::vec3 forward;
+	glm::vec3 right;
 };
 
 struct Model;
@@ -33,12 +38,14 @@ struct Scene{
 	Light shadowLight;
 	std::vector<Light> lights;
 	Camera mainCam;
+	Camera DebugCam;
 	glm::mat4 rotSkybox; //skybox orientation
 	bool singleSkyColor = true;
 	glm::vec3 skyColor = glm::vec3(1,1,10);
 	glm::vec3 ambientLight = glm::vec3(0.3, 0.3, 0.3);
 
 	std::vector<Model*> toDraw;
+	std::vector<Model*> toDrawShadows;
 };
 
 void loadScene(std::string fileName);

@@ -4,7 +4,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
-
+#include <glm/glm.hpp>
 //stb_image include
 #define STB_IMAGE_IMPLEMENTATION //put this line in only one .cpp file
 #include <external/stb_image.h>
@@ -14,14 +14,13 @@
 bool useBloom = false;
 bool useShadowMap = true;
 bool drawColliders = false;
-
+bool useDebugcam = false;
 int targetFrameRate = 30;
 float secondsPerFrame = 1.0f / (float)targetFrameRate;
 float nearPlane = 0.2;
 float farPlane = 20;
 
 #include "luaSupport.h"
-
 #include "RenderingSystem.h"
 #include "Skybox.h"
 #include "Shadows.h"
@@ -63,8 +62,43 @@ void Win2PPM(int width, int height);
 AudioManager audioManager = AudioManager();
 vec3 camPos;
 vec3 camDir;
+vec3 DebugcamPos;
+vec3 DebugcamDir;
 
 void configEngine(string configFile, string configName);
+void FitToView(glm::mat4 lightView, glm::vec3 camPos, float nearPlane, float farPlane)
+{
+	float g = tan(curScene.mainCam.FOV* 3.1415926f / 360);
+	//compute 8 points in light space
+	glm::vec3 nearO = camPos + nearPlane * curScene.mainCam.forward;
+	glm::vec3 farO = camPos + farPlane * curScene.mainCam.forward;
+	glm::vec3 nearur = nearO + nearPlane * g*curScene.mainCam.up + nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	nearur = glm::vec3(lightView * glm::vec4(nearur, 0.0));
+	glm::vec3 nearul = nearO + nearPlane * g*curScene.mainCam.up - nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	nearul = glm::vec3(lightView * glm::vec4(nearul, 0.0));
+	glm::vec3 nearbr = nearO - nearPlane * g*curScene.mainCam.up + nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	nearbr = glm::vec3(lightView * glm::vec4(nearbr, 0.0));
+	glm::vec3 nearbl = nearO - nearPlane * g*curScene.mainCam.up - nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	nearbl = glm::vec3(lightView * glm::vec4(nearbl, 0.0));
+	glm::vec3 farur = farO + farPlane * g*curScene.mainCam.up + farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	farur = glm::vec3(lightView * glm::vec4(farur, 0.0));
+	glm::vec3 farul = farO + farPlane * g*curScene.mainCam.up - farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	farul = glm::vec3(lightView * glm::vec4(farul, 0.0));
+	glm::vec3 farbr = farO - farPlane * g*curScene.mainCam.up + farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	farbr = glm::vec3(lightView * glm::vec4(farbr, 0.0));
+	glm::vec3 farbl = farO - farPlane * g*curScene.mainCam.up - farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	farbl = glm::vec3(lightView * glm::vec4(farbl, 0.0));
+	// find the min and max
+	std::vector<float> litx = {nearur[0],nearul[0],nearbr[0], nearbl[0],farur[0],farul[0],farbr[0],farbl[0] };
+	std::vector<float> lity = { nearur[1],nearul[1],nearbr[1], nearbl[1],farur[1],farul[1],farbr[1],farbl[1] };
+	std::vector<float> litz = { -nearur[2],-nearul[2],-nearbr[2], -nearbl[2],-farur[2],-farul[2],-farbr[2],-farbl[2]};
+	curScene.shadowLight.frustLeft = *min_element(litx.begin(), litx.end()) + 1;
+	curScene.shadowLight.frustRight = *max_element(litx.begin(), litx.end()) - 1;
+	curScene.shadowLight.frustBot = *min_element(lity.begin(), lity.end()) +1;
+	curScene.shadowLight.frustTop = *max_element(lity.begin(), lity.end()) - 1;
+	curScene.shadowLight.frustNear = *min_element(litz.begin(), litz.end());
+	curScene.shadowLight.frustFar = *max_element(litz.begin(), litz.end()) - 2;
+}
 // order in distance
 bool comp(const Model* a, const Model* b) {
 	glm::vec3 posa = glm::vec3(models[a->ID].transform*glm::vec4(0, 0, 0, 1));
@@ -119,7 +153,7 @@ int main(int argc, char *argv[]){
 	LOG_F(INFO,"Loaded scene file\n");
 
 	createOpenGLWindow(targetScreenWidth, targetScreenHeight, fullscreen); 
-
+	
 	//Initalize various buffers on the GPU
 	initIMGui();
 	loadTexturesToGPU();
@@ -137,7 +171,7 @@ int main(int argc, char *argv[]){
 	createFullscreenQuad();
 
 	glEnable(GL_DEPTH_TEST);  //Have closer objects hide further away ones
-
+	glDepthFunc(GL_LESS);
 	//Load Lua Gamescript (this will start the game running)
 	LOG_F(INFO,"Loading Gamescript: '%s'",luaFile.c_str());
 	int luaErr; 
@@ -241,11 +275,25 @@ int main(int argc, char *argv[]){
 		lastTime = (long long) SDL_GetTicks();
 
 		//Get the camera state from the Lua Script
+		useDebugcam = getDebugCamFromLua(L);
+		//--------------------Camera---------------------------//
 		camPos = getCameraPosFromLau(L);
+		curScene.mainCam.pos = camPos;
 		camDir = getCameraDirFromLau(L);
+		curScene.mainCam.forward = glm::normalize(camDir);
 		vec3 camUp = getCameraUpFromLau(L);
+		curScene.mainCam.up = glm::normalize(camUp);
 		vec3 lookatPoint = camPos + camDir;
-
+		curScene.mainCam.right = glm::normalize(glm::cross(camDir, camUp));
+		//------------Debug Camera------------------------//
+		DebugcamPos = getDebugCameraPosFromLau(L);
+		curScene.DebugCam.pos = DebugcamPos;
+		DebugcamDir = getDebugCameraDirFromLau(L);
+		curScene.DebugCam.forward = glm::normalize(DebugcamDir);
+		vec3 DebugcamUp = getDebugCameraUpFromLau(L);
+		curScene.DebugCam.up = glm::normalize(DebugcamUp);
+		vec3 DebuglookatPoint = DebugcamPos + DebugcamDir;
+		curScene.DebugCam.right = glm::normalize(glm::cross(DebugcamDir, DebugcamUp));
 		//LOG_F(3,"Read Camera from Lua");
 
 		//TODO: Allow Lua script to set Lights dynamically (it's currently static)
@@ -256,7 +304,7 @@ int main(int argc, char *argv[]){
 
 		//TODO: Allow Lua script to set FOV dynamically (it's currently static)
 		float FOV = curScene.mainCam.FOV;
-
+	
 		//Rendering the frame goes over 4 passes:
 		// 1. Computing depth map
 		// 2. Rendering Geometry (and skybox)
@@ -279,18 +327,32 @@ int main(int argc, char *argv[]){
 			lightPos = lookatPoint - lightDir*lightDist; 
 			lightUp = glm::cross(vec3(lightDir.y,lightDir.x,lightDir.z),lookatPoint-lightPos);
 			lightViewMatrix = glm::lookAt(lightPos,lookatPoint, lightUp); 
-
+			//if (!useDebugcam)
+			//{
+			//	FitToView(lightViewMatrix, camPos, nearPlane, farPlane);	
+			//}
 			computeShadowDepthMap(lightViewMatrix, lightProjectionMatrix, curScene.toDraw);
 		}
 
 		glViewport(0, 0, screenWidth, screenHeight); //TODO: Make this more robust when the user switches to fullscreen
-
+		curScene.mainCam.aspect = screenWidth / (float)screenHeight;
 		//------ PASS 2 - Main (PBR) Shading Pass --------------------
-
-		mat4 view = glm::lookAt(camPos, //Camera Position
-																lookatPoint, //Point to look at (camPos + camDir)
-		  													camUp);     //Camera Up direction
-		mat4 proj = glm::perspective(FOV * 3.14f/180, screenWidth / (float) screenHeight, nearPlane, farPlane); //FOV, aspect, near, far
+		mat4 view, proj;
+		if (useDebugcam)
+		{
+			view = glm::lookAt(DebugcamPos, //Camera Position
+				DebuglookatPoint, //Point to look at (camPos + camDir)
+				DebugcamUp);     //Camera Up direction
+			proj = glm::perspective(FOV * 3.14f / 180, screenWidth / (float)screenHeight, nearPlane, farPlane); //
+		}
+		else
+		{
+			view = glm::lookAt(camPos, //Camera Position
+				lookatPoint, //Point to look at (camPos + camDir)
+				camUp);     //Camera Up direction
+			proj = glm::perspective(FOV * 3.14f / 180, screenWidth / (float)screenHeight, nearPlane, farPlane); //FOV, aspect, near, far
+		}
+		
 		//view = lightViewMatrix; proj = lightProjectionMatrix;  //This was useful to visualize the shadowmap
 
 		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap);
@@ -299,10 +361,16 @@ int main(int argc, char *argv[]){
 		// Clear the screen to default color
 		glClearColor(0,0,0,1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		//drawSceneGeometry(curScene.toDraw); //Pass 2A: Draw Scene Geometry
-		sort(curScene.toDraw.begin(), curScene.toDraw.end(), comp);
-		drawSceneGeometry(curScene.toDraw, camDir, camPos, nearPlane, farPlane);
+	
+		if (useDebugcam)
+		{
+			drawSceneGeometry(curScene.toDraw); //Pass 2A: Draw Scene Geometry
+		}
+		else
+		{
+			//sort(curScene.toDraw.begin(), curScene.toDraw.end(), comp);
+			drawSceneGeometry(curScene.toDraw, camDir, camPos, nearPlane, farPlane);
+		}
 		//TODO: Add a pass which draws some items without depth culling (e.g. keys, items)
 		if (drawColliders) drawColliderGeometry(); //Pass 2B: Draw Colliders
 		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
@@ -367,7 +435,19 @@ int main(int argc, char *argv[]){
 	lua_close(L);
 	return 0;
 }
-
+//void generatetoDrawShadow(glm::mat4 lightView, glm::mat4 lightProjection)
+//{
+//	curScene.toDrawShadows.clear();
+//	for (size_t i = 0; i < curScene.toDraw.size(); i++) {
+//		glm::vec4 pos4 = models[curScene.toDraw[i]->ID].transform*glm::vec4(0, 0, 0, 1);
+//		glm::vec4 lit_space_pos = lightView * pos4;
+//		float x = lit_space_pos[0], y = lit_space_pos[1], z = lit_space_pos[2];
+//		if (curScene.shadowLight.frustLeft <= x <= curScene.shadowLight.frustRight&&
+//			curScene.shadowLight.frustBot <= y <= curScene.shadowLight.frustTop&&
+//			curScene.shadowLight.frustNear <= -z <= curScene.shadowLight.frustFar)
+//			curScene.toDrawShadows.push_back(curScene.toDraw[i]);
+//	}
+//}
 void configEngine(string configFile, string configName){
 	LOG_SCOPE_FUNCTION(INFO); //Group logging info from this function
 

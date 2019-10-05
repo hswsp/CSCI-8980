@@ -21,6 +21,7 @@ struct Model{
 	glm::vec2 textureWrap = glm::vec2(1,1);
 	glm::vec3 modelColor = glm::vec3(1,1,1); //TODO: Perhaps we can replace this simple approach with a more general material blending system?
 	std::vector<Model*> childModel;
+	std::vector<Model*> lodModel;
 };
 
 void resetModels();

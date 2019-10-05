@@ -71,3 +71,8 @@ emissive = 10 10 10
 [Red Light]
 color = 1 1 1
 emissive = 50 3 2
+
+[Purple Light]
+color = 0 0.6 0.6
+emmisive = 0 10 10
+ior = 2.0

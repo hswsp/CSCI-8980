@@ -2,14 +2,15 @@
 #include "RenderingCore.h"
 #include "GPU-Includes.h"
 #include "Shader.h" 
-
+#include "Scene.h"
+#include <iostream>
 GLuint shadowVAO, shadowVBO, depthPosAttrib;
 Shader depthShader;
 unsigned int depthMapFBO, depthMapTex;
 unsigned int shadowMapWidth = 1024, shadowMapHeight = 1024;
 
 using std::vector;
-
+extern bool useDebugcam;
 int totalShadowTriangles = 0;
 
 void initShadowMapping(){
@@ -97,7 +98,20 @@ void computeShadowDepthMap(glm::mat4 lightView, glm::mat4 lightProjection, vecto
 	glm::mat4 I;
 	for (size_t i = 0; i < toDrawShadows.size(); i++){
 		//TODO: Allow some objects to not cast shadows @HW
-		drawGeometryShadow(depthShader.ID, *toDrawShadows[i], materials[0], I);
+		// only draw shadow in the prisim
+		if (!useDebugcam)
+		{
+			glm::vec4 pos4 = models[toDrawShadows[i]->ID].transform*glm::vec4(0, 0, 0, 1);
+			glm::vec4 lit_space_pos = lightView * pos4;
+			float x = lit_space_pos[0], y = lit_space_pos[1], z = lit_space_pos[2];
+			if (curScene.shadowLight.frustLeft <= x <= curScene.shadowLight.frustRight&&
+				curScene.shadowLight.frustBot <= y <= curScene.shadowLight.frustTop&&
+				-curScene.shadowLight.frustFar <= z <= -curScene.shadowLight.frustNear)
+				drawGeometryShadow(depthShader.ID, *toDrawShadows[i], materials[0], I);
+		}
+		else
+			drawGeometryShadow(depthShader.ID, *toDrawShadows[i], materials[0], I);
+		
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

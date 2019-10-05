@@ -4,18 +4,22 @@ modelDir = ./models/
 #teapot knot sphere teapotLowPoly teapot cube
 
 [TeapotLowPoly]
-rotate 90 1 0 0
-scale .9
 flatModel = teapotLowPoly.txt
+material [Clay]
+translate 0 .25 0
+rotate 0 -1 0 0
+scale .9
 
 [TeapotHighPoly]
+material [Shiny Red Plastic]
 translate 0 .25 0
 rotate 90 -1 0 0
 flatModel = teapot.txt   
 
 [Teapot]
 child [TeapotHighPoly]
-#child [TeapotLowPoly]
+lodchild [TeapotLowPoly]
+
 
 [Sphere]
 flatModel = sphere.txt   
@@ -79,4 +83,7 @@ scalexyz 0.5 0.5 0.5
 
 [Bigmax]
 child [Robot]
+material [Aluminium]
+rotate 270 0 90 0
+#translate 0 -2 0
 objModel = Bigmax_White_OBJ.obj

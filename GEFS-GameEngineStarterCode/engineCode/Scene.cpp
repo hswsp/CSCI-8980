@@ -154,6 +154,7 @@ void loadScene(string fileName){
 			float fov;
 			sscanf(rawline,"CameraFOV = %f", &fov);
 			curScene.mainCam.FOV = fov;
+			curScene.DebugCam.FOV = fov;
 			LOG_F(1,"Camera FOV set to: %f",fov);
     }
 	}
@@ -166,3 +167,4 @@ void loadScene(string fileName){
 		}
 	}
 }
+
