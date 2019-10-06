@@ -86,7 +86,7 @@ void loadScene(string fileName){
     }
 		else if (commandStr == "shadowFrustum"){ 
 			float l,r,t,b,n,f;
-			sscanf(rawline,"shadowFrustum = %f %f %f %f %f %f", &l, &r, &t, &b, &n, &f);
+			sscanf(rawline,"shadowFrustum = %f %f %f %f %f %f", &l, &r, &b, &t, &n, &f);
 			lightList.back().frustLeft = l; lightList.back().frustRight = r;
 			lightList.back().frustBot = b; lightList.back().frustTop = t;
 			lightList.back().frustNear = n; lightList.back().frustFar = f;

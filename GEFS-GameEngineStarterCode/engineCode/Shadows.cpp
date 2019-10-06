@@ -4,6 +4,7 @@
 #include "Shader.h" 
 #include "Scene.h"
 #include <iostream>
+#include<algorithm>
 GLuint shadowVAO, shadowVBO, depthPosAttrib;
 Shader depthShader;
 unsigned int depthMapFBO, depthMapTex;
@@ -103,11 +104,19 @@ void computeShadowDepthMap(glm::mat4 lightView, glm::mat4 lightProjection, vecto
 		{
 			glm::vec4 pos4 = models[toDrawShadows[i]->ID].transform*glm::vec4(0, 0, 0, 1);
 			glm::vec4 lit_space_pos = lightView * pos4;
+			glm::vec4 size = models[toDrawShadows[i]->ID].transform*glm::vec4(1, 1, 1, 0);
+			float radius = std::max(size[0], std::max(size[1], size[2]));
 			float x = lit_space_pos[0], y = lit_space_pos[1], z = lit_space_pos[2];
-			if (curScene.shadowLight.frustLeft <= x <= curScene.shadowLight.frustRight&&
-				curScene.shadowLight.frustBot <= y <= curScene.shadowLight.frustTop&&
-				-curScene.shadowLight.frustFar <= z <= -curScene.shadowLight.frustNear)
-				drawGeometryShadow(depthShader.ID, *toDrawShadows[i], materials[0], I);
+			/*std::cout << x << " " << y << " " << z << std::endl;
+			std::cout << curScene.shadowLight.frustLeft << " " << curScene.shadowLight.frustRight << " " << curScene.shadowLight.frustBot << " "
+				<< curScene.shadowLight.frustTop << " " << -curScene.shadowLight.frustFar << " " << -curScene.shadowLight.frustNear << std::endl;*/
+			if (x<=curScene.shadowLight.frustLeft - radius ||x >= curScene.shadowLight.frustRight + radius ||
+				y<=curScene.shadowLight.frustBot - radius || y >= curScene.shadowLight.frustTop + radius ||
+				z<= -curScene.shadowLight.frustFar - radius || z >= -curScene.shadowLight.frustNear + radius)
+			{
+				continue;		
+			}
+			drawGeometryShadow(depthShader.ID, *toDrawShadows[i], materials[0], I);
 		}
 		else
 			drawGeometryShadow(depthShader.ID, *toDrawShadows[i], materials[0], I);

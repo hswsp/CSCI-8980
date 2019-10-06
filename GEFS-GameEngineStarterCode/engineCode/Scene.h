@@ -13,8 +13,8 @@ struct Light{
 	float distance = 10;
 	float intensity = 3;
 	bool castShadow = false; //TODO: Only 1 light can cast a shadow
-	float frustLeft = -50.0f, frustRight = 50.0f;
-	float frustBot = -50.0f, frustTop = 50.0f;
+	float frustLeft = -15.0f, frustRight = 15.0f;
+	float frustBot = -15.0f, frustTop = 15.0f;
 	float frustNear = 0.6f, frustFar = 50.0f;
 	float shadowBias = 0.001;
 	int pcfWidth = 1;

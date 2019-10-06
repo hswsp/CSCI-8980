@@ -29,9 +29,155 @@ GLint uniModelMatrix, colorTextureID, texScaleID, biasID, pcfID;
 GLint xxxID;
 
 GLuint colliderVAO; //Build a Vertex Array Object for the collider
+float vertices[] = {
+	// X      Y     Z     
+	  -0.5f, -0.5f, -0.5f, 
+	   0.5f, -0.5f, -0.5f, 
+	   0.5f,  0.5f, -0.5f, 
+	   0.5f,  0.5f, -0.5f, 
+	  -0.5f,  0.5f, -0.5f, 
+	  -0.5f, -0.5f, -0.5f, 
+
+	  -0.5f, -0.5f,  0.5f, 
+	   0.5f, -0.5f,  0.5f, 
+	   0.5f,  0.5f,  0.5f, 
+	   0.5f,  0.5f,  0.5f, 
+	  -0.5f,  0.5f,  0.5f, 
+	  -0.5f, -0.5f,  0.5f, 
+
+	  -0.5f,  0.5f,  0.5f, 
+	  -0.5f,  0.5f, -0.5f, 
+	  -0.5f, -0.5f, -0.5f, 
+	  -0.5f, -0.5f, -0.5f, 
+	  -0.5f, -0.5f,  0.5f, 
+	  -0.5f,  0.5f,  0.5f, 
+
+	   0.5f,  0.5f,  0.5f, 
+	   0.5f,  0.5f, -0.5f, 
+	   0.5f, -0.5f, -0.5f, 
+	   0.5f, -0.5f, -0.5f, 
+	   0.5f, -0.5f,  0.5f, 
+	   0.5f,  0.5f,  0.5f, 
+
+	  -0.5f, -0.5f, -0.5f, 
+	   0.5f, -0.5f, -0.5f, 
+	   0.5f, -0.5f,  0.5f, 
+	   0.5f, -0.5f,  0.5f,
+	  -0.5f, -0.5f,  0.5f, 
+	  -0.5f, -0.5f, -0.5f, 
+
+	  -0.5f,  0.5f, -0.5f, 
+	   0.5f,  0.5f, -0.5f, 
+	   0.5f,  0.5f,  0.5f, 
+	   0.5f,  0.5f,  0.5f, 
+	  -0.5f,  0.5f,  0.5f,
+	  -0.5f,  0.5f, -0.5f, 
+};
+
+GLfloat frustum_vertices_position[108];
+
+void Generate_frustum_vertices_position(float nearPlane, float farPlane)
+{
+	glm::vec3 camPos = glm::vec3(0, 0, 0);
+	glm::vec3 forward = glm::vec3(0, 0, -1);
+	glm::vec3 up = glm::vec3(0, 1, 0);
+	glm::vec3 right = glm::cross(forward, up);
+	//compute 8 points
+	int i =0;
+	float g = tan(curScene.mainCam.FOV* 3.1415926f / 360);
+	glm::vec3 nearO = camPos + nearPlane * forward;
+	glm::vec3 farO = camPos + farPlane * forward;
+	glm::vec3 nearur = nearO + nearPlane * g*up + nearPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 nearul = nearO + nearPlane * g*up - nearPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 nearbr = nearO - nearPlane * g*up + nearPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 nearbl = nearO - nearPlane * g*up - nearPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 farur = farO + farPlane * g*up + farPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 farul = farO + farPlane * g*up - farPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 farbr = farO - farPlane * g*up + farPlane * g* curScene.mainCam.aspect*right;
+	glm::vec3 farbl = farO - farPlane * g*up - farPlane * g* curScene.mainCam.aspect*right;
+	// add 6 face
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbl[j];
+
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbl[j];
+
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farul[j];
+
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farur[j];
+
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearur[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farul[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farur[j];
+
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbr[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = nearbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbl[j];
+	for (int j = 0; j < 3; ++j)
+		frustum_vertices_position[i++] = farbr[j];
+
+	return;
+}
 
 void drawGeometry(Model model, int matID, glm::mat4 transform = glm::mat4(), glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
-
 void drawGeometry(Model model, int materialID, glm::mat4 transform, glm::vec2 textureWrap, glm::vec3 modelColor){
 	//printf("Model: %s, num Children %d\n",model.name.c_str(), model.numChildren);
 	//printf("Material ID: %d (passed in id = %d)\n", model.materialID,materialID);
@@ -50,16 +196,27 @@ void drawGeometry(Model model, int materialID, glm::mat4 transform, glm::vec2 te
 	transform *= model.transform;
 	modelColor *= model.modelColor;
 	//textureWrap *= model.textureWrap; //TODO: Where best to apply textureWrap transform?
-	glm::vec4 pos4 = transform*glm::vec4(0, 0, 0, 1);
-	float d = glm::dot(glm::vec3(pos4) - curScene.mainCam.pos, curScene.mainCam.forward);
-	if (!useDebugcam && d > LODStartDis && !model.lodModel.empty())//
-		drawGeometry(*model.lodModel[0], materialID, transform, textureWrap, modelColor);
-	else
+	
+	if (useDebugcam)
 	{
 		for (int i = 0; i < model.numChildren; i++) {
 			drawGeometry(*model.childModel[i], materialID, transform, textureWrap, modelColor);
 		}
 	}
+	else
+	{
+		glm::vec4 pos4 = transform * glm::vec4(0, 0, 0, 1);
+		float d = glm::dot(glm::vec3(pos4) - curScene.mainCam.pos, curScene.mainCam.forward);
+		if (d > LODStartDis && !model.lodModel.empty())
+			drawGeometry(*model.lodModel[0], materialID, transform, textureWrap, modelColor);
+		else
+		{
+			for (int i = 0; i < model.numChildren; i++) {
+				drawGeometry(*model.childModel[i], materialID, transform, textureWrap, modelColor);
+			}
+		}
+	}
+		
 	if (!model.modelData) return;
 	
 	transform *= model.modelOffset;
@@ -218,6 +375,8 @@ void initHDRBuffers(){
 
 	glBindFramebuffer(GL_FRAMEBUFFER,0); //Return to normal rendering
 }
+
+//---------------frustum shader------------------------//
 
 
 //------------ PBR Shader ---------
@@ -413,6 +572,8 @@ void drawSceneGeometry(vector<Model*> toDraw){
 		//printf("%s - %d\n",toDraw[i]->name.c_str(),i);
 		drawGeometry(*toDraw[i], -1, I);
 	}
+	//glBindVertexArray(0);
+	
 }
 
 bool IsOuterPlane(glm::vec3 PlaneN, glm::vec3 pos, glm::vec3 plane_point, float distance)
@@ -429,16 +590,25 @@ void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPo
 	totalTriangles = 0;
 	float g = tan(curScene.mainCam.FOV* 3.1415926f / 360);
 	//compute 8 points
+	
 	glm::vec3 nearO = camPos + nearPlane * curScene.mainCam.forward;
 	glm::vec3 farO = camPos + farPlane * curScene.mainCam.forward;
 	glm::vec3 nearur = nearO + nearPlane * g*curScene.mainCam.up + nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 nearul = nearO + nearPlane * g*curScene.mainCam.up - nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 nearbr = nearO - nearPlane * g*curScene.mainCam.up + nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 nearbl = nearO - nearPlane * g*curScene.mainCam.up - nearPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 farur = farO + farPlane * g*curScene.mainCam.up + farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 farul = farO + farPlane * g*curScene.mainCam.up - farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 farbr = farO - farPlane * g*curScene.mainCam.up + farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	glm::vec3 farbl = farO - farPlane * g*curScene.mainCam.up - farPlane * g* curScene.mainCam.aspect*curScene.mainCam.right;
+	
 	//compute 6 normal
 	glm::vec3 nearN = -curScene.mainCam.forward;
 	glm::vec3 farN = curScene.mainCam.forward;
@@ -529,9 +699,60 @@ void createFullscreenQuad(){
   glBindVertexArray(0); //Unbind the VAO once we have set all the attributes
 }
 
-void cleanupBuffers(){
-	glDeleteBuffers(1,&modelsVBO);
-  glDeleteVertexArrays(1, &modelsVAO);
+
+Shader FrustumShader;
+GLuint frustumVAO;
+GLint frusModel, frusView, frusProj;
+void initfrustumShading()
+{
+	FrustumShader = Shader("shaders/frustum-vert.glsl", "shaders/frustum-frag.glsl");
+	FrustumShader.init();
+	
+	// Use a Vertex Array Object
+	glGenVertexArrays(1, &frustumVAO);
+	glBindVertexArray(frustumVAO);
+
+	// Create a Vector Buffer Object that will store the vertices on video memory
+	GLuint frustumVBO;
+	glGenBuffers(1, &frustumVBO);
+
+	// Allocate space and upload the data from CPU to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, frustumVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(frustum_vertices_position), frustum_vertices_position, GL_STATIC_DRAW);
+
+	// Get the location of the attributes that enters in the vertex shader
+	GLint position_attribute = glGetAttribLocation(FrustumShader.ID, "position");
+	// Specify how the data for position can be accessed
+	glVertexAttribPointer(position_attribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);//
+   // Enable the attribute
+	glEnableVertexAttribArray(position_attribute);
+
+	frusModel = glGetUniformLocation(FrustumShader.ID, "model");
+	frusView = glGetUniformLocation(FrustumShader.ID, "view");
+	frusProj = glGetUniformLocation(FrustumShader.ID, "proj");
+	glBindVertexArray(0); //Unbind the VAO once we have set all the attributes
+}
+
+void displayFrustum(glm::mat4 view, glm::mat4 proj, glm::mat4 mainview) {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	FrustumShader.bind();
+	
+	glBindVertexArray(frustumVAO);
+	glm::mat4 model = glm::mat4();
+	model = glm::inverse(mainview)*model;
+	glUniformMatrix4fv(frusModel, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(frusProj, 1, GL_FALSE, glm::value_ptr(proj));
+	glUniformMatrix4fv(frusView, 1, GL_FALSE, glm::value_ptr(view));
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);//GL_TRIANGLE_STRIP
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//reset to origin
+}
+
+void cleanupBuffers() {
+	glDeleteBuffers(1, &modelsVBO);
+	glDeleteVertexArrays(1, &modelsVAO);
 	glDeleteVertexArrays(1, &colliderVAO);
+	glDeleteVertexArrays(1, &frustumVAO);
 	//TODO: Clearn up the other VAOs and VBOs
 }

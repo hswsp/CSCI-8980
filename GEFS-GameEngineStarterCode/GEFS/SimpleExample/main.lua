@@ -14,6 +14,9 @@ CameraUpX = 0.0
 CameraUpY = 1.0
 CameraUpZ = 0.0
 
+CameraRtX = 0
+CameraRtY = 0
+CameraRtZ = 0
 -- debug Camera
 DebugCameraPosX = -3.0
 DebugCameraPosY = 1.0
@@ -27,6 +30,9 @@ DebugCameraUpX = 0.0
 DebugCameraUpY = 1.0
 DebugCameraUpZ = 0.0
 
+DebugCameraRtX = 0
+DebugCameraRtY = 0
+DebugCameraRtZ = 0
 
 animatedModels = {}
 velModel = {}
@@ -62,9 +68,91 @@ function frameUpdate(dt)
 
   end
 end
+function computeCameraRight()
+  CameraRtX = CameraDirY*CameraUpZ - CameraDirZ*CameraUpY
+  CameraRtY = CameraDirZ*CameraUpX - CameraDirX*CameraUpZ
+  CameraRtZ = CameraDirX*CameraUpY - CameraDirY*CameraUpX
 
+  DebugCameraRtX = DebugCameraDirY*DebugCameraUpZ - DebugCameraDirZ*DebugCameraUpY
+  DebugCameraRtY = DebugCameraDirZ*DebugCameraUpX - DebugCameraDirX*DebugCameraUpZ
+  DebugCameraRtZ = DebugCameraDirX*DebugCameraUpY - DebugCameraDirY*DebugCameraUpX
+end
+function RotateRight(theta)
+  computeCameraRight()
+  local X = CameraDirX
+  local Y = CameraDirY
+  local Z = CameraDirZ
+  local DebugX = DebugCameraDirX
+  local DebugY = DebugCameraDirY
+  local DebugZ = DebugCameraDirZ
+
+  
+  local KdotCameraDir = CameraRtX*X + CameraRtY*Y + CameraRtZ*Z
+  local KdotDebugCameraDir = DebugCameraRtX*DebugX + DebugCameraRtY*DebugY + DebugCameraRtZ*DebugZ
+  if(DebugCam) then
+    DebugCameraDirX = math.cos(theta)*DebugX + math.sin(theta)*(DebugCameraRtY*DebugZ-DebugCameraRtZ*DebugY)+ DebugCameraRtX*KdotDebugCameraDir*(1 - math.cos(theta))
+    DebugCameraDirY = math.cos(theta)*DebugY + math.sin(theta)*(DebugCameraRtZ*DebugX-DebugCameraRtX*DebugZ)+ DebugCameraRtY*KdotDebugCameraDir*(1 - math.cos(theta))
+    DebugCameraDirZ = math.cos(theta)*DebugZ + math.sin(theta)*(DebugCameraRtX*DebugY-DebugCameraRtY*DebugX)+ DebugCameraRtZ*KdotDebugCameraDir*(1 - math.cos(theta))
+  else
+    CameraDirX = math.cos(theta)*X + math.sin(theta)*(CameraRtY*Z-CameraRtZ*Y)+ CameraRtX*KdotCameraDir*(1 - math.cos(theta))
+    CameraDirY = math.cos(theta)*Y + math.sin(theta)*(CameraRtZ*X-CameraRtX*Z)+ CameraRtY*KdotCameraDir*(1 - math.cos(theta))
+    CameraDirZ = math.cos(theta)*Z + math.sin(theta)*(CameraRtX*Y-CameraRtY*X)+ CameraRtZ*KdotCameraDir*(1 - math.cos(theta))
+  end
+end
 function keyHandler(keys)
   if keys.left then
+    computeCameraRight()
+    if(DebugCam) then
+      DebugCameraPosX = DebugCameraPosX - targetFrameRate *frameVel * DebugCameraRtX;
+      DebugCameraPosY = DebugCameraPosY - targetFrameRate *frameVel * DebugCameraRtY;
+      DebugCameraPosZ = DebugCameraPosZ - targetFrameRate *frameVel * DebugCameraRtZ;
+    else
+      CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraRtX;
+      CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraRtY;
+      CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraRtZ;
+    end
+  end
+  if keys.right then
+    computeCameraRight()
+    if(DebugCam) then
+      DebugCameraPosX = DebugCameraPosX + targetFrameRate *frameVel * DebugCameraRtX;
+      DebugCameraPosY = DebugCameraPosY + targetFrameRate *frameVel * DebugCameraRtY;
+      DebugCameraPosZ = DebugCameraPosZ + targetFrameRate *frameVel * DebugCameraRtZ;
+    else
+      CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraRtX;
+      CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraRtY;
+      CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraRtZ;
+    end
+  end
+  if keys.up then
+    if(DebugCam) then
+      DebugCameraPosX = DebugCameraPosX + targetFrameRate *frameVel * DebugCameraDirX;
+      DebugCameraPosY = DebugCameraPosY + targetFrameRate *frameVel * DebugCameraDirY;
+      DebugCameraPosZ = DebugCameraPosZ + targetFrameRate *frameVel * DebugCameraDirZ;
+    else
+      CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraDirX;
+      CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraDirY;
+      CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraDirZ;
+    end
+  end
+  -- Rotate
+  if keys.down then
+    --translateModel(dinoID,-0.1,0,0)
+    if(DebugCam) then
+      DebugCameraPosX = DebugCameraPosX - targetFrameRate *frameVel * DebugCameraDirX;
+      DebugCameraPosY = DebugCameraPosY - targetFrameRate *frameVel * DebugCameraDirY;
+      DebugCameraPosZ = DebugCameraPosZ - targetFrameRate *frameVel * DebugCameraDirZ;
+    else
+      CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraDirX;
+      CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraDirY;
+      CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraDirZ;
+    end
+  end
+  if keys.w then
+    local theta = targetFrameRate *frameVel
+    RotateRight(theta)
+  end
+  if keys.a then
     --translateModel(dinoID,0,0,-0.1)
     local X = CameraDirX
     local Z = CameraDirZ
@@ -79,7 +167,7 @@ function keyHandler(keys)
       CameraDirZ = math.cos(theta)*Z - math.sin(theta)*X
     end
   end
-  if keys.right then
+  if keys.d then
     --translateModel(dinoID,0,0,0.1)
     local X = CameraDirX
     local Z = CameraDirZ
@@ -94,60 +182,11 @@ function keyHandler(keys)
       CameraDirZ = math.cos(theta)*Z + math.sin(theta)*X
     end
   end
-  if keys.up then
-    --translateModel(dinoID,0.1,0,0)
-    if(DebugCam) then
-      DebugCameraPosX = DebugCameraPosX + targetFrameRate *frameVel * DebugCameraDirX;
-      DebugCameraPosY = DebugCameraPosY + targetFrameRate *frameVel * DebugCameraDirY;
-      DebugCameraPosZ = DebugCameraPosZ + targetFrameRate *frameVel * DebugCameraDirZ;
-    else
-      CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraDirX;
-      CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraDirY;
-      CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraDirZ;
-    end
-  end
-  if keys.down then
-    --translateModel(dinoID,-0.1,0,0)
-    if(DebugCam) then
-      DebugCameraPosX = DebugCameraPosX - targetFrameRate *frameVel * DebugCameraDirX;
-      DebugCameraPosY = DebugCameraPosY - targetFrameRate *frameVel * DebugCameraDirY;
-      DebugCameraPosZ = DebugCameraPosZ - targetFrameRate *frameVel * DebugCameraDirZ;
-    else
-      CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraDirX;
-      CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraDirY;
-      CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraDirZ;
-    end
-  end
-  if keys.w then
-    local X = CameraDirX
-    local Y = CameraDirY
-    local DebugX = DebugCameraDirX
-    local DebugY = DebugCameraDirY
-    local theta = targetFrameRate *frameVel
-    if(DebugCam) then
-      DebugCameraDirX = math.cos(theta)*DebugX - math.sin(theta)*DebugY
-      DebugCameraDirY = math.cos(theta)*DebugY + math.sin(theta)*DebugX
-    else
-      CameraDirX = math.cos(theta)*X - math.sin(theta)*Y
-      CameraDirY = math.cos(theta)*Y + math.sin(theta)*X
-    end
-
-  end
   if keys.s then
-    local X = CameraDirX
-    local Y = CameraDirY
-    local DebugX = DebugCameraDirX
-    local DebugY = DebugCameraDirY
-    local theta = targetFrameRate *frameVel
-    if(DebugCam) then
-      DebugCameraDirX = math.cos(theta)*DebugX + math.sin(theta)*DebugY
-      DebugCameraDirY = math.cos(theta)*DebugY - math.sin(theta)*DebugX
-    else
-      CameraDirX = math.cos(theta)*X + math.sin(theta)*Y
-      CameraDirY = math.cos(theta)*Y - math.sin(theta)*X
-    end
+    local theta = -targetFrameRate *frameVel
+    RotateRight(theta)
   end
-  if keys.d then -- d open debug
+  if keys.x then -- d open debug
     DebugCam = true
   end
   if keys.c then
@@ -155,8 +194,8 @@ function keyHandler(keys)
   end
 end
 
-for i=-15,15 do
-  for j = -15,15 do
+for i= -1,1 do
+  for j = -1,1 do
     teapotID = addModel("Teapot",i*modelsize,0,j*modelsize)
     -- setModelMaterial(teapotID,"Shiny Red Plastic")
     --setModelMaterial(teapotID,"Steel")

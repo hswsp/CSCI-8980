@@ -2,68 +2,68 @@ arguments: D:\\Github_repository\\CSCI-8980\\GEFS-GameEngineStarterCode\\GEFS\\D
 Current dir: D:\Github_repository\CSCI-8980\GEFS-GameEngineStarterCode\GEFS
 File verbosity level: 0
 date       time         ( uptime  ) [ thread name/id ]                   file:line     v| 
-2019-10-05 18:29:52.143 (   0.145s) [main thread     ]             loguru.cpp:761   INFO| Logging to 'latest_readable.log', mode: 'w', verbosity: 0
-2019-10-05 18:29:52.164 (   0.166s) [main thread     ]               main.cpp:130   INFO| Loading game folder SimpleExample/
-2019-10-05 18:29:52.177 (   0.179s) [main thread     ]               main.cpp:452   INFO| { configEngine
-2019-10-05 18:29:52.199 (   0.201s) [main thread     ]               main.cpp:460   INFO| .   Loading Config File: settings.cfg
-2019-10-05 18:29:52.219 (   0.221s) [main thread     ]               main.cpp:452   INFO| } 0.042 s: configEngine
-2019-10-05 18:29:53.311 (   1.313s) [main thread     ]          Materials.cpp:21    INFO| { loadMaterials
-2019-10-05 18:29:53.567 (   1.569s) [main thread     ]          Materials.cpp:134   WARN| .   WARNING. Unknow command: emmisive in file SimpleExample/materials.txt
-2019-10-05 18:29:53.578 (   1.580s) [main thread     ]          Materials.cpp:21    INFO| } 0.267 s: loadMaterials
-2019-10-05 18:29:53.592 (   1.594s) [main thread     ]               main.cpp:147   INFO| Read 12 materials
+2019-10-06 15:44:25.583 (   0.141s) [main thread     ]             loguru.cpp:761   INFO| Logging to 'latest_readable.log', mode: 'w', verbosity: 0
+2019-10-06 15:44:25.603 (   0.161s) [main thread     ]               main.cpp:130   INFO| Loading game folder SimpleExample/
+2019-10-06 15:44:25.622 (   0.180s) [main thread     ]               main.cpp:465   INFO| { configEngine
+2019-10-06 15:44:25.637 (   0.195s) [main thread     ]               main.cpp:473   INFO| .   Loading Config File: settings.cfg
+2019-10-06 15:44:25.659 (   0.217s) [main thread     ]               main.cpp:465   INFO| } 0.037 s: configEngine
+2019-10-06 15:44:27.045 (   1.603s) [main thread     ]          Materials.cpp:21    INFO| { loadMaterials
+2019-10-06 15:44:27.562 (   2.120s) [main thread     ]          Materials.cpp:134   WARN| .   WARNING. Unknow command: emmisive in file SimpleExample/materials.txt
+2019-10-06 15:44:27.586 (   2.144s) [main thread     ]          Materials.cpp:21    INFO| } 0.541 s: loadMaterials
+2019-10-06 15:44:27.597 (   2.155s) [main thread     ]               main.cpp:147   INFO| Read 12 materials
 
-2019-10-05 18:29:53.605 (   1.608s) [main thread     ]             Models.cpp:85    INFO| { loadModel
-2019-10-05 18:29:53.645 (   1.647s) [main thread     ]             Models.cpp:94    INFO| .   Loading Model File: SimpleExample/Prefabs.txt
-2019-10-05 18:29:53.658 (   1.660s) [main thread     ]             Models.cpp:100   INFO| .   File 'SimpleExample/Prefabs.txt' is 1234 bytes long.
-2019-10-05 18:29:53.673 (   1.675s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: TeapotLowPoly
-2019-10-05 18:29:53.803 (   1.805s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: TeapotHighPoly
-2019-10-05 18:29:54.762 (   2.764s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Teapot
-2019-10-05 18:29:54.774 (   2.776s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Sphere
-2019-10-05 18:29:54.914 (   2.916s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Cube
-2019-10-05 18:29:54.923 (   2.925s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: FancyCube
-2019-10-05 18:29:54.955 (   2.957s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Cube2
-2019-10-05 18:29:55.416 (   3.418s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: CubeOuter
-2019-10-05 18:29:55.438 (   3.440s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: CubeInner
-2019-10-05 18:29:55.453 (   3.455s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: VeryFancyCube
-2019-10-05 18:29:55.468 (   3.470s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Knot
-2019-10-05 18:29:55.951 (   3.953s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Tile
-2019-10-05 18:29:55.958 (   3.961s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Floor
-2019-10-05 18:29:55.981 (   3.983s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: FloorPart
-2019-10-05 18:29:56.048 (   4.050s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Dino
-2019-10-05 18:29:56.130 (   4.132s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Rim
-2019-10-05 18:29:57.099 (   5.101s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Wheel
-2019-10-05 18:29:57.109 (   5.111s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Robot
-2019-10-05 18:29:57.126 (   5.128s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Bigmax
-2019-10-05 18:29:57.234 (   5.236s) [main thread     ]             Models.cpp:201   WARN| .   Obj Loading Warning: Both `d` and `Tr` parameters defined for "wire_198224087". Use the value of `d` for dissolve (line 7 in .mtl.)
+2019-10-06 15:44:27.613 (   2.171s) [main thread     ]             Models.cpp:85    INFO| { loadModel
+2019-10-06 15:44:27.647 (   2.206s) [main thread     ]             Models.cpp:94    INFO| .   Loading Model File: SimpleExample/Prefabs.txt
+2019-10-06 15:44:27.659 (   2.217s) [main thread     ]             Models.cpp:100   INFO| .   File 'SimpleExample/Prefabs.txt' is 1234 bytes long.
+2019-10-06 15:44:27.674 (   2.232s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: TeapotLowPoly
+2019-10-06 15:44:27.858 (   2.416s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: TeapotHighPoly
+2019-10-06 15:44:28.848 (   3.407s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Teapot
+2019-10-06 15:44:28.859 (   3.417s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Sphere
+2019-10-06 15:44:28.974 (   3.533s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Cube
+2019-10-06 15:44:28.986 (   3.544s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: FancyCube
+2019-10-06 15:44:29.029 (   3.587s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Cube2
+2019-10-06 15:44:29.496 (   4.054s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: CubeOuter
+2019-10-06 15:44:29.522 (   4.081s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: CubeInner
+2019-10-06 15:44:29.544 (   4.103s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: VeryFancyCube
+2019-10-06 15:44:29.562 (   4.120s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Knot
+2019-10-06 15:44:30.049 (   4.607s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Tile
+2019-10-06 15:44:30.063 (   4.621s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Floor
+2019-10-06 15:44:30.078 (   4.637s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: FloorPart
+2019-10-06 15:44:30.137 (   4.695s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Dino
+2019-10-06 15:44:30.214 (   4.772s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Rim
+2019-10-06 15:44:31.177 (   5.735s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Wheel
+2019-10-06 15:44:31.189 (   5.747s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Robot
+2019-10-06 15:44:31.203 (   5.761s) [main thread     ]             Models.cpp:127   INFO| .   Creating PreFab Model with name: Bigmax
+2019-10-06 15:44:31.313 (   5.871s) [main thread     ]             Models.cpp:201   WARN| .   Obj Loading Warning: Both `d` and `Tr` parameters defined for "wire_198224087". Use the value of `d` for dissolve (line 7 in .mtl.)
 Both `d` and `Tr` parameters defined for "wire_177027088". Use the value of `d` for dissolve (line 17 in .mtl.)
 Both `d` and `Tr` parameters defined for "wire_027177027". Use the value of `d` for dissolve (line 27 in .mtl.)
 Both `d` and `Tr` parameters defined for "wire_214229166". Use the value of `d` for dissolve (line 37 in .mtl.)
 
-2019-10-05 18:29:57.315 (   5.317s) [main thread     ]             Models.cpp:85    INFO| } 3.709 s: loadModel
-2019-10-05 18:29:57.322 (   5.324s) [main thread     ]               main.cpp:150   INFO| Read 84 models
+2019-10-06 15:44:31.418 (   5.976s) [main thread     ]             Models.cpp:85    INFO| } 3.805 s: loadModel
+2019-10-06 15:44:31.425 (   5.983s) [main thread     ]               main.cpp:150   INFO| Read 84 models
 
-2019-10-05 18:29:57.333 (   5.335s) [main thread     ]              Scene.cpp:19    INFO| { loadScene
-2019-10-05 18:29:57.345 (   5.347s) [main thread     ]              Scene.cpp:26    INFO| .   Opening Scene/Environment File: SimpleExample/Scene.txt
-2019-10-05 18:29:57.386 (   5.388s) [main thread     ]              Scene.cpp:19    INFO| } 0.053 s: loadScene
-2019-10-05 18:29:57.399 (   5.401s) [main thread     ]               main.cpp:153   INFO| Loaded scene file
+2019-10-06 15:44:31.444 (   6.002s) [main thread     ]              Scene.cpp:19    INFO| { loadScene
+2019-10-06 15:44:31.451 (   6.009s) [main thread     ]              Scene.cpp:26    INFO| .   Opening Scene/Environment File: SimpleExample/Scene.txt
+2019-10-06 15:44:31.473 (   6.031s) [main thread     ]              Scene.cpp:19    INFO| } 0.029 s: loadScene
+2019-10-06 15:44:31.488 (   6.046s) [main thread     ]               main.cpp:153   INFO| Loaded scene file
 
-2019-10-05 18:29:57.675 (   5.677s) [main thread     ]      WindowManager.cpp:47    INFO| 
+2019-10-06 15:44:31.950 (   6.508s) [main thread     ]      WindowManager.cpp:47    INFO| 
 OpenGL loaded
 
-2019-10-05 18:29:57.682 (   5.684s) [main thread     ]      WindowManager.cpp:48    INFO| Vendor:   Intel
+2019-10-06 15:44:31.962 (   6.521s) [main thread     ]      WindowManager.cpp:48    INFO| Vendor:   Intel
 
-2019-10-05 18:29:57.697 (   5.699s) [main thread     ]      WindowManager.cpp:49    INFO| Renderer: Intel(R) HD Graphics 520
+2019-10-06 15:44:31.968 (   6.526s) [main thread     ]      WindowManager.cpp:49    INFO| Renderer: Intel(R) HD Graphics 520
 
-2019-10-05 18:29:57.710 (   5.712s) [main thread     ]      WindowManager.cpp:50    INFO| Version:  3.3.0 - Build 25.20.100.6373
+2019-10-06 15:44:32.041 (   6.600s) [main thread     ]      WindowManager.cpp:50    INFO| Version:  3.3.0 - Build 25.20.100.6373
 
 
-2019-10-05 18:29:57.731 (   5.733s) [main thread     ]      WindowManager.cpp:19    INFO| { setWindowSize
-2019-10-05 18:29:57.750 (   5.753s) [main thread     ]      WindowManager.cpp:20    INFO| .   Attempting to create a Windowed display of size 1152x720
-2019-10-05 18:29:57.766 (   5.768s) [main thread     ]      WindowManager.cpp:25    INFO| .   Created a window of size 1152x720
-2019-10-05 18:29:57.792 (   5.794s) [main thread     ]      WindowManager.cpp:19    INFO| } 0.061 s: setWindowSize
-2019-10-05 18:29:58.098 (   6.100s) [main thread     ]    RenderingSystem.cpp:367   INFO| Created Colider Circle with 360 verts
-2019-10-05 18:29:58.106 (   6.108s) [main thread     ]             Skybox.cpp:37    INFO| { loadCubemap
-2019-10-05 18:30:00.940 (   8.942s) [main thread     ]             Skybox.cpp:37    INFO| } 2.834 s: loadCubemap
-2019-10-05 18:30:01.022 (   9.024s) [main thread     ]               main.cpp:176   INFO| Loading Gamescript: 'SimpleExample/main.lua'
-2019-10-05 18:30:01.301 (   9.303s) [main thread     ]               main.cpp:184   INFO| Script Loaded without Error.
-2019-10-05 18:30:41.939 (  49.941s) [main thread     ]             loguru.cpp:477   INFO| atexit
+2019-10-06 15:44:32.088 (   6.646s) [main thread     ]      WindowManager.cpp:19    INFO| { setWindowSize
+2019-10-06 15:44:32.094 (   6.652s) [main thread     ]      WindowManager.cpp:20    INFO| .   Attempting to create a Windowed display of size 1152x720
+2019-10-06 15:44:32.120 (   6.679s) [main thread     ]      WindowManager.cpp:25    INFO| .   Created a window of size 1152x720
+2019-10-06 15:44:32.140 (   6.698s) [main thread     ]      WindowManager.cpp:19    INFO| } 0.052 s: setWindowSize
+2019-10-06 15:44:32.736 (   7.294s) [main thread     ]    RenderingSystem.cpp:526   INFO| Created Colider Circle with 360 verts
+2019-10-06 15:44:32.745 (   7.304s) [main thread     ]             Skybox.cpp:37    INFO| { loadCubemap
+2019-10-06 15:44:35.213 (   9.771s) [main thread     ]             Skybox.cpp:37    INFO| } 2.467 s: loadCubemap
+2019-10-06 15:44:35.307 (   9.866s) [main thread     ]               main.cpp:178   INFO| Loading Gamescript: 'SimpleExample/main.lua'
+2019-10-06 15:44:35.321 (   9.879s) [main thread     ]               main.cpp:186   INFO| Script Loaded without Error.
+2019-10-06 15:46:22.828 ( 117.386s) [main thread     ]             loguru.cpp:477   INFO| atexit
