@@ -345,7 +345,7 @@ int main(int argc, char *argv[]){
 			view = glm::lookAt(DebugcamPos, //Camera Position
 				DebuglookatPoint, //Point to look at (camPos + camDir)
 				DebugcamUp);     //Camera Up direction
-			proj = glm::perspective(FOV * 3.14f / 180, screenWidth / (float)screenHeight, 0.1f, 1000.0f); 
+			proj = glm::perspective(FOV * 3.14f / 180, screenWidth / (float)screenHeight, 0.1f, 2000.0f); 
 			mainview = glm::lookAt(camPos, //Camera Position
 				lookatPoint, //Point to look at (camPos + camDir)
 				camUp);     //Camera Up direction
