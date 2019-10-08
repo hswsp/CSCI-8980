@@ -376,6 +376,7 @@ int main(int argc, char *argv[]){
 		{
 			//sort(curScene.toDraw.begin(), curScene.toDraw.end(), comp);
 			drawSceneGeometry(curScene.toDraw, camDir, camPos, nearPlane, farPlane);
+			
 		}
 		//TODO: Add a pass which draws some items without depth culling (e.g. keys, items)
 		if (drawColliders) 

@@ -58,7 +58,7 @@ function frameUpdate(dt)
     --print("ID",modelID)
     local vel = velModel[modelID]
     if vel then 
-      translateModel(modelID, -vel[1]*math.sin(dt*vel[1]),dt*vel[2],vel[3]*math.cos(dt*vel[3]))
+      translateModel(modelID, -vel[1]*math.sin(dt*vel[1])*dt,dt*vel[2],vel[3]*math.cos(dt*vel[3])*dt)
     end
 
     local rotYvel = rotYVelModel[modelID]
@@ -194,8 +194,8 @@ function keyHandler(keys)
   end
 end
 
-for i= -1,1 do
-  for j = -1,1 do
+for i= -15,15 do
+  for j = -15,15 do
     teapotID = addModel("Teapot",i*modelsize,0,j*modelsize)
     -- setModelMaterial(teapotID,"Shiny Red Plastic")
     --setModelMaterial(teapotID,"Steel")
@@ -212,16 +212,16 @@ setModelMaterial(floorID,"Gold")
 dinoID = addModel("Dino",0,0,-.15)
 animatedModels[dinoID] = true
 velModel[dinoID] = {}
-velModel[dinoID][1] = -0.01
+velModel[dinoID][1] = -0.1
 velModel[dinoID][2] = 0.0
-velModel[dinoID][3] = -0.01
+velModel[dinoID][3] = -0.1
 
 RimID = addModel("Bigmax",0,0,0)
 placeModel(RimID,-3.0,0.0,-1.5)
 scaleModel(RimID,0.01,0.01,0.01)
 animatedModels[RimID] = true
 velModel[RimID] = {}
-velModel[RimID][1] = 0.01
+velModel[RimID][1] = 0.1
 velModel[RimID][2] = 0.0
-velModel[RimID][3] = 0.01
+velModel[RimID][3] = 0.1
 

@@ -621,7 +621,7 @@ void drawSceneGeometry(vector<Model*> toDraw, glm::vec3 forward, glm::vec3 camPo
 		//printf("%s - %d\n", toDraw[i]->childModel[0]->name.c_str(), i);
 		glm::vec4 pos4 = models[toDraw[i]->ID].transform*glm::vec4(0,0,0,1);
 		glm::vec4 size = models[toDraw[i]->ID].transform*glm::vec4(1, 1, 1, 0);
-		radius = std::max(size[0], std::max(size[1], size[2]));
+		radius = std::max(size[0], std::max(size[1], size[2]))*(1 + 1e-1);
 		//frustrum culling	
 		if(IsOuterPlane(nearN, glm::vec3(pos4),nearO, radius)||
 			IsOuterPlane(farN, glm::vec3(pos4), farO, radius)||
