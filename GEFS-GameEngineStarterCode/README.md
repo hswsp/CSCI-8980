@@ -45,6 +45,10 @@ After you finish the above steps go to GEFS-GameEngineStarterCode/build/ directo
 ```
   cmake ..   
 ```  
+or for win64
+```
+  cmake -G "Visual Studio 15 2017 Win64" ..   
+```  
 Then, for Linux or OS X command line, run make
 ```
   make
