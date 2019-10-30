@@ -1,0 +1,9 @@
+build/
+SDL2-2.0.10/
+*.log
+*.o
+*properties.json
+engine
+.DS_Store
+*.dll
+*.sh
