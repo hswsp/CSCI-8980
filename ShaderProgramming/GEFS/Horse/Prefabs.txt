@@ -1,0 +1,25 @@
+modelDir = ./models/
+
+[FloorPart]
+scalexyz 1 1 1
+objModel = Floor_Modular.obj
+
+[Floor]
+scalexyz 30 .1 30
+flatModel = cube.txt 
+
+[Horse-Walk]
+scale .2
+childDir = Horse/Walk/
+
+[Horse-Dash]
+scale .2
+childDir = Horse/Dash/
+
+[Horse-Jump]
+scale .2
+childDir = Horse/Jump/
+
+[Horse-Fall]
+scale .2
+childDir = Horse/Fall/

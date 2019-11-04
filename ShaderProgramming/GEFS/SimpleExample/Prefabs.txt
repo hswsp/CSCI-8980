@@ -1,0 +1,280 @@
+
+modelDir = ./models/
+
+#teapot knot sphere teapotLowPoly teapot cube
+
+[TeapotLowPoly]
+rotate 90 1 0 0
+scale .9
+flatModel = teapotLowPoly.txt
+
+[TeapotHighPoly]
+translate 0 .25 0
+rotate 90 -1 0 0
+flatModel = teapot.txt   
+
+[Teapot]
+child [TeapotHighPoly]
+#child [TeapotLowPoly]
+
+[Sphere]
+flatModel = sphere.txt   
+
+[Cube]
+flatModel = cube.txt
+
+[FancyCube]
+scale 0.39
+objModel = fancyCube.obj
+
+[Cube2]
+scale 1
+flatModel = knot.txt
+
+[CubeOuter]
+material [Dark Polished Wood] #[Polished Wood]
+objModel = cubeOuter.obj
+
+[CubeInner]
+material [Glowly White]
+objModel = simpleCube.obj
+
+[VeryFancyCube]
+scale 0.39
+child [CubeOuter]
+child [CubeInner]
+
+[Knot]
+textureWrap 2 1.5
+scalexyz .9 .9 .75
+flatModel = knot.txt
+
+[Tile]
+scalexyz 1 1 .1
+flatModel = cube.txt 
+
+[Floor]
+scalexyz 1 1 .5
+material [Clay]
+flatModel = cube.txt 
+
+[FloorPart]
+scalexyz 0.5 0.5 0.5
+material [Clay]
+objModel = Floor_Modular.obj
+
+[Dino]
+scale .1
+objModel = Trex.obj #Triceratops
+
+[Cow]
+scale .1
+objModel  = Cow.obj
+[Pig]
+scale .1
+objModel  = Pig.obj
+[Frog]
+scale .2.5
+objModel  = Frog.obj
+[Whale]
+translate 0 .5 0
+scale .1
+objModel  = Whale.obj
+[Sheep]
+scale .1
+objModel  = Sheep.obj
+[Zebra]
+scale .1
+objModel  = Zebra.obj
+
+
+[LetterA]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter A]
+
+[LetterB]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter B]
+
+[LetterC]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter C]
+
+[LetterD]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter D]
+
+[LetterE]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter E]
+
+[LetterF]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter F]
+
+[LetterG]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter G]
+
+[LetterH]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter H]
+
+[LetterI]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter I]
+
+[LetterJ]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter J]
+
+[LetterK]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter K]
+
+[LetterL]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter L]
+
+[LetterM]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter M]
+
+[LetterN]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter N]
+
+[LetterO]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter O]
+
+[LetterP]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter P]
+
+[LetterQ]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter Q]
+
+[LetterR]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter R]
+
+[LetterS]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter S]
+
+[LetterT]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter T]
+
+[LetterU]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter U]
+
+[LetterV]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter V]
+
+[LetterW]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter W]
+
+[LetterX]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter X]
+
+[LetterY]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter Y]
+
+[LetterZ]
+child [Cube]
+rotate 90 -1 0 0
+material [Letter Z]
+
+[Number0]
+objModel  = Number_0_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Red Light]
+
+[Number1]
+objModel  = Number_1_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Red Light]
+
+[Number2]
+objModel  = Number_2_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Red Light]
+
+[Number3]
+objModel  = Number_3_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Red Light]
+
+[Number4]
+objModel  = Number_4_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Red Light]
+
+[Number5]
+objModel  =Number_5_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Blue Light]
+
+[Number6]
+objModel  = Number_6_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Blue Light]
+
+[Number7]
+objModel  = Number_7_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Blue Light]
+
+[Number8]
+objModel  = Number_8_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Blue Light]
+
+[Number9]
+objModel  = Number_9_v1.obj
+scale .1
+rotate 100 -1 0 0
+material [Blue Light]
+

@@ -1,0 +1,5 @@
+[Flooring]
+metallic = 0.3
+smoothness = 0.6
+ior = 1.5
+color = 0.7 0.5 0.16
