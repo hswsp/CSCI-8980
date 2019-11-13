@@ -1,6 +1,8 @@
 build/
+engineCode.bk/
 *.log
 *.o
 *properties.json
-engine
+engine/
 .DS_Store
+*.bk

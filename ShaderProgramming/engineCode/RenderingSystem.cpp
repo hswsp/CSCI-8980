@@ -9,11 +9,17 @@
 #include "Shader.h"
 #include <external/loguru.hpp>
 #include <external/stb_image.h>
+#include <iostream>
+
 #undef near
 #undef far
 
 using std::vector;
-
+using namespace std;
+extern bool useFog;
+extern bool useDissolve;
+extern int targetScreenWidth;
+extern int targetScreenHeight;
 GLuint tex[1000];
 
 bool xxx; //Just an unspecified bool that gets passed to shader for debugging
@@ -24,11 +30,105 @@ int totalTriangles = 0;
 
 GLint uniColorID, uniEmissiveID, uniUseTextureID, modelColorID;
 GLint metallicID, roughnessID, iorID, reflectivenessID;
-GLint uniModelMatrix, colorTextureID, texScaleID, biasID, pcfID;
-GLint xxxID;
+GLint uniModelMatrix, colorTextureID,dataTextureID, flameTextureID, texScaleID, biasID, pcfID, TimeValueID;
+GLint xxxID, useDissolveID,useFogID, timeID, resolutionID;
 
 GLuint colliderVAO; //Build a Vertex Array Object for the collider
+float Testvertices[] = {
+	// X      Y     Z     
+	  -0.5f, -0.5f, -0.5f,
+	   0.5f, -0.5f, -0.5f,
+	   0.5f,  0.5f, -0.5f,
+	   0.5f,  0.5f, -0.5f,
+	  -0.5f,  0.5f, -0.5f,
+	  -0.5f, -0.5f, -0.5f,
 
+	  -0.5f, -0.5f,  0.5f,
+	   0.5f, -0.5f,  0.5f,
+	   0.5f,  0.5f,  0.5f,
+	   0.5f,  0.5f,  0.5f,
+	  -0.5f,  0.5f,  0.5f,
+	  -0.5f, -0.5f,  0.5f,
+
+	  -0.5f,  0.5f,  0.5f,
+	  -0.5f,  0.5f, -0.5f,
+	  -0.5f, -0.5f, -0.5f,
+	  -0.5f, -0.5f, -0.5f,
+	  -0.5f, -0.5f,  0.5f,
+	  -0.5f,  0.5f,  0.5f,
+
+	   0.5f,  0.5f,  0.5f,
+	   0.5f,  0.5f, -0.5f,
+	   0.5f, -0.5f, -0.5f,
+	   0.5f, -0.5f, -0.5f,
+	   0.5f, -0.5f,  0.5f,
+	   0.5f,  0.5f,  0.5f,
+
+	  -0.5f, -0.5f, -0.5f,
+	   0.5f, -0.5f, -0.5f,
+	   0.5f, -0.5f,  0.5f,
+	   0.5f, -0.5f,  0.5f,
+	  -0.5f, -0.5f,  0.5f,
+	  -0.5f, -0.5f, -0.5f,
+
+	  -0.5f,  0.5f, -0.5f,
+	   0.5f,  0.5f, -0.5f,
+	   0.5f,  0.5f,  0.5f,
+	   0.5f,  0.5f,  0.5f,
+	  -0.5f,  0.5f,  0.5f,
+	  -0.5f,  0.5f, -0.5f,
+};
+GLfloat vertices[] = {
+	// X Y Z R G B U V
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, //Red face
+	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+	0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+	-0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, //Green face
+	0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+	-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+	-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, //Yellow face
+	-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+	-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, //Blue face
+	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, //Black face
+	0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, //White face
+0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
+};
+
+float normals[] = { //Normals for 36 vertices
+0.f,0.f,-1.f, 0.f,0.f,-1.f, 0.f,0.f,-1.f, 0.f,0.f,-1.f, //1-4
+0.f,0.f,-1.f, 0.f,0.f,-1.f, 0.f,0.f,1.f, 0.f,0.f,1.f, //5-8
+0.f,0.f,1.f, 0.f,0.f,1.f, 0.f,0.f,1.f, 0.f,0.f,1.f, //9-12
+-1.f,0.f,0.f, -1.f,0.f,0.f, -1.f,0.f,0.f, -1.f,0.f,0.f, //13-16
+-1.f,0.f,0.f, -1.f,0.f,0.f, 1.f,0.f,0.f, 1.f,0.f,0.f, //17-20
+1.f,0.f,0.f, 1.f,0.f,0.f, 1.f,0.f,0.f, 1.f,0.f,0.f, //21-24
+0.f,-1.f,0.f, 0.f,-1.f,0.f, 0.f,-1.f,0.f, 0.f,-1.f,0.f, //25-28
+0.f,-1.f,0.f, 0.f,-1.f,0.f, 0.f,1.f,0.f, 0.f,1.f,0.f, //29-32
+0.f,1.f,0.f, 0.f,1.f,0.f, 0.f,1.f,0.f, 0.f,1.f,0.f, //33-36
+};
 void drawGeometry(Model model, int matID, glm::mat4 transform = glm::mat4(), float cameraDist = 0, glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
 
 void drawGeometry(Model model, int materialID, glm::mat4 transform, float cameraDist, glm::vec2 textureWrap, glm::vec3 modelColor){
@@ -79,7 +179,42 @@ void drawGeometry(Model model, int materialID, glm::mat4 transform, float camera
 		glUniform2fv(texScaleID, 1, glm::value_ptr(textureWrap));
 	}
 
+	glActiveTexture(GL_TEXTURE4);  //Set texture 0 as active texture
+	glBindTexture(GL_TEXTURE_2D, tex[999]); //Load bound texture
+	glUniform1i(dataTextureID, 4); //Use the texture we just loaded (texture 0) as material color
+	static float t = 1;
+	static bool decrease = true;
+	glUniform1f(TimeValueID, t);
+	if (!useDissolve)
+		t = 1;
+	else
+	{
+		if (decrease)
+		{
+			t *= (1 - 1e-5);
+			if (t <= 0.1)
+			{
+				//std::cout << "t is :" << t <<std::endl;
+				decrease = false;
+			}
+
+		}
+		else
+		{
+			t *= (1 + 1e-5);
+			if (t >= 1)
+				decrease = true;
+		}
+	}
 	glUniform1i(xxxID, xxx);
+	glUniform1i(useDissolveID, useDissolve);
+	glUniform1i(useFogID, useFog);
+
+	glActiveTexture(GL_TEXTURE3);  //Set texture 0 as active texture
+	glBindTexture(GL_TEXTURE_2D, tex[998]); //Load bound texture
+	glUniform1i(flameTextureID, 3); //Use the texture we just loaded (texture 0) as material color
+	long long curTime_dt = SDL_GetTicks(); //TODO: is this really long long?
+	glUniform1f(timeID, curTime_dt/1000.0f);
 
 	//printf("%f\n",model.modelColor[0]);
 	glUniform3fv(modelColorID, 1, glm::value_ptr(modelColor*model.modelColor)); //multiply parent's color by your own
@@ -159,7 +294,49 @@ void loadTexturesToGPU(){
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //TODO: Does this look better? I'm not sure
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    stbi_image_free(pixelData);	}
+    stbi_image_free(pixelData);	
+  }
+  int i = 999;
+  string noise = string("./textures/noise.jpg");
+  LOG_F(1, "Loading Texture %s", noise.c_str());
+  unsigned char *pixelData = stbi_load(noise.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", noise.c_str()); //TODO: Is there some way to get the error from STB image?
+
+  //Load the texture into memory
+  glGenTextures(1, &tex[i]);
+  glBindTexture(GL_TEXTURE_2D, tex[i]);
+  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  //What to do outside 0-1 range
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  stbi_image_free(pixelData);
+
+  i = 998;
+  string flame = string("./textures/flame.png");
+  LOG_F(1, "Loading Texture %s", flame.c_str());
+  pixelData = stbi_load(flame.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", flame.c_str()); //TODO: Is there some way to get the error from STB image?
+
+  //Load the texture into memory
+  glGenTextures(1, &tex[i]);
+  glBindTexture(GL_TEXTURE_2D, tex[i]);
+  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  //What to do outside 0-1 range
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  
+
+  stbi_image_free(pixelData);
 }
 
 
@@ -278,12 +455,20 @@ void initPBRShading(){
 	reflectivenessID = glGetUniformLocation(PBRShader.ID, "reflectiveness");
 	uniModelMatrix = glGetUniformLocation(PBRShader.ID, "model");
 	colorTextureID = glGetUniformLocation(PBRShader.ID, "colorTexture");
+	dataTextureID = glGetUniformLocation(PBRShader.ID, "dataTexture");
+	flameTextureID = glGetUniformLocation(PBRShader.ID, "uDiffuseSampler");
+	TimeValueID = glGetUniformLocation(PBRShader.ID, "timeValue");
 	texScaleID = glGetUniformLocation(PBRShader.ID, "textureScaleing");
 	xxxID = glGetUniformLocation(PBRShader.ID, "xxx");
+	useDissolveID = glGetUniformLocation(PBRShader.ID, "useDissolve");
+	useFogID = glGetUniformLocation(PBRShader.ID, "useFog");
+	timeID = glGetUniformLocation(PBRShader.ID, "time");
+	resolutionID = glGetUniformLocation(PBRShader.ID, "resolution");
+	
 
 	PBRShader.bind();
 	glUniformMatrix4fv(glGetUniformLocation(PBRShader.ID, "rotSkybox"), 1, GL_FALSE, &curScene.rotSkybox[0][0]);
-
+	glUniform2fv(resolutionID, 1, glm::value_ptr(glm::vec2(targetScreenWidth, targetScreenHeight)));
 
 	glBindVertexArray(0); //Unbind the VAO in case we want to create a new one
 }
@@ -546,9 +731,86 @@ void createFullscreenQuad(){
   glBindVertexArray(0); //Unbind the VAO once we have set all the attributes
 }
 
-void cleanupBuffers(){
-	glDeleteBuffers(1,&modelsVBO);
-  glDeleteVertexArrays(1, &modelsVAO);
+
+
+
+
+/* My shader*/
+Shader FrustumShader;
+GLuint frustumVAO;
+GLint frusModel, frusView, frusProj;
+GLuint frustumVBO;
+void initMyShading()
+{
+	FrustumShader = Shader("shaders/myvert.glsl", "shaders/myfrag.glsl");
+	FrustumShader.init();
+
+	// Use a Vertex Array Object
+	glGenVertexArrays(1, &frustumVAO);
+	glBindVertexArray(frustumVAO);
+
+	// Create a Vector Buffer Object that will store the vertices on video memory
+	
+	glGenBuffers(1, &frustumVBO);
+
+	// Allocate space and upload the data from CPU to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, frustumVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Testvertices), Testvertices, GL_STATIC_DRAW);
+
+	// Get the location of the attributes that enters in the vertex shader
+	GLint posAttrib = glGetAttribLocation(FrustumShader.ID, "position");
+	// Specify how the data for position can be accessed
+	//glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);//
+   // Enable the attribute
+	glEnableVertexAttribArray(posAttrib);
+
+	//GLint colAttrib = glGetAttribLocation(FrustumShader.ID, "inColor");
+	//glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+	//	8 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(colAttrib);
+
+
+	//glBindBuffer(GL_ARRAY_BUFFER, frustumVBO[1]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW); //upload no
+
+	//GLint normAttrib = glGetAttribLocation(FrustumShader.ID, "inNormal");
+	//glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//glEnableVertexAttribArray(normAttrib);
+
+	frusModel = glGetUniformLocation(FrustumShader.ID, "model");
+	frusView = glGetUniformLocation(FrustumShader.ID, "view");
+	frusProj = glGetUniformLocation(FrustumShader.ID, "proj");
+	glBindVertexArray(0); //Unbind the VAO once we have set all the attributes
+}
+
+void displayMyObj(glm::mat4 view, glm::mat4 proj,float time) {
+	
+	glClearColor(.2f, 0.4f, 0.8f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	FrustumShader.bind();
+	glBindVertexArray(frustumVAO);
+	glm::mat4 model = glm::mat4();
+	/*model = glm::rotate(model, time * 3.14f / 2, glm::vec3(0.0f, 1.0f, 1.0f));
+	model = glm::rotate(model, time * 3.14f / 4, glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(10, 10, 10));*/
+	model = glm::inverse(view)*model;
+	glUniformMatrix4fv(frusModel, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(frusProj, 1, GL_FALSE, glm::value_ptr(proj));
+	glUniformMatrix4fv(frusView, 1, GL_FALSE, glm::value_ptr(view));
+	//glUniform3fv(glGetUniformLocation(PBRShader.ID, "lightDir"), curScene.lights.size(), glm::value_ptr(lightDirections[0]));
+	glDrawArrays(GL_TRIANGLES, 0, 36);//GL_TRIANGLE_STRIP
+
+}
+
+
+
+void cleanupBuffers() {
+	glDeleteBuffers(1, &modelsVBO);
+	glDeleteVertexArrays(1, &modelsVAO);
 	glDeleteVertexArrays(1, &colliderVAO);
+	glDeleteVertexArrays(1, &frustumVAO);
+	glDeleteBuffers(1, &frustumVBO);
 	//TODO: Clearn up the other VAOs and VBOs
 }

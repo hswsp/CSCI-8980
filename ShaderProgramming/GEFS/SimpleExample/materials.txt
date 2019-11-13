@@ -2,6 +2,13 @@
 
 textureDir  = ./textures/
 
+[Silver]
+metallic = .8
+smoothness = 0.7
+reflectiveness = 0.2
+ior = 2.0
+color = .9 .9 .9
+
 [Aluminium]
 metallic = .8
 smoothness = 0.7
@@ -28,6 +35,11 @@ reflectiveness = 0.01
 color = 1 .8 .14
 color = .85 .65 .13
 
+[Copper]
+metallic = .6
+smoothness = 0.8
+ior = 1.8
+color = .72 .3 .15
 
 [Polished Wood]
 texture = wood.jpg

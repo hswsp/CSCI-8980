@@ -17,6 +17,8 @@ void drawSceneGeometry(std::vector<Model*> toDraw, glm::mat4 viewMat, float FOV,
 
 //HDR render targets
 void initHDRBuffers();
+void initMyShading();
+void displayMyObj(glm::mat4 view, glm::mat4 proj, float time);
 
 //Collider spheres drawing function
 void initColliderGeometry();

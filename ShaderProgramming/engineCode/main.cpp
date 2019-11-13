@@ -4,13 +4,15 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include <ctime>
+#include <chrono>
 
 //stb_image include
 #define STB_IMAGE_IMPLEMENTATION //put this line in only one .cpp file
 #include <external/stb_image.h>
 
 #include <external/loguru.hpp>
-
+int GameContrl=0;
 bool useBloom = false;
 bool useShadowMap = true;
 bool drawColliders = false;
@@ -21,6 +23,7 @@ int targetFrameRate = 30;
 float secondsPerFrame = 1.0f / (float)targetFrameRate;
 float cameraFar = 20;
 float cameraNear = 0.1;
+int timettt=0;
 
 #include "luaSupport.h"
 
@@ -58,6 +61,7 @@ int targetScreenWidth = 1120;
 int targetScreenHeight = 700;
 
 bool saveOutput = false;
+long long start_t=0;
 
 bool fullscreen = false;
 void Win2PPM(int width, int height);
@@ -66,7 +70,8 @@ AudioManager audioManager = AudioManager();
 
 
 void configEngine(string configFile, string configName);
-
+bool useFog = false;
+bool useDissolve = false;
 
 int main(int argc, char *argv[]){
 	loguru::g_stderr_verbosity = -1; // Only show warnings on error stderr (higher number == more printing)
@@ -127,7 +132,8 @@ int main(int argc, char *argv[]){
 	initPBRShading();
 	initColliderGeometry(); //Depends on PBRShading being initalized
 	initSkyboxBuffers();
-  initShadowBuffers();
+	initShadowBuffers();
+	//initMyShading();
 
 	//Create a quad to be used for fullscreen rendering
 	createFullscreenQuad();
@@ -214,11 +220,16 @@ int main(int argc, char *argv[]){
 		//Read keyboard and send the state of the keys to the Lua scrip
 		updateKeyboardState();
 		keyboardUpdateLua(L);
-
+		useDissolve = setDissolve(L);
+		useFog = setFog(L);
+		
 		//Read gamepad/controller and send the state to the Lua script
 		updateControllerState();
 		gamepadUpdateLua(L);
-
+		int score=getScoresFromLua(L);
+		if (starttime(L)==1 && start_t==0){
+			start_t=SDL_GetTicks(); 
+		}
 		static long long lastTime_dt = 0; //@cleanup -- pull together various timing code
 		long long curTime_dt = SDL_GetTicks(); //TODO: is this really long long?
 		if (saveOutput) curTime_dt = lastTime_dt + .07 * 1000.0;
@@ -319,8 +330,12 @@ int main(int argc, char *argv[]){
 			drawSceneGeometry(curScene.toDraw);
 		}
 		//TODO: Add a pass which draws some items without depth culling (e.g. keys, items)
-		if (drawColliders) drawColliderGeometry(); //Pass 2B: Draw Colliders
+		if (drawColliders) 
+			drawColliderGeometry(); //Pass 2B: Draw Colliders
 		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
+
+		//displayMyObj(view, proj, curTime_frame/1000.f);
+
 
 		//------ PASS 3 - Compute Bloom Blur --------------------
 		if (useBloom) 
@@ -342,8 +357,41 @@ int main(int argc, char *argv[]){
 		float drawTime = (curTime_draw-lastTime);
 
 		if (saveOutput) Win2PPM(screenWidth,screenHeight);
+		GameContrl = SetGameInfo(L);
+				if (GameContrl == 1)
+		{
+			IMGuiNewFrame();
+		
+			//ImGui can do some pretty cool things, try some of these:
+			//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+			//ImGui::ColorEdit3("clear color", (float*)&clear_color);
+			//static float f = 0.0f; 
+			//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+			//static int counter = 0;
+			//if (ImGui::Button("Button")) counter++;
+		
+		
+			ImGui::Begin("Game Info");
+			ImGui::SetWindowFontScale(2.6);
+			//ImGui::Text("Time for Rendering %.0f ms", drawTime);
+			
 
-		IMGuiNewFrame();
+			ImGui::Text("Your Score: %d", score);
+			if (start_t!=0){
+			// auto chrono::duration < double> elapsed_seconds = end-temp;
+			// int sec=(int(now->tm_hour)-hour)*3600+(int(now->tm_min)-minutes)*60+int(now->tm_sec)-sec;
+			//int sec=int(now->tm_sec)-sec;
+			long long curTime_dt = SDL_GetTicks(); //TODO: is this really long long?
+			timettt=(curTime_dt-start_t)/1000;
+
+
+			ImGui::Text("Time Elaspse:%d S",timettt);
+			ImGui::Text("Time Left:%d S",60-timettt);
+
+			//ImGui::Text("Time now:%d:%d:%d", start->tm_hour,start->tm_min,start->tm_sec);
+
+			}
+		//IMGuiNewFrame();
 
 		//ImGui can do some pretty cool things, try some of these:
 		//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -353,21 +401,21 @@ int main(int argc, char *argv[]){
 		//static int counter = 0;
 		//if (ImGui::Button("Button")) counter++;
 
-		ImGui::Begin("Frame Info");               
-		ImGui::Text("Time for Rendering %.0f ms", drawTime);
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::Text("%d Objects in Scene Graph, %d being drawn", numModels, (int)curScene.toDraw.size());
-		ImGui::Text("Total Triangles: %d", totalTriangles);
-		ImGui::Text("Total Shadow Triangles: %d", totalShadowTriangles);
-		ImGui::Text("Camera Pos %f %f %f",camPos.x,camPos.y,camPos.z);
-		ImGui::Text("Camera Dir %f %f %f",camDir.x,camDir.y,camDir.z);
-		ImGui::Text("Camera Up %f %f %f",camUp.x,camUp.y,camUp.z);
-		ImGui::End();
+		// ImGui::Begin("Frame Info");               
+		// ImGui::Text("Time for Rendering %.0f ms", drawTime);
+		// ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		// ImGui::Text("%d Objects in Scene Graph, %d being drawn", numModels, (int)curScene.toDraw.size());
+		// ImGui::Text("Total Triangles: %d", totalTriangles);
+		// ImGui::Text("Total Shadow Triangles: %d", totalShadowTriangles);
+		// ImGui::Text("Camera Pos %f %f %f",camPos.x,camPos.y,camPos.z);
+		// ImGui::Text("Camera Dir %f %f %f",camDir.x,camDir.y,camDir.z);
+		// ImGui::Text("Camera Up %f %f %f",camUp.x,camUp.y,camUp.z);
+			ImGui::End();
 
-		// Render ImGui
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+			// Render ImGui
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        }
 		//LOG_F(3,"Done Drawing");
 		swapDisplayBuffers();
 	}

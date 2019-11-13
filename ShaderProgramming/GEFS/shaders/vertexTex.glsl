@@ -33,6 +33,7 @@ out vec2 texcoord;
 out vec4 shadowCoord;
 out vec3 globalPos;
 
+
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;

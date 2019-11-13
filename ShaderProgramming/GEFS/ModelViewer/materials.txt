@@ -2,7 +2,7 @@
 # by the model file (prefabs) and by the lua scripting command
 # called setModelMaterial(modelID, materialName)
 
-textureDir  = ./ModelViewer/models/  #Which directory to find textures in
+textureDir  = ./textures/  #Which directory to find textures in
 
 #Non metatalic materials:
 

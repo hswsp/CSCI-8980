@@ -11,7 +11,7 @@ Shader skyboxShader;
 GLuint skyboxVAO;
 
 vector<std::string> faces;
-
+extern bool useFog;
 unsigned int cubemapTexture;
 
 void initSkyboxShader(){
@@ -115,6 +115,8 @@ void drawSkybox(glm::mat4 view, glm::mat4 proj){
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"),0);
 	}
+	glUniform1i(glGetUniformLocation(skyboxShader.ID, "useFog"), useFog); 
+
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glDepthFunc(GL_LESS); // set depth function back to default
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

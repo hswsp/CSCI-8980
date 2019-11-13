@@ -14,13 +14,19 @@ void luaSetup(lua_State * L);
 //      e.g. move laodAudio, playSound, and playSoundEffect lua calls to Audiomanager
 
 #include "Sound.h"
+int setDissolve(lua_State * L);
+int setFog(lua_State * L);
 extern AudioManager audioManager;
+int starttime(lua_State * L);
+int pushcontrol(lua_State * L);
+int getTargetFPS(lua_State * L);
 int loadAudio(lua_State * L); //load audio file into sound manager
 int playSong(lua_State * L); //plays background music
 int playSoundEffect(lua_State * L); //plays short sound effect
 int pauseSound(lua_State * L); //pause all sounds
 int unpauseSound(lua_State * L); //pause all sounds
 int getTargetFPS(lua_State * L);
+int getScoresFromLua(lua_State * L); // Get the score of thethe game
 
 int addModel(lua_State * L); //Adds model to be drawn
 int findModel(lua_State * L); //Find model ID based on name
@@ -42,7 +48,11 @@ int translateModel(lua_State * L);
 int rotateModel(lua_State * L);
 int resetTransformation(lua_State * L);
 int setModelTransform(lua_State * L);
+int getModelPos(lua_State * L);
+int getModelScale(lua_State * L);
 
+int SetSkyBox(lua_State * L);
+int SetGameInfo(lua_State * L);
 
 #include "GPU-Includes.h"
 glm::vec3 getCameraPosFromLua(lua_State * L);

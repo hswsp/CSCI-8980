@@ -23,8 +23,8 @@ uniform float ior; //1.3-5? (stick ~1.3-1.5 unless gemstone or so)
 
 uniform bool xxx;
 
-
 uniform sampler2D colorTexture;
+
 uniform vec2 textureScaleing;
 uniform vec3 emissive;
 
@@ -54,6 +54,21 @@ uniform float reflectiveness;
 //float G1V(float dotNV, float k){return 1.f/ (dotNV*(1-k)+k);}
 
 float G1V(float dotNV, float k){return dotNV/ (dotNV*(1-k)+k);}  //Maybe better?
+
+/****************fog shader********************************************/
+uniform bool useFog;
+
+vec3 fogColor = 10* ambientLight; //vec3(0.5, 0.5,0.5)
+const float FogDensity = 0.5;
+
+uniform bool useDissolve;
+uniform sampler2D dataTexture;
+uniform float timeValue;
+
+
+uniform sampler2D uDiffuseSampler;
+uniform float time ;
+uniform vec2 resolution;
 
 vec3 GGXSpec(vec3 N, vec3 V, vec3 L, float rough, vec3 F0){
   float alpha = rough*rough;
@@ -102,7 +117,135 @@ vec3 GGXSpec(vec3 N, vec3 V, vec3 L, float rough, vec3 F0){
   vec3 specular = vec3( D * F * vis);  //also a dotNL term here? I'm not sure
   return specular;
 }
+vec3 flame()
+{
+   vec2 pos = -1. + 2.*gl_FragCoord.xy / resolution.xy;
+   pos *= vec2(resolution.x / resolution.y, 1.) * 3.;
+   
+   // Flame jitter
+   if(pos.y>-2.*4.2)
+   {
+      for(float baud = 1.; baud < 9.; baud += 1.)
+      {
+         pos.y += 0.2*sin(4.20*time/(1.+baud))/(1.+baud);
+         pos.x += 0.1*cos(pos.y/4.20+2.40*time/(1.+baud))/(1.+baud);
+      }
+      pos.y += 0.04*fract(sin(time*60.));
+   }
+   
+   // outer fire
+   vec3 color = vec3(0.,0.,0.);
+   float p =.004;
+   float y = -pow(abs(pos.x), 4.2)/p;   // shape of the outer fire，pos.x<0 will be cut
+   float dir = abs(pos.y - y)*sin(.3);  // size of the outer fire
+   //float dir = abs(pos.y - y)*(0.01*sin(time)+0.07);
+   if(dir < 0.7)
+   {
+      color.rg += smoothstep(0.,1.,.75-dir);   // color of the outer fire
+      color.g /=2.4;                           // substract some green
+   }
+   color *= (0.2 + abs(pos.y/4.2 + 4.2)/4.2);  // increase contrast
+   color += pow(color.r, 1.1);                 // add red
+   color *= cos(-0.5+pos.y*0.4);               // hidden color of the bottom
+   
+   // 火苗内焰
+   pos.y += 1.5;
+   vec3 dolor = vec3(0.,0.,0.0);
+   y = -pow(abs(pos.x), 4.2)/(4.2*p)*4.2;   // shape of the inner fire，the power should be close to that of outer fire
+   dir = abs(pos.y - y)*sin(1.1);           // scale of inner fire
+   if(dir < 0.7)
+   {
+      dolor.bg += smoothstep(0., 1., .75-dir);// change the color of inner fire
+      dolor.g /=2.4;
+   }
+   dolor *= (0.2 + abs((pos.y/4.2+4.2))/4.2);
+   dolor += pow(color.b,1.1);                 // add some blue
+   dolor *= cos(-0.6+pos.y*0.4);
+   //dolor.rgb -= pow(length(dolor)/16., 0.5);
+   
+   color = (color+dolor)/2.;
+   return color;
+}
+vec4 flamefromnoise()
+{
+   vec2 uv = -1. + 2.*gl_FragCoord.xy / resolution.xy;
+  // Generate noisy x value
+  vec2 n0Uv = vec2(uv.x*1.4 + 0.01, uv.y + time*0.69);
+  vec2 n1Uv = vec2(uv.x*0.5 - 0.033, uv.y*2.0 + time*0.12);
+  vec2 n2Uv = vec2(uv.x*0.94 + 0.02, uv.y*3.0 + time*0.61);
+  float n0 = (texture2D(uDiffuseSampler, n0Uv).w-0.5)*2.0;
+  float n1 = (texture2D(uDiffuseSampler, n1Uv).w-0.5)*2.0;
+  float n2 = (texture2D(uDiffuseSampler, n2Uv).w-0.5)*2.0;
+  float noiseA = clamp(n0 + n1 + n2, -1.0, 1.0);
 
+  // Generate noisy y value
+  vec2 n0UvB = vec2(uv.x*0.7 - 0.01, uv.y + time*0.27);
+  vec2 n1UvB = vec2(uv.x*0.45 + 0.033, uv.y*1.9 + time*0.61);
+  vec2 n2UvB = vec2(uv.x*0.8 - 0.02, uv.y*2.5 + time*0.51);
+  float n0B = (texture2D(uDiffuseSampler, n0UvB).w-0.5)*2.0;
+  float n1B = (texture2D(uDiffuseSampler, n1UvB).w-0.5)*2.0;
+  float n2B = (texture2D(uDiffuseSampler, n2UvB).w-0.5)*2.0;
+  float noiseB = clamp(n0B + n1B + n2B, -1.0, 1.0);
+
+  vec2 finalNoise = vec2(noiseA, noiseB);
+  float perturb = (1.0 - uv.y) * 0.35 + 0.02;
+  finalNoise = (finalNoise * perturb) + uv - 0.02;
+
+  vec4 flamecolor = texture2D(uDiffuseSampler, finalNoise);
+  flamecolor = vec4(flamecolor.x*2.0, flamecolor.y*0.9, (flamecolor.y/flamecolor.x)*0.2, 1.0);
+  finalNoise = clamp(finalNoise, 0.05, 1.0);
+  flamecolor.w = texture2D(uDiffuseSampler, finalNoise).z*2.0;
+  flamecolor.w = flamecolor.w*texture2D(uDiffuseSampler, uv).z;
+  return flamecolor;
+}
+
+
+//=======================================================================================
+float DefiniteIntegral (in float x, in float amplitude, in float frequency, in float motionFactor)
+{
+    // Fog density on an axis:
+    // (1 + sin(x*F)) * A
+    //
+    // indefinite integral:
+    // (x - cos(F * x)/F) * A
+    //
+    // ... plus a constant (but when subtracting, the constant disappears)
+    //
+    x += time * motionFactor;
+    return (x - cos(frequency * x)/ frequency) * amplitude;
+}
+ 
+//=======================================================================================
+float AreaUnderCurveUnitLength (in float a, in float b, in float amplitude, in float frequency, in float motionFactor)
+{
+    // we calculate the definite integral at a and b and get the area under the curve
+    // but we are only doing it on one axis, so the "width" of our area bounding shape is
+    // not correct.  So, we divide it by the length from a to b so that the area is as
+    // if the length is 1 (normalized... also this has the effect of making sure it's positive
+    // so it works from left OR right viewing).  The caller can then multiply the shape
+    // by the actual length of the ray in the fog to "stretch" it across the ray like it
+    // really is.
+    return (DefiniteIntegral(a, amplitude, frequency, motionFactor) - DefiniteIntegral(b, amplitude, frequency, motionFactor)) / (a - b);
+}
+ 
+//=======================================================================================
+float FogAmount (in vec3 src, in vec3 dest)
+{
+    float len = length(dest - src);
+     
+    // calculate base fog amount (constant density over distance)   
+    float amount = len * 0.1;
+     
+    // calculate definite integrals across axes to get moving fog adjustments
+    float adjust = 0.0;
+    adjust += AreaUnderCurveUnitLength(dest.x, src.x, 0.01, 0.6, 2.0);
+    adjust += AreaUnderCurveUnitLength(dest.y, src.y, 0.01, 1.2, 1.4);
+    adjust += AreaUnderCurveUnitLength(dest.z, src.z, 0.01, 0.9, 2.2);
+    adjust *= len;
+     
+    // make sure and not go over 1 for fog amount!
+    return min(amount+adjust, 1.0);
+}
 void main() {
   vec3 color;
   if (useTexture == 0)
@@ -173,9 +316,42 @@ void main() {
   if (xxx) oColor = oColor.gbr; //Just to demonstrate how to use the boolean for debugging
   outColor = vec4(modelColor*oColor, 1.0);
 
+  /******************fog *************************/
+  
+  if(useFog)
+  {
+      //float f = exp(-FogDensity*length(pos));
+      //outColor = vec4(f*outColor.rgb+3*ambientLight*length(pos),1);
+      //f = clamp( f, 0.0, 1.0 );
+      vec3 dest = vec3(0,0,0);
+      float f = 1 - FogAmount (pos, dest);
+      outColor.rgb = mix(fogColor,outColor.rgb,f);
+  }
 
+  if(useDissolve && texcoord.x > -.9)
+  {
+    float textValue = texture(dataTexture,texcoord).r;
+    float diff = timeValue - textValue;
+    vec3 glowColor = vec3(0,0,0);
+    if(diff<.3)
+    {
+      glowColor = mix(vec3(20,10,0),vec3(15,0,10),diff/.3);
+    }
+    if(diff<=0)
+    {
+      glowColor = vec3(20,0,0);
+      discard;
+    }
+    outColor.rgb+=glowColor;
+      
+  }
+  // Flame
+  //color = flame();
+  //outColor += 15*color;
+ 
   float brightness = dot(oColor, vec3(0.3, 0.6, 0.1));
   brightColor = outColor;
   if(brightness < 1)
       brightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }
+

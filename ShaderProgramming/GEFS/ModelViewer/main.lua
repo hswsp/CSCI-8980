@@ -85,7 +85,8 @@ i = 1 --Lau is typically 1-indexed
 model = {}
 model[i] = addModel("Windmill",0,1,0); i = i+1
 model[i] = addModel("Bookcase",0,1,0); i = i+1
-model[i] = addModel("Ring",0,1,0); i = i+1
+model[i] = addModel("Ring",0,1,0); 
+i = i+1
 model[i] = addModel("Soccer Ball",0,1,0); i = i+1
 model[i] = addModel("Thonet S43 Chair",0,1,0); i = i+1
 model[i] = addModel("Silver Knot",0,1,0); i = i+1
@@ -95,7 +96,7 @@ model[i] = addModel("Copper Pan",0,1,0); i = i+1
 model[i] = addModel("Pool Table",0,1,0); i = i+1
 
 --Choose 1 model to be drawn at a time, the rest will be hidden
-drawModel = 1
+drawModel = 3
 for i = 1,#model do
   if drawModel ~= i then
     hideModel(model[i])

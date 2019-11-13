@@ -5,7 +5,7 @@
 struct KeyState{
 	bool up, down, right, left;
 	bool shift, tab; 
-  bool q,w,e,r,a,s,d,f,z,x,c,v;
+  bool q,w,e,r,a,s,d,f,z,x,c,v,n;
 };
 
 struct KeyState keys;
@@ -33,6 +33,7 @@ void updateKeyboardState(){
   keys.x = keyboardState[SDL_SCANCODE_X];
   keys.c = keyboardState[SDL_SCANCODE_C];
   keys.v = keyboardState[SDL_SCANCODE_V];
+
 }
 
 void keyboardUpdateLua(lua_State* L){

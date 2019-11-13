@@ -1,9 +1,15 @@
 #include "luaSupport.h"
+#include "Skybox.h"
+#include "Scene.h"
 #include <algorithm>
+#include<iostream>
 
 #include <external/loguru.hpp>
+#include <ctime>
 
-#pragma GCC diagnostic ignored "-Wunused-variable" //TODO: Delete this line, this is hacky =/
+#pragma GCC diagnostic ignored "-Wunused-variable" //TODO: Delete this line, this is hacky =/extern int targetFrameRate;
+extern int GameContrl;
+extern int timettt;
 extern int targetFrameRate;
 void luaSetup(lua_State * L){
 	//open all libraries
@@ -18,6 +24,8 @@ void luaSetup(lua_State * L){
 	lua_register(L, "selectChild", selectChild);
 	lua_register(L, "findModel", findModel);
 	lua_register(L, "hideModel", hideModel);
+	lua_register(L, "getModelPos", getModelPos);
+	lua_register(L, "getModelScale", getModelScale);
 	lua_register(L, "unhideModel", unhideModel);
 	lua_register(L, "deleteModel", deleteModel);
 	lua_register(L, "addCollider", addCollider);
@@ -34,13 +42,77 @@ void luaSetup(lua_State * L){
 	lua_register(L, "unpauseSound", unpauseSound);
 	lua_register(L, "playSoundEffect", playSoundEffect);
 	lua_register(L, "loadAudio", loadAudio);
+	lua_register(L, "setFog", setFog);
+	lua_register(L, "setDissolve", setDissolve);
+	lua_register(L, "starttime", starttime);
+	lua_register(L, "pushcontrol", pushcontrol);
+	lua_register(L, "SetSkyBox", SetSkyBox);
+	lua_register(L, "SetGameInfo", SetGameInfo);
 }
 int getTargetFPS(lua_State * L)
 {
 	lua_pushnumber(L, targetFrameRate);
 	return 1;
 }
+int setDissolve(lua_State * L)
+{
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "useDissolve");
+	bool Dissolve = (bool)lua_toboolean(L, 1);
+	lua_pop(L, 1);
+	return Dissolve;
+}
+int setFog(lua_State * L)
+{
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "useFog");
+	bool Fog = (bool)lua_toboolean(L, 1);
+	lua_pop(L, 1);
+	return Fog;
+}
+int SetGameInfo(lua_State * L)
+{
+	int argc = lua_gettop(L);
+	int ShowGameInfo;
+	lua_getglobal(L, "GameContrl");
+	ShowGameInfo = (int)lua_tonumber(L, 1);
+	lua_pop(L, 1);
+	return ShowGameInfo;
+}
+int pushcontrol(lua_State * L)
+{
+	//int contol=2;
+	// lua_getglobal(L, "GameContrl");
+	// lua_pushinteger(L, contol);
+	
+
+	lua_pushnumber(L, timettt);
+	return 1;
+}
+
+
+int SetSkyBox(lua_State * L)
+{
+	const char* envMapName;
+	envMapName = lua_tostring(L, 1);
+	curScene.environmentMap = envMapName;
+	initSkyboxBuffers();
+	return 0;
+}
 //----------- Camera ----------
+int starttime(lua_State * L){
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "GameContrl");
+	int start= (int)lua_tonumber(L, 1);
+	lua_pop(L, 1);
+    if(start==1){
+	return 1;
+	}
+	else{
+		return 0;
+	}
+	
+}
 
 glm::vec3 getCameraPosFromLua(lua_State * L){
 	glm::vec3 cameraPos;
@@ -53,6 +125,13 @@ glm::vec3 getCameraPosFromLua(lua_State * L){
 	cameraPos.z = (float)lua_tonumber(L, 3);
 	lua_pop(L, 3);
 	return cameraPos;
+}
+
+int getScoresFromLua(lua_State * L){
+	lua_getglobal(L, "score");
+	int score= (int)lua_tonumber(L, 1);
+	lua_pop(L, 1);
+	return score;
 }
 
 glm::vec3 getCameraDirFromLua(lua_State * L){
@@ -580,4 +659,32 @@ int rotateModel(lua_State * L){
 	models[modelID].transform = glm::rotate(models[modelID].transform, ang, glm::vec3(rx,ry,rz));
 
 	return 0;
+}
+
+int getModelPos(lua_State * L)
+{
+	int modelID = -1;
+	float rx, ry, rz;
+	modelID = lua_tonumber(L, 1);
+	LOG_F(1, "get model %s position )", models[modelID].name.c_str());
+	glm::vec4 objPos = models[modelID].transform*glm::vec4(0, 0, 0, 1);
+	rx = objPos[0]/ objPos[3]; ry = objPos[1] / objPos[3]; rz = objPos[2] / objPos[3];
+	lua_pushnumber(L, rx);
+	lua_pushnumber(L, ry);
+	lua_pushnumber(L, rz);
+	return 3;
+}
+
+int getModelScale(lua_State * L)
+{
+	int modelID = -1;
+	float rx, ry, rz;
+	modelID = lua_tonumber(L, 1);
+	LOG_F(1, "get model %s scale )", models[modelID].name.c_str());
+	glm::vec3 objscale = glm::vec3(models[modelID].transform*glm::vec4(1, 1, 1, 0));
+	rx = objscale[0] ; ry = objscale[1] ; rz = objscale[2];
+	lua_pushnumber(L, rx);
+	lua_pushnumber(L, ry);
+	lua_pushnumber(L, rz);
+	return 3;
 }
