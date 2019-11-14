@@ -10,7 +10,7 @@ objModel = pan.obj
 
 [Cube]
 translate 0 0.4 0
-scale 0.35
+#scale 0.35
 rotate 100 0 1 0
 flatModel = cube.txt  
 
@@ -140,6 +140,7 @@ objModel = Trex.obj #Triceratops
 [Cow]
 scale .1
 objModel  = Cow.obj
+
 [Pig]
 scale .1
 objModel  = Pig.obj

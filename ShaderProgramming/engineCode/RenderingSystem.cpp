@@ -17,6 +17,7 @@
 using std::vector;
 using namespace std;
 extern bool useFog;
+extern bool useFlame;
 extern bool useDissolve;
 extern int targetScreenWidth;
 extern int targetScreenHeight;
@@ -31,7 +32,7 @@ int totalTriangles = 0;
 GLint uniColorID, uniEmissiveID, uniUseTextureID, modelColorID;
 GLint metallicID, roughnessID, iorID, reflectivenessID;
 GLint uniModelMatrix, colorTextureID,dataTextureID, flameTextureID, texScaleID, biasID, pcfID, TimeValueID;
-GLint xxxID, useDissolveID,useFogID, timeID, resolutionID;
+GLint xxxID, useDissolveID,useFogID, timeID, resolutionID, useFlameID;
 
 GLuint colliderVAO; //Build a Vertex Array Object for the collider
 float Testvertices[] = {
@@ -129,9 +130,9 @@ float normals[] = { //Normals for 36 vertices
 0.f,-1.f,0.f, 0.f,-1.f,0.f, 0.f,1.f,0.f, 0.f,1.f,0.f, //29-32
 0.f,1.f,0.f, 0.f,1.f,0.f, 0.f,1.f,0.f, 0.f,1.f,0.f, //33-36
 };
-void drawGeometry(Model model, int matID, glm::mat4 transform = glm::mat4(), float cameraDist = 0, glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
+void drawGeometry(Model& model, int matID, glm::mat4 transform = glm::mat4(), float cameraDist = 0, glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
 
-void drawGeometry(Model model, int materialID, glm::mat4 transform, float cameraDist, glm::vec2 textureWrap, glm::vec3 modelColor){
+void drawGeometry(Model& model, int materialID, glm::mat4 transform, float cameraDist, glm::vec2 textureWrap, glm::vec3 modelColor){
 	//printf("Model: %s, num Children %d\n",model.name.c_str(), model.numChildren);
 	//printf("Material ID: %d (passed in id = %d)\n", model.materialID,materialID);
 	//printf("xyx %f %f %f %f\n",model.transform[0][0],model.transform[0][1],model.transform[0][2],model.transform[0][3]);
@@ -182,26 +183,33 @@ void drawGeometry(Model model, int materialID, glm::mat4 transform, float camera
 	glActiveTexture(GL_TEXTURE4);  //Set texture 0 as active texture
 	glBindTexture(GL_TEXTURE_2D, tex[999]); //Load bound texture
 	glUniform1i(dataTextureID, 4); //Use the texture we just loaded (texture 0) as material color
+	glUniform2fv(texScaleID, 1, glm::value_ptr(textureWrap));
 	static float t = 1;
 	static bool decrease = true;
 	glUniform1f(TimeValueID, t);
-	if (!useDissolve)
+	//cout << model.IsDissolve << " " << model.finishDisslve << endl;
+	if (!useDissolve )//&& !model.IsDissolve
+	{
 		t = 1;
+	}
 	else
 	{
 		if (decrease)
 		{
-			t *= (1 - 1e-5);
-			if (t <= 0.1)
+			t *= (1 - 5e-5);
+			if (t <= 0.05)
 			{
 				//std::cout << "t is :" << t <<std::endl;
 				decrease = false;
+				model.finishDisslve = true;
+				
 			}
 
 		}
 		else
 		{
-			t *= (1 + 1e-5);
+			model.IsDissolve = false;
+			t *= (1 + 5e-5);
 			if (t >= 1)
 				decrease = true;
 		}
@@ -209,6 +217,7 @@ void drawGeometry(Model model, int materialID, glm::mat4 transform, float camera
 	glUniform1i(xxxID, xxx);
 	glUniform1i(useDissolveID, useDissolve);
 	glUniform1i(useFogID, useFog);
+	glUniform1i(useFlameID, useFlame);
 
 	glActiveTexture(GL_TEXTURE3);  //Set texture 0 as active texture
 	glBindTexture(GL_TEXTURE_2D, tex[998]); //Load bound texture
@@ -462,6 +471,7 @@ void initPBRShading(){
 	xxxID = glGetUniformLocation(PBRShader.ID, "xxx");
 	useDissolveID = glGetUniformLocation(PBRShader.ID, "useDissolve");
 	useFogID = glGetUniformLocation(PBRShader.ID, "useFog");
+	useFlameID = glGetUniformLocation(PBRShader.ID, "UseFlame");
 	timeID = glGetUniformLocation(PBRShader.ID, "time");
 	resolutionID = glGetUniformLocation(PBRShader.ID, "resolution");
 	

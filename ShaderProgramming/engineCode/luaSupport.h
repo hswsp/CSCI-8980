@@ -16,6 +16,7 @@ void luaSetup(lua_State * L);
 #include "Sound.h"
 int setDissolve(lua_State * L);
 int setFog(lua_State * L);
+int setFlame(lua_State * L);
 extern AudioManager audioManager;
 int starttime(lua_State * L);
 int pushcontrol(lua_State * L);
@@ -46,7 +47,7 @@ int placeModelAtAngle(lua_State * L);
 int resetModelTransform(lua_State * L);
 int translateModel(lua_State * L);
 int rotateModel(lua_State * L);
-int resetTransformation(lua_State * L);
+//int resetTransformation(lua_State * L);
 int setModelTransform(lua_State * L);
 int getModelPos(lua_State * L);
 int getModelScale(lua_State * L);
@@ -66,4 +67,8 @@ int getCollisionsWithLayer(lua_State * L);
 int intersectMouseWithLayer(lua_State * L);
 int getRayCollisionWithLayer(lua_State * L);
 
+int SetModelDissolve(lua_State * L);
+int ReSetModelFinishDissolve(lua_State * L);
+int GetModelFinishDissolve(lua_State * L);
+int GetModelDissolve(lua_State * L);
 #endif //LUASUPPORT_H

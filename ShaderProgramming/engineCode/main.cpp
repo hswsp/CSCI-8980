@@ -72,6 +72,7 @@ AudioManager audioManager = AudioManager();
 void configEngine(string configFile, string configName);
 bool useFog = false;
 bool useDissolve = false;
+bool useFlame = false;
 
 int main(int argc, char *argv[]){
 	loguru::g_stderr_verbosity = -1; // Only show warnings on error stderr (higher number == more printing)
@@ -222,7 +223,7 @@ int main(int argc, char *argv[]){
 		keyboardUpdateLua(L);
 		useDissolve = setDissolve(L);
 		useFog = setFog(L);
-		
+		useFlame = setFlame(L);
 		//Read gamepad/controller and send the state to the Lua script
 		updateControllerState();
 		gamepadUpdateLua(L);

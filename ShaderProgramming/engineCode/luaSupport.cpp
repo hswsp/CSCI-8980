@@ -43,12 +43,20 @@ void luaSetup(lua_State * L){
 	lua_register(L, "playSoundEffect", playSoundEffect);
 	lua_register(L, "loadAudio", loadAudio);
 	lua_register(L, "setFog", setFog);
+	lua_register(L, "setFog", setFlame);
 	lua_register(L, "setDissolve", setDissolve);
 	lua_register(L, "starttime", starttime);
 	lua_register(L, "pushcontrol", pushcontrol);
 	lua_register(L, "SetSkyBox", SetSkyBox);
 	lua_register(L, "SetGameInfo", SetGameInfo);
+	lua_register(L, "SetModelDissolve", SetModelDissolve);
+	lua_register(L, "GetModelDissolve", GetModelDissolve);
+	lua_register(L, "GetModelFinishDissolve", GetModelFinishDissolve);
+	lua_register(L, "ReSetModelFinishDissolve", ReSetModelFinishDissolve);
+	
 }
+
+
 int getTargetFPS(lua_State * L)
 {
 	lua_pushnumber(L, targetFrameRate);
@@ -69,6 +77,14 @@ int setFog(lua_State * L)
 	bool Fog = (bool)lua_toboolean(L, 1);
 	lua_pop(L, 1);
 	return Fog;
+}
+int setFlame(lua_State * L)
+{
+	int argc = lua_gettop(L);
+	lua_getglobal(L, "useFlame");
+	bool Flame = (bool)lua_toboolean(L, 1);
+	lua_pop(L, 1);
+	return Flame;
 }
 int SetGameInfo(lua_State * L)
 {
@@ -284,6 +300,42 @@ int selectChild(lua_State * L){
 	LOG_F(1,"Selecting the %d'th from model #%d ",(int)child,modelID);
 
 	return 0;
+}
+int SetModelDissolve(lua_State * L)
+{
+	int modelID;
+	int argc = lua_gettop(L);
+	modelID = (int)lua_tonumber(L, 1);
+	models[modelID].finishDisslve = false;
+	models[modelID].IsDissolve = true;
+	return 0;
+}
+
+int ReSetModelFinishDissolve(lua_State * L)
+{
+	int modelID;
+	int argc = lua_gettop(L);
+	modelID = (int)lua_tonumber(L, 1);
+	models[modelID].finishDisslve = false;
+	return 0;
+}
+int GetModelDissolve(lua_State * L)
+{
+	int modelID;
+	int argc = lua_gettop(L);
+	modelID = (int)lua_tonumber(L, 1);
+	int dissolve = models[modelID].IsDissolve;
+	lua_pushnumber(L, dissolve);
+	return 1;
+}
+int GetModelFinishDissolve(lua_State * L)
+{
+	int modelID;
+	int argc = lua_gettop(L);
+	modelID = (int)lua_tonumber(L, 1);
+	int dissolve = models[modelID].finishDisslve;
+	lua_pushnumber(L, dissolve);
+	return 1;
 }
 
 #include "CollisionSystem.h"

@@ -13,8 +13,8 @@ currenttime=0
 GameContrl = 0
 InitialEndflag = false 
 
-
-
+HasElimination = false
+TrychangeBack = false
 CameraPosX = -5.0
 CameraPosY = 5.0
 CameraPosZ = 0.0
@@ -47,6 +47,8 @@ currentchange={
   modelIDA,
   modelIDB
 }
+useFog = false
+useDissolve = false
 -- camera 
 function computeCameraRight()
   CameraRtX = CameraDirY*CameraUpZ - CameraDirZ*CameraUpY
@@ -135,7 +137,128 @@ function keyHandler(keys)
   end
 end
 
-TrychangeBack = false
+
+function frameUpdate(dt)
+
+  -- print(GameContrl)
+  if GameContrl == 1 then
+    -- for modelID,v in pairs(StartModels) do
+    --   hideModel(modelID)
+    -- end
+    
+    if(HasElimination == true) then  
+      Logic:adjustment()
+    else 
+      swapAnimals() 
+    end
+    for modelID,v in pairs(animatedModels) do
+      local vel = velModel[modelID]
+      if vel then 
+        translateModel(modelID,dt*vel[1],dt*vel[2],dt*vel[3])
+      end
+
+      local rotYvel = rotYVelModel[modelID]
+      if rotYvel then 
+        rotateModel(modelID,rotYvel*dt, 0, 1, 0)
+      end
+    end
+
+    for modelID,v in pairs(Anim) do
+      if(v.Isstretch) then
+        v:bounce()
+      end
+      if(v.Isjumping) then
+        v:jump()
+      end
+      time=pushcontrol()
+      if time==10 then
+        useDissolve = true
+        useFog = false
+      elseif time==0 then
+        useFog = true  
+      end
+      if time==20 and InitialEndflag == false then
+        CameraPosX = 0.0
+        CameraPosY = 2.5
+        CameraPosZ = -7.0
+      
+        CameraDirX = 0.0
+        CameraDirY = 0.0
+        CameraDirZ = 1.0
+      
+        CameraUpX = 0.0
+        CameraUpY = 1.0
+        CameraUpZ = 0.0
+        Deletegame()
+        GameContrl = 2
+        Finish:EndInterface()
+        InitialEndflag = true
+       end
+      
+    end
+
+
+  elseif  GameContrl == 0 then
+    for modelID,v in pairs(StartModels) do
+      -- local vel = velModel[modelID]
+      -- if vel then 
+      --   translateModel(modelID,dt*vel[1],dt*vel[2],dt*vel[3])
+      -- end
+
+      local rotYvel = rotYVelModel[modelID]
+      local thetaMax = 180*math.pi/180
+      rotateModel(modelID,rotYvel*dt, 1, 0, 0)
+      StartModelAngles[modelID] = StartModelAngles[modelID] + rotYvel*dt
+      if(StartModelAngles[modelID]> thetaMax and rotYVelModel[modelID]>0) then
+        rotYVelModel[modelID] = -rotYVelModel[modelID]
+      elseif(StartModelAngles[modelID]< -thetaMax and rotYVelModel[modelID]<0) then
+        rotYVelModel[modelID] = -rotYVelModel[modelID]
+      end
+
+    end
+  elseif  GameContrl == 2 then
+    useFog = false
+    useDissolve = false
+    local velX = -1
+    for modelID,v in pairs(Objectid) do
+      if(ObjdeltPox[modelID] <= 5) then
+        translateModel(modelID,dt*velX,0,0)
+        ObjdeltPox[modelID] = math.abs(dt*velX) + ObjdeltPox[modelID]
+      end
+    end 
+    for modelID,v in pairs(NumberObjID) do
+      local rotZvel = 1
+      if(ObjdeltPox[modelID] <= 5) then
+        translateModel(modelID,dt*velX,0,0)
+        ObjdeltPox[modelID] = math.abs(dt*velX) + ObjdeltPox[modelID]
+        rotateModel(modelID,rotZvel*dt, 0, 0, 1)
+      else
+        rotateModel(modelID,rotZvel*dt, 0, 0, -1)
+
+        local scaleVel = 1
+        if(Numberenlarg[modelID]) then
+          local enlarge = 1 + scaleVel*dt
+          scaleModel(modelID,enlarge,enlarge,0) 
+          Numbersize[modelID] = Numbersize[modelID]*enlarge
+          if(Numbersize[modelID] >=1.6) then
+            Numberenlarg[modelID] = false
+          end
+        else
+          local enlarge = 1 - scaleVel*dt
+          scaleModel(modelID,enlarge,enlarge,0) 
+          Numbersize[modelID] = Numbersize[modelID]*enlarge
+          if(Numbersize[modelID] <=0.5) then
+            Numberenlarg[modelID] = true
+          end
+        end
+
+      end
+    end
+
+  end
+
+end
+
 function switchModel(dt)
   -- if(Anim[currentchange.modelIDA].Isthrow and Anim[currentchange.modelIDB].Isthrow) then
   --   Anim[currentchange.modelIDA]:computeThrow(currentchange.modelIDB,dt)
@@ -147,16 +270,23 @@ function switchModel(dt)
     Anim[currentchange.modelIDB]:computeThrow(currentchange.modelIDA)
   elseif(TrychangeBack) then
     if(IsCurchangeValid()) then 
+      -- if(useDissolve==false) then
       Tryswap() -- do swap 
-      playSoundEffect(s_win)
+      playSoundEffect(s_win) 
+        -- print("222222222") 
+      -- end
+      -- print("11111111111")
+      HasElimination = true   
       Logic:adjustment()
+    
     else
       -- swap false
       playSoundEffect(s_fail)
       Anim[currentchange.modelIDA]:InitThrow(currentchange.modelIDB)
       Anim[currentchange.modelIDB]:InitThrow(currentchange.modelIDA)
+      TrychangeBack = false
     end
-    TrychangeBack = false
+    
   else 
     -- finish swap
     Resetclicked()
@@ -226,119 +356,7 @@ function swapAnimals()
 
 end
 
-function frameUpdate(dt)
 
-  -- print(GameContrl)
-  if GameContrl == 1 then
-    -- for modelID,v in pairs(StartModels) do
-    --   hideModel(modelID)
-    -- end
-    swapAnimals()  
-    for modelID,v in pairs(animatedModels) do
-      local vel = velModel[modelID]
-      if vel then 
-        translateModel(modelID,dt*vel[1],dt*vel[2],dt*vel[3])
-      end
-
-      local rotYvel = rotYVelModel[modelID]
-      if rotYvel then 
-        rotateModel(modelID,rotYvel*dt, 0, 1, 0)
-      end
-    end
-
-    for modelID,v in pairs(Anim) do
-      if(v.Isstretch) then
-        v:bounce()
-      end
-      if(v.Isjumping) then
-        v:jump()
-      end
-      time=pushcontrol()
-      if time==15 then
-        useFog = true
-      end
-      if time==20 and InitialEndflag == false then
-        CameraPosX = 0.0
-        CameraPosY = 2.5
-        CameraPosZ = -7.0
-      
-        CameraDirX = 0.0
-        CameraDirY = 0.0
-        CameraDirZ = 1.0
-      
-        CameraUpX = 0.0
-        CameraUpY = 1.0
-        CameraUpZ = 0.0
-        Deletegame()
-        GameContrl = 2
-        Finish:EndInterface()
-        InitialEndflag = true
-       end
-      
-    end
-
-
-  elseif  GameContrl == 0 then
-    for modelID,v in pairs(StartModels) do
-      -- local vel = velModel[modelID]
-      -- if vel then 
-      --   translateModel(modelID,dt*vel[1],dt*vel[2],dt*vel[3])
-      -- end
-
-      local rotYvel = rotYVelModel[modelID]
-      local thetaMax = 180*math.pi/180
-      rotateModel(modelID,rotYvel*dt, 1, 0, 0)
-      StartModelAngles[modelID] = StartModelAngles[modelID] + rotYvel*dt
-      if(StartModelAngles[modelID]> thetaMax and rotYVelModel[modelID]>0) then
-        rotYVelModel[modelID] = -rotYVelModel[modelID]
-      elseif(StartModelAngles[modelID]< -thetaMax and rotYVelModel[modelID]<0) then
-        rotYVelModel[modelID] = -rotYVelModel[modelID]
-      end
-
-    end
-  elseif  GameContrl == 2 then
-    useFog = false
-    local velX = -1
-    for modelID,v in pairs(Objectid) do
-      if(ObjdeltPox[modelID] <= 5) then
-        translateModel(modelID,dt*velX,0,0)
-        ObjdeltPox[modelID] = math.abs(dt*velX) + ObjdeltPox[modelID]
-      end
-    end 
-    for modelID,v in pairs(NumberObjID) do
-      local rotZvel = 1
-      if(ObjdeltPox[modelID] <= 5) then
-        translateModel(modelID,dt*velX,0,0)
-        ObjdeltPox[modelID] = math.abs(dt*velX) + ObjdeltPox[modelID]
-        rotateModel(modelID,rotZvel*dt, 0, 0, 1)
-      else
-        rotateModel(modelID,rotZvel*dt, 0, 0, -1)
-
-        local scaleVel = 1
-        if(Numberenlarg[modelID]) then
-          local enlarge = 1 + scaleVel*dt
-          scaleModel(modelID,enlarge,enlarge,0) 
-          Numbersize[modelID] = Numbersize[modelID]*enlarge
-          if(Numbersize[modelID] >=1.6) then
-            Numberenlarg[modelID] = false
-          end
-        else
-          local enlarge = 1 - scaleVel*dt
-          scaleModel(modelID,enlarge,enlarge,0) 
-          Numbersize[modelID] = Numbersize[modelID]*enlarge
-          if(Numbersize[modelID] <=0.5) then
-            Numberenlarg[modelID] = true
-          end
-        end
-
-      end
-    end
-
-  end
-
-  
-  
-end
 
 
 function mouseHandler(mouse)

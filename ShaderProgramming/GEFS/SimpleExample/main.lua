@@ -18,6 +18,7 @@ CameraRtX = 0
 CameraRtY = 0
 CameraRtZ = 0
 
+ModelID = 0
 
 row = 5
 col = 5
@@ -34,6 +35,7 @@ angleVel = 0.001
 modelsize = 1
 
 useFog = false
+useFlame= false
 useDissolve = false
 -- function rotateY(v,theta)
 --   local out
@@ -142,9 +144,11 @@ function keyHandler(keys)
   end
   if keys.x then -- d open debug
     useDissolve = true
+    -- SetModelDissolve(ModelID)
   end
   if keys.c then
     useDissolve = false -- x close debug
+    
   end
 
   if keys.f then
@@ -154,15 +158,27 @@ function keyHandler(keys)
   if keys.v then
     useFog = false
   end
+
+  if keys.q then
+    useFlame = true
+  end
+
+  if keys.z then
+    useFlame = false
+  end
 end
 
 for i= -row,row do
   for j = -col,col do
+   
     teapotID = addModel("Teapot",i*modelsize,0,j*modelsize)
-    setModelMaterial(teapotID,"Shiny Red Plastic")
+    setModelMaterial(teapotID,"Polished Wood")
     -- setModelMaterial(teapotID,"Steel")
     animatedModels[teapotID] = true
     rotYVelModel[teapotID] = 1
+    if i ==0 and j==0 then
+      ModelID = teapotID
+    end
   end
 end
 
@@ -185,9 +201,11 @@ end
 --Add several predefined models to be rendered
 i = 1 --Lau is typically 1-indexed
 model = {}
-model[i] = addModel("Windmill",0,1,0); i = i+1
+model[i] = addModel("Windmill",0,0.5,0);
+setModelMaterial (model[i],"Aluminium")
+i = i+1
 model[i] = addModel("Bookcase",0,1,0); i = i+1
-model[i] = addModel("Ring",0,1,0); 
+model[i] = addModel("Ring",0,0.5,0); 
 i = i+1
 model[i] = addModel("Soccer Ball",0,1,0); i = i+1
 model[i] = addModel("Thonet S43 Chair",0,1,0); i = i+1
@@ -198,11 +216,11 @@ model[i] = addModel("Copper Pan",0,1,0); i = i+1
 model[i] = addModel("Pool Table",0,1,0); i = i+1
 
 --Choose 1 model to be drawn at a time, the rest will be hidden
-drawModel = 3
+drawModel = 1
 for i = 1,#model do
-  if drawModel ~= i then
+  -- if drawModel ~= i then
     hideModel(model[i])
-  end
+  -- end
 end
 
 --Set the 3rd model to rotate around it's the y-axis

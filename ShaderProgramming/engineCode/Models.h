@@ -25,6 +25,11 @@ struct Model{
 	std::vector<Model*> childModel;
 	Model* lodChild = nullptr; //TODO: We assume only one LOD child, do we need to suport more?
 	float lodDist = 5;
+
+	bool IsDissolve = false;
+	bool finishDisslve = false;
+	float tValue = 1;
+	bool decrease = true;
 };
 
 void resetModels();

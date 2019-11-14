@@ -57,8 +57,9 @@ float G1V(float dotNV, float k){return dotNV/ (dotNV*(1-k)+k);}  //Maybe better?
 
 /****************fog shader********************************************/
 uniform bool useFog;
+uniform bool UseFlame;
 
-vec3 fogColor = 10* ambientLight; //vec3(0.5, 0.5,0.5)
+vec3 fogColor = 10* ambientLight; //vec3(0.5, 0.5,0.5) vec3(0,10,0)
 const float FogDensity = 0.5;
 
 uniform bool useDissolve;
@@ -148,7 +149,7 @@ vec3 flame()
    color += pow(color.r, 1.1);                 // add red
    color *= cos(-0.5+pos.y*0.4);               // hidden color of the bottom
    
-   // 火苗内焰
+   //inner
    pos.y += 1.5;
    vec3 dolor = vec3(0.,0.,0.0);
    y = -pow(abs(pos.x), 4.2)/(4.2*p)*4.2;   // shape of the inner fire，the power should be close to that of outer fire
@@ -166,6 +167,7 @@ vec3 flame()
    color = (color+dolor)/2.;
    return color;
 }
+
 vec4 flamefromnoise()
 {
    vec2 uv = -1. + 2.*gl_FragCoord.xy / resolution.xy;
@@ -328,14 +330,14 @@ void main() {
       outColor.rgb = mix(fogColor,outColor.rgb,f);
   }
 
-  if(useDissolve && texcoord.x > -.9)
+  if(useDissolve && texcoord.x>-.9)
   {
     float textValue = texture(dataTexture,texcoord).r;
     float diff = timeValue - textValue;
     vec3 glowColor = vec3(0,0,0);
-    if(diff<.3)
+    if(diff<.05)
     {
-      glowColor = mix(vec3(20,10,0),vec3(15,0,10),diff/.3);
+      glowColor = mix(vec3(20,5,5),vec3(15,0,0),diff/.2);
     }
     if(diff<=0)
     {
@@ -346,8 +348,12 @@ void main() {
       
   }
   // Flame
-  //color = flame();
-  //outColor += 15*color;
+  if(UseFlame)
+  {
+    color = flame();
+    outColor.rgb += 15*color;
+  }
+  
  
   float brightness = dot(oColor, vec3(0.3, 0.6, 0.1));
   brightColor = outColor;

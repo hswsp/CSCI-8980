@@ -36,19 +36,14 @@ function GameLogic:remove(x,y,target)
     -- return cntx,cnty
 end
 
-function GameLogic:adjustment()
-
-    for j = -col,col do
-        for i = -row ,row do
-            print("j,i:",j,i,LinkBoard[i][j],state[i][j])
-        end
-    end
+function GameLogic:adjustment()    
+    -- local HasElimination = true
     
-    local HasElimination = true
-    while(HasElimination) do
+    -- while(HasElimination) do
         local startx = {}  -- record the start x of the changed model
         local starti = {}  -- record the start x of the new model
-
+        local FinishDissolve = true;
+        -- useDissolve = false;
         for j = -col, col do
             local temp = {}
             local Mtmp = {}
@@ -70,69 +65,84 @@ function GameLogic:adjustment()
                         translateModel(ModelIDArr[i][j],-dx,0,0)
                     end
                 else -- remove the model
-                    HasElimination  = true
-                    deleteModel(ModelIDArr[i][j])
-                    score=score+1
-                    
-                    if startx[j] == nil then
-                        startx[j] = i
-                    end
+                    -- local finish_dis = GetModelFinishDissolve(ModelIDArr[i][j])
+                    -- local dis = GetModelDissolve(ModelIDArr[i][j])
+                   
+                    -- if(dis==0 and finish_dis==0) then
+                    --     useDissolve = true;
+                    --     SetModelDissolve(ModelIDArr[i][j])
+                    -- end
+                    -- if(useDissolve) then
+                    --     FinishDissolve = false
+                    --     -- print(finish_dis,dis)
+                    --     if(finish_dis==1 and dis==0) then
+                    --         ReSetModelFinishDissolve(ModelIDArr[i][j])
+                    --         FinishDissolve = true
+                    --     end
+                    -- end
+                        -- FinishDissolve = false
+                
+                    -- elseif(finish_dis==0) then
+                    --     FinishDissolve = false
+                    -- end
+                    -- if(FinishDissolve==true) then
+                    --     useDissolve = false;
+                        HasElimination  = true
+                        deleteModel(ModelIDArr[i][j])
+                        score=score+1
+                        if startx[j] == nil then
+                            startx[j] = i
+                        end
+                    -- end
                 end
             end
-            local r = -row
-            for i = 0,k-1 do
-                LinkBoard[r][j] =  temp[i]
-                ModelIDArr[r][j] = Mtmp[i]
-                state[r][j] = false
-                r = r + 1
-            end
-            math.randomseed(os.time())
-            starti[j] = r
-            while(r<=row) do
-                state[r][j] = true
-                LinkBoard[r][j] =  "nil"
-                ModelIDArr[r][j] = nil
-                r = r + 1
-            end
+            -- if(FinishDissolve==true) then
+                local r = -row
+                for i = 0,k-1 do
+                    LinkBoard[r][j] =  temp[i]
+                    ModelIDArr[r][j] = Mtmp[i]
+                    state[r][j] = false
+                    r = r + 1
+                end
+                math.randomseed(os.time())
+                starti[j] = r
+                while(r<=row) do
+                    state[r][j] = true
+                    LinkBoard[r][j] =  "nil"
+                    ModelIDArr[r][j] = nil
+                    r = r + 1
+                end
+            -- end
         end
 
-        for j = -col, col do
-            r = starti[j]
-            while(r<=row) do
-                AddOneAnimal(r,j)
-                r = r + 1
+        -- if(FinishDissolve==true) then
+            for j = -col, col do
+                r = starti[j]
+                while(r<=row) do
+                    AddOneAnimal(r,j)
+                    r = r + 1
+                end
             end
-        end
-
-        -- for j = -col,col do
-        --     for i = -row ,row do
-        --         print("j,i:",j,i,LinkBoard[i][j],state[i][j])
-        --     end
+            HasElimination = false
+            for j = -col, col do
+                while true do  --work as continue
+                    -- print(startx[j])
+                    local i = startx[j]
+                    if i==nil then break end
+                    while(i<=row) do
+                        local Elim = Logic:remove(i,j,LinkBoard[i][j])
+                        if(Elim) then
+                            -- print("remove new one")
+                            HasElimination = true
+                        end
+                        i = i + 1
+                    end
+                    break
+                end
+            end
         -- end
 
-        HasElimination = false
-        for j = -col, col do
-            while true do  --work as continue
-                print(startx[j])
-                local i = startx[j]
-                if i==nil then break end
-                while(i<=row) do
-                    local Elim = Logic:remove(i,j,LinkBoard[i][j])
-                    if(Elim) then
-                        -- print("remove new one")
-                        HasElimination = true
-                        -- for j = -col,col do
-                        --     for i = -row ,row do
-                        --         print("j,i:",j,i,LinkBoard[i][j],state[i][j])
-                        --     end
-                        -- end
-                    end
-                    i = i + 1
-                end
-                break
-            end
-        end
-    end
+    -- end
 end
 
 function GameLogic:JudgeElimation(x,y,target)
