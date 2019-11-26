@@ -1,0 +1,13 @@
+modelDir = ./models/
+
+[FloorPart]
+scalexyz 1 1 1
+objModel = Floor_Modular.obj
+
+[Floor]
+scalexyz 30 .1 30
+flatModel = cube.txt 
+
+[Dino1]
+scale .1
+objDir = Trex/

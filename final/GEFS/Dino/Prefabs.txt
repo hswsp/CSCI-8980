@@ -1,0 +1,14 @@
+modelDir = ./models/
+
+[FloorPart]
+scalexyz 1 1 1
+objModel = Floor_Modular.obj
+
+[Floor]
+scalexyz 30 .1 30
+flatModel = cube.txt 
+
+[Dino]
+scale .1
+selectChild = 5    --Will only draw a specific child
+childDir = Trex/  --Will load all of the models in this folder as children
