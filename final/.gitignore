@@ -1,5 +1,4 @@
 build/
-engineCode.bk/
 *.log
 *.o
 *properties.json
