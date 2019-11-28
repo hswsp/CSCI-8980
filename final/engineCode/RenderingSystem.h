@@ -11,7 +11,8 @@ extern bool xxx; //
 
 //Main geometry drawing functions
 void initPBRShading();
-void setPBRShaderUniforms(glm::mat4 view, glm::mat4 proj, glm::mat4 lightViewMatrix, glm::mat4 lightProjectionMatrix, bool useShadowMap);
+void setPBRShaderUniforms(glm::mat4 view, glm::mat4 proj, glm::mat4 lightViewMatrix, glm::mat4 lightProjectionMatrix, bool useShadowMap,
+	glm::vec4 planefunc);
 void drawSceneGeometry(std::vector<Model*> toDraw);
 void drawSceneGeometry(std::vector<Model*> toDraw, glm::mat4 viewMat, float FOV, float aspect, float near, float far);
 
@@ -37,10 +38,10 @@ extern int totalTriangles;
 extern GLuint modelsVBO;
 
 // refraction and reflection buffer
-static int REFLECTION_WIDTH = 960;
-static int REFLECTION_HEIGHT = 600;
-static int REFRACTION_WIDTH = 960;
-static int REFRACTION_HEIGHT = 600;
+static int REFLECTION_WIDTH = 1280;
+static int REFLECTION_HEIGHT = 720;
+static int REFRACTION_WIDTH = 960; 
+static int REFRACTION_HEIGHT = 600; 
 void displayWater(glm::mat4 view, glm::mat4 proj, float waterheight = 0);
 
 
@@ -58,5 +59,5 @@ void initialiseRefractionFrameBuffer();
 void initWaterFrameBuffers();
 void PrepareWater();
 void SetRelectionView(Camera& camera, float waterheight = 0);
-
+void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& lookatPoint, float waterheight = 0);
 #endif //RENDERING_H

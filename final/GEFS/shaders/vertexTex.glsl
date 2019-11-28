@@ -45,9 +45,9 @@ uniform vec4 plane;
 void main() {
 
   vec4 worldPosition =  model * vec4(position,1.0);
-  gl_ClipDistance[0] = dot(worldPosition,plane);
+  gl_ClipDistance[0] = dot(worldPosition,plane);//-1;
   
-  gl_Position = proj * view * model * vec4(position,1.0);
+  gl_Position = proj * view * worldPosition;
   pos = (view * model * vec4(position,1.0)).xyz;
   globalPos = (model * vec4(position,1.0)).xyz;
   for (int i = 0; i < numLights; i++){

@@ -21,6 +21,9 @@ extern bool useFlame;
 extern bool useDissolve;
 extern int targetScreenWidth;
 extern int targetScreenHeight;
+
+
+
 GLuint tex[1000];
 
 bool xxx; //Just an unspecified bool that gets passed to shader for debugging
@@ -263,12 +266,12 @@ unsigned int pingpongFBO[2];
 unsigned int pingpongColorbuffers[2];
 
 void initHDRBuffers(){
-	glGenFramebuffers(1, &fboHDR);
-	glBindFramebuffer(GL_FRAMEBUFFER, fboHDR);
-	//Specify which color attachments we'll use (of this framebuffer) for rendering (both regular and bright pixels) 
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, attachments);
-
+	//glGenFramebuffers(1, &fboHDR);
+	//glBindFramebuffer(GL_FRAMEBUFFER, fboHDR);
+	////Specify which color attachments we'll use (of this framebuffer) for rendering (both regular and bright pixels) 
+	//unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	//glDrawBuffers(2, attachments);
+	fboHDR = createFrameBuffer();
 	glGenTextures(1, &baseTex);
 	glBindTexture(GL_TEXTURE_2D, baseTex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -395,7 +398,8 @@ void bindHDRFrameBuffer() {//call before rendering to this FBO
 	//glBindFramebuffer(GL_FRAMEBUFFER, fboHDR);
 	bindFrameBuffer(fboHDR, screenWidth, screenHeight);
 }
-void setPBRShaderUniforms(glm::mat4 view, glm::mat4 proj, glm::mat4 lightViewMatrix, glm::mat4 lightProjectionMatrix, bool useShadowMap){
+void setPBRShaderUniforms(glm::mat4 view, glm::mat4 proj, glm::mat4 lightViewMatrix, glm::mat4 lightProjectionMatrix, bool useShadowMap, 
+	glm::vec4 planefunc){
 	//glBindFramebuffer(GL_FRAMEBUFFER, fboHDR);
 	PBRShader.bind();
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
@@ -422,7 +426,7 @@ void setPBRShaderUniforms(glm::mat4 view, glm::mat4 proj, glm::mat4 lightViewMat
 
 	glUniform1i(glGetUniformLocation(PBRShader.ID, "useShadow"), useShadowMap && curScene.shadowLight.castShadow);
 
-	glUniform4fv(planeID, 1, glm::value_ptr(glm::vec4(0, -1, 0, 5)));
+	glUniform4fv(planeID, 1, glm::value_ptr(planefunc));
 }
 
 // ---------------- Collider Geometry -----------
@@ -722,23 +726,24 @@ void displayWater(glm::mat4 view, glm::mat4 proj,float waterheight) {
 	glDrawArrays(GL_TRIANGLES, 0, 6);//GL_TRIANGLE_STRIP
 
 }
-void SetRelectionView(Camera& camera, float waterheight)
+void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& lookatPoint, float waterheight)
 {
 	//reverse pitch of camera
-	const glm::vec3 camR = glm::cross(camera.Dir, camera.Up);
-	float theta = asin(camera.Dir.y / glm::length(camera.Dir));
+	const glm::vec3 camR = glm::cross(Dir,Up);
+	float theta = asin(Dir.y / glm::length(Dir));
 	glm::mat4 trans;
-	trans = glm::rotate(trans, -2.f*theta, camR);
-	glm::vec4 Dir4 = trans * glm::vec4(camera.Dir, 1);
-	camera.Dir.x = Dir4.x;
-	camera.Dir.y = Dir4.y;
-	camera.Dir.z = Dir4.z;
-	glm::vec4 Up4 = trans * glm::vec4(camera.Up, 1);
-	camera.Up.x = Up4.x;
-	camera.Up.y = Up4.y;
-	camera.Up.z = Up4.z;
-	float distance = 2 * camera.Pos.y - waterheight;
-	camera.Pos.y -= distance;
+	Up.y>0? trans = glm::rotate(trans, -2.f*theta, camR) : trans = glm::rotate(trans, 2.f*theta, camR);
+	glm::vec4 Dir4 = trans * glm::vec4(Dir, 1);
+	Dir.x = Dir4.x;
+	Dir.y = Dir4.y;
+	Dir.z = Dir4.z;
+	glm::vec4 Up4 = trans * glm::vec4(Up, 1);
+	Up.x = Up4.x;
+	Up.y = Up4.y;
+	Up.z = Up4.z;
+	float distance = 2 * Pos.y - waterheight;
+	Pos.y -= distance;
+	lookatPoint = Pos + Dir;
 	// reset
 	//trans = glm::rotate(trans, 2.f*theta, camR);
 	//Dir4 = trans * glm::vec4(camera.Dir, 1);
@@ -757,7 +762,7 @@ void SetRelectionView(Camera& camera, float waterheight)
 void PrepareWater()
 {
 	glActiveTexture(GL_TEXTURE0);  //Set texture 0 as active texture
-	glBindTexture(GL_TEXTURE_2D, reflectionTexture);
+	glBindTexture(GL_TEXTURE_2D, reflectionTexture);//baseTex
 	glUniform1i(reflectionTextureID, 0);
 
 	glActiveTexture(GL_TEXTURE1);  //Set texture 0 as active texture
@@ -771,7 +776,7 @@ GLuint createFrameBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	/*unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0};
 	glDrawBuffers(1, attachments);*/
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 };//
 	glDrawBuffers(2, attachments);
 	
 	return frameBuffer;
@@ -779,18 +784,19 @@ GLuint createFrameBuffer()
 
 GLuint createTextureAttachment(int width, int height)
 {
-	GLuint basetexure;
-	glGenTextures(1, &basetexure);
-	glBindTexture(GL_TEXTURE_2D, basetexure);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	GLuint texture1;
+	glGenTextures(1, &texture1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, basetexure, 0);//none mip map
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture1, 0);//none mip map
 
 	
-	return basetexure;
+	
+	return texture1;
 }
 GLuint createDepthTextureAttachment(int width, int height)
 {
@@ -812,7 +818,7 @@ GLuint createDepthBufferAttachment(int width, int height)
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
-	
+
 	return rboDepth;
 }
 void bindReflectionFrameBuffer() {//call before rendering to this FBO
@@ -850,8 +856,53 @@ void initialiseRefractionFrameBuffer() {
 	unbindCurrentFrameBuffer();
 }
 void initWaterFrameBuffers() {//call when loading the game
-	initialiseReflectionFrameBuffer();
-	initialiseRefractionFrameBuffer();
+	/*initialiseReflectionFrameBuffer();
+	initialiseRefractionFrameBuffer();*/
+	reflectionFrameBuffer = createFrameBuffer();
+	glGenTextures(1, &reflectionTexture);
+	glBindTexture(GL_TEXTURE_2D, reflectionTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, REFLECTION_WIDTH, REFLECTION_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	/*glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
+	
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, reflectionTexture, 0);
+	GLuint texture1;
+
+	// create and attach depth buffer (renderbuffer)
+	glGenRenderbuffers(1, &reflectionDepthBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, reflectionDepthBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, REFLECTION_WIDTH, REFLECTION_HEIGHT);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, reflectionDepthBuffer);
+
+	// finally check if framebuffer is complete
+	CHECK_F(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer not complete!");
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	refractionFrameBuffer = createFrameBuffer();
+	glGenTextures(1, &refractionTexture);
+	glBindTexture(GL_TEXTURE_2D, refractionTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, REFRACTION_WIDTH, REFRACTION_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	/*glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
+	
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, refractionTexture, 0);
+	
+	glGenTextures(1, &refractionDepthTexture);
+	glBindTexture(GL_TEXTURE_2D, refractionDepthTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, REFRACTION_WIDTH, REFRACTION_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	/*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, refractionDepthTexture, 0);//none mip map
+
+	// finally check if framebuffer is complete
+	CHECK_F(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer not complete!");
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 

@@ -1,5 +1,8 @@
-#include "GPU-Includes.h"
+#define _CRT_SECURE_NO_WARNINGS
+//stb_image include
+#define STB_IMAGE_IMPLEMENTATION //put this line in only one .cpp file
 
+#include "GPU-Includes.h"
 //imgui includes
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
@@ -7,8 +10,7 @@
 #include <ctime>
 #include <chrono>
 
-//stb_image include
-#define STB_IMAGE_IMPLEMENTATION //put this line in only one .cpp file
+
 #include <external/stb_image.h>
 
 #include <external/loguru.hpp>
@@ -24,6 +26,7 @@ float secondsPerFrame = 1.0f / (float)targetFrameRate;
 float cameraFar = 20;
 float cameraNear = 0.1;
 int timettt=0;
+float waterheight = 0;
 
 #include "luaSupport.h"
 
@@ -74,7 +77,7 @@ bool useFlame = false;
 
 void Win2PPM(int width, int height);
 void configEngine(string configFile, string configName);
-void RenderScene(float FOV, glm::vec4 plane);
+void RenderScene(float FOV, bool FrustumCull = true);
 
 
 int main(int argc, char *argv[]){
@@ -316,7 +319,7 @@ int main(int argc, char *argv[]){
 			}
 		}
 
-		glViewport(0, 0, screenWidth, screenHeight); //TODO: Make this more robust when the user switches to fullscreen
+		//glViewport(0, 0, screenWidth, screenHeight); //TODO: Make this more robust when the user switches to fullscreen
 		
 		
 		//------ PASS 2 - Main (PBR) Shading Pass --------------------
@@ -326,41 +329,48 @@ int main(int argc, char *argv[]){
 		  											camUp);     //Camera Up direction
 		proj = glm::perspective(FOV * 3.14f/180, screenWidth / (float) screenHeight, cameraNear, cameraFar); //FOV, aspect, near, far
 		//view = lightViewMatrix; proj = lightProjectionMatrix;  //This was useful to visualize the shadowmap
+
 		bindHDRFrameBuffer();
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap);
+		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0,-1,0,100000));
 		updatePRBShaderSkybox(); //TODO: We only need to call this if the skybox changes
-		
-		
-		RenderScene(FOV, glm::vec4(0,0,0,0));
+		RenderScene(FOV);
 		unbindCurrentFrameBuffer();
 
-		SetRelectionView(curScene.mainCam);
-		
-		bindReflectionFrameBuffer();
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap);
-		updatePRBShaderSkybox(); 
-
-		RenderScene(FOV, glm::vec4(0, 0, 0, 0));
-		
-		SetRelectionView(curScene.mainCam);
+		//glEnable(GL_CLIP_DISTANCE0);
+		//std::cout << camUp.x << " " << camUp.y << " " << camUp.z << endl;
+		SetRelectionView(camDir, camUp, camPos,lookatPoint, waterheight);
 		view = glm::lookAt(camPos, //Camera Position
 			lookatPoint, //Point to look at (camPos + camDir)
 			camUp);     //Camera Up direction
-		proj = glm::perspective(FOV * 3.14f / 180, screenWidth / (float)screenHeight, cameraNear, cameraFar);
-		unbindCurrentFrameBuffer();
-
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap);
+		//std::cout << camUp.x << " "<< camUp.y << " " << camUp.z<< endl;
+		bindReflectionFrameBuffer();
+		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -waterheight));
 		updatePRBShaderSkybox(); 
+		RenderScene(FOV,false);
+
+		SetRelectionView(camDir, camUp, camPos, lookatPoint, waterheight);
+		view = glm::lookAt(camPos, //Camera Position
+			lookatPoint, //Point to look at (camPos + camDir)
+			camUp);     //Camera Up direction
+		//std::cout << camUp.x << " " << camUp.y << " " << camUp.z << endl;
+		unbindCurrentFrameBuffer();
+
 		bindRefractionFrameBuffer();
-		RenderScene(FOV, glm::vec4(0, 0, 0, 0));
+		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, -1, 0, waterheight));
+		updatePRBShaderSkybox(); 
+		RenderScene(FOV,false);
 		unbindCurrentFrameBuffer();
-		
+		//glDisable(GL_CLIP_DISTANCE0);
+
 		bindHDRFrameBuffer();
-		displayWater(view, proj);
+		displayWater(view, proj, waterheight);
+
+
+		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
 		unbindCurrentFrameBuffer();
 		
 
-
+		
 		//------ PASS 3 - Compute Bloom Blur --------------------
 		if (useBloom) 
 			computeBloomBlur();
@@ -592,7 +602,7 @@ void configEngine(string configFile, string configName){
 }
 
 
-void RenderScene(float FOV, glm::vec4 plane)
+void RenderScene(float FOV, bool FrustumCull)
 {
 	
 	// Clear the screen to default color
@@ -611,8 +621,8 @@ void RenderScene(float FOV, glm::vec4 plane)
 	if (drawColliders)
 		drawColliderGeometry(); //Pass 2B: Draw Colliders
 
-	drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
 	glDisable(GL_CLIP_DISTANCE0);
+	
 }
 void Win2PPM(int width, int height){
 	char outdir[20] = "Screenshots/"; //Must be exist!

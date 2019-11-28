@@ -6,8 +6,11 @@ modelDir = ./models/
 translate 0 0.3 0
 scale 0.04
 rotate -20 0 0 1
-objModel = pan.obj  
+objModel = pan.obj 
+ 
 
+[SnowTerrain]
+objModel = SnowTerrain.obj
 [Cube]
 translate 0 0.4 0
 scale 0.35

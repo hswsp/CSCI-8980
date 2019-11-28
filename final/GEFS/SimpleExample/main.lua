@@ -97,74 +97,89 @@ function RotateUp(theta)
   computeCameraRight()
 end
 function keyHandler(keys)
-  if keys.left then
-    computeCameraRight()
-    CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraRtX;
-    CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraRtY;
-    CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraRtZ;
- 
-  end
-  if keys.right then
-    computeCameraRight()
-    CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraRtX;
-    CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraRtY;
-    CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraRtZ;
- 
-  end
-  if keys.up then
-    CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraDirX;
-    CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraDirY;
-    CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraDirZ;
-  end
-  if keys.down then
-    CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraDirX;
-    CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraDirY;
-    CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraDirZ; 
-  end
+  if keys.shift then
+    if  keys.up then
+      CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraUpX;
+      CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraUpY;
+      CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraUpZ; 
+    end
+  
+    if keys.down then
+      CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraUpX;
+      CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraUpY;
+      CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraUpZ; 
+    end
+  else
+    if keys.left then
+      computeCameraRight()
+      CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraRtX;
+      CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraRtY;
+      CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraRtZ;
+  
+    end
+    if keys.right then
+      computeCameraRight()
+      CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraRtX;
+      CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraRtY;
+      CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraRtZ;
+  
+    end
+    if keys.up then
+      CameraPosX = CameraPosX + targetFrameRate *frameVel * CameraDirX;
+      CameraPosY = CameraPosY + targetFrameRate *frameVel * CameraDirY;
+      CameraPosZ = CameraPosZ + targetFrameRate *frameVel * CameraDirZ;
+    end
+    if keys.down then
+      CameraPosX = CameraPosX - targetFrameRate *frameVel * CameraDirX;
+      CameraPosY = CameraPosY - targetFrameRate *frameVel * CameraDirY;
+      CameraPosZ = CameraPosZ - targetFrameRate *frameVel * CameraDirZ; 
+    end
+  
 
-  if keys.w then
-    local theta = targetFrameRate *angleVel
-    RotateRight(theta)
-  end
-  if keys.a then
-    local X = CameraDirX
-    local Z = CameraDirZ
-    local theta = targetFrameRate * angleVel
-    RotateUp(theta)
-  end
-  if keys.d then
-    local X = CameraDirX
-    local Z = CameraDirZ
-    local theta = targetFrameRate *angleVel
-    RotateUp(-theta)
-  end
-  if keys.s then
-    local theta = -targetFrameRate *angleVel
-    RotateRight(theta)
-  end
-  if keys.x then -- d open debug
-    useDissolve = true
-    -- SetModelDissolve(ModelID)
-  end
-  if keys.c then
-    useDissolve = false -- x close debug
-    
-  end
+    if keys.w then
+      local theta = targetFrameRate *angleVel
+      RotateRight(theta)
+    end
+    if keys.a then
+      local X = CameraDirX
+      local Z = CameraDirZ
+      local theta = targetFrameRate * angleVel
+      RotateUp(theta)
+    end
+    if keys.d then
+      local X = CameraDirX
+      local Z = CameraDirZ
+      local theta = targetFrameRate *angleVel
+      RotateUp(-theta)
+    end
+    if keys.s then
+      local theta = -targetFrameRate *angleVel
+      RotateRight(theta)
+    end
+    if keys.x then -- d open debug
+      useDissolve = true
+      -- SetModelDissolve(ModelID)
+    end
+    if keys.c then
+      useDissolve = false -- x close debug
+      
+    end
 
-  if keys.f then
-    useFog = true
-  end
+    if keys.f then
+      useFog = true
+    end
 
-  if keys.v then
-    useFog = false
-  end
+    if keys.v then
+      useFog = false
+    end
 
-  if keys.q then
-    useFlame = true
-  end
+    if keys.q then
+      useFlame = true
+    end
 
-  if keys.z then
-    useFlame = false
+    if keys.z then
+      useFlame = false
+    end
   end
 end
 
@@ -200,11 +215,12 @@ for i = -row ,row do
     end
   end
 end
-
+addModel("Ring",0,-1.5,0); 
+addModel("SnowTerrain",0,-2,0); 
 --Add several predefined models to be rendered
 i = 1 --Lau is typically 1-indexed
 model = {}
-model[i] = addModel("Windmill",0,0.5,0);
+model[i] = addModel("Windmill",0,.5,0);
 setModelMaterial (model[i],"Aluminium")
 i = i+1
 model[i] = addModel("Bookcase",0,1,0); i = i+1
