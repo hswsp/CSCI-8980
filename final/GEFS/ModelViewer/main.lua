@@ -96,7 +96,7 @@ model[i] = addModel("Copper Pan",0,1,0); i = i+1
 model[i] = addModel("Pool Table",0,1,0); i = i+1
 
 --Choose 1 model to be drawn at a time, the rest will be hidden
-drawModel = 3
+drawModel = 10
 for i = 1,#model do
   if drawModel ~= i then
     hideModel(model[i])

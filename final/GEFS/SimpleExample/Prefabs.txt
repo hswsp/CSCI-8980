@@ -8,9 +8,11 @@ scale 0.04
 rotate -20 0 0 1
 objModel = pan.obj 
  
+[Terrain]
+scale 0.5
+childDir =Small_Tropical_Island/
 
-[SnowTerrain]
-objModel = SnowTerrain.obj
+
 [Cube]
 translate 0 0.4 0
 scale 0.35

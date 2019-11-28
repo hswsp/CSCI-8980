@@ -428,32 +428,32 @@ int main(int argc, char *argv[]){
 		//	//ImGui::Text("Time now:%d:%d:%d", start->tm_hour,start->tm_min,start->tm_sec);
 
 		//	}
-		//IMGuiNewFrame();
+		IMGuiNewFrame();
 
-		////ImGui can do some pretty cool things, try some of these:
-		//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-		//ImGui::ColorEdit3("clear color", (float*)&clear_color);
-		//static float f = 0.0f; 
-		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-		//static int counter = 0;
-		//if (ImGui::Button("Button")) counter++;
+		//ImGui can do some pretty cool things, try some of these:
+		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+		ImGui::ColorEdit3("clear color", (float*)&clear_color);
+		static float f = 0.0f; 
+		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		static int counter = 0;
+		if (ImGui::Button("Button")) counter++;
 
-		// ImGui::Begin("Frame Info");               
-		// ImGui::Text("Time for Rendering %.0f ms", drawTime);
-		// ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		// ImGui::Text("%d Objects in Scene Graph, %d being drawn", numModels, (int)curScene.toDraw.size());
-		// ImGui::Text("Total Triangles: %d", totalTriangles);
-		// ImGui::Text("Total Shadow Triangles: %d", totalShadowTriangles);
-		// ImGui::Text("Camera Pos %f %f %f",camPos.x,camPos.y,camPos.z);
-		// ImGui::Text("Camera Dir %f %f %f",camDir.x,camDir.y,camDir.z);
-		// ImGui::Text("Camera Up %f %f %f",camUp.x,camUp.y,camUp.z);
-		// ImGui::End();
+		 ImGui::Begin("Frame Info");               
+		 ImGui::Text("Time for Rendering %.0f ms", drawTime);
+		 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		 ImGui::Text("%d Objects in Scene Graph, %d being drawn", numModels, (int)curScene.toDraw.size());
+		 ImGui::Text("Total Triangles: %d", totalTriangles);
+		 ImGui::Text("Total Shadow Triangles: %d", totalShadowTriangles);
+		 ImGui::Text("Camera Pos %f %f %f",camPos.x,camPos.y,camPos.z);
+		 ImGui::Text("Camera Dir %f %f %f",camDir.x,camDir.y,camDir.z);
+		 ImGui::Text("Camera Up %f %f %f",camUp.x,camUp.y,camUp.z);
+		 ImGui::End();
 
-		// // Render ImGui
-		// ImGui::Render();
-		// ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		 // Render ImGui
+		 ImGui::Render();
+		 ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //}
-		//LOG_F(3,"Done Drawing");
+		LOG_F(3,"Done Drawing");
 		 swapDisplayBuffers();
 	}
 	

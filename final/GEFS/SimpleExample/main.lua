@@ -30,7 +30,7 @@ rotYVelModel = {}
 targetFrameRate = getTargetFPS();
 CameraP = vec3(CameraPosX,CameraPosY,CameraPosZ);
 CameraDir = vec3(CameraDirX,CameraDirY,CameraDirZ);
-frameVel = 0.001
+frameVel = 0.01
 angleVel = 0.001
 modelsize = 1
 
@@ -183,44 +183,44 @@ function keyHandler(keys)
   end
 end
 
-for i= -row,row do
-  for j = -col,col do
-    if  math.abs(j)>2 or math.abs(i)>2 then
-      teapotID = addModel("Teapot",i*modelsize,0,j*modelsize)
-      setModelMaterial(teapotID,"Polished Wood")
-      -- setModelMaterial(teapotID,"Steel")
-      animatedModels[teapotID] = true
-      rotYVelModel[teapotID] = 1
-      if i ==0 and j==0 then
-        ModelID = teapotID
-      end
-    end
-  end
-end
+-- for i= -row,row do
+--   for j = -col,col do
+--     if  math.abs(j)>2 or math.abs(i)>2 then
+--       teapotID = addModel("Teapot",i*modelsize,0,j*modelsize)
+--       setModelMaterial(teapotID,"Polished Wood")
+--       -- setModelMaterial(teapotID,"Steel")
+--       animatedModels[teapotID] = true
+--       rotYVelModel[teapotID] = 1
+--       if i ==0 and j==0 then
+--         ModelID = teapotID
+--       end
+--     end
+--   end
+-- end
 
 
-for i = -row ,row do
-  for j = -col,col do
-    if   math.abs(i)>2 or math.abs(j)>2 then
-      floorID = addModel("FloorPart",0,0,0)
-      floorColID = addCollider(floorID,0,0.5,0,0,0) --layer 0 for floor
-      scaleModel(floorID,3,1,3)
-      placeModel(floorID,i,-.02,j)
+-- for i = -row ,row do
+--   for j = -col,col do
+--     if   math.abs(i)>2 or math.abs(j)>2 then
+--       floorID = addModel("FloorPart",0,0,0)
+--       floorColID = addCollider(floorID,0,0.5,0,0,0) --layer 0 for floor
+--       scaleModel(floorID,3,1,3)
+--       placeModel(floorID,i,-.02,j)
       
-      if (i+j)%2==0 then
-          setModelMaterial (floorID,"Polished Wood")
-      else
-          setModelMaterial (floorID,"Dark Polished Wood")
-      end
-    end
-  end
-end
-addModel("Ring",0,-1.5,0); 
-addModel("SnowTerrain",0,-2,0); 
+--       if (i+j)%2==0 then
+--           setModelMaterial (floorID,"Polished Wood")
+--       else
+--           setModelMaterial (floorID,"Dark Polished Wood")
+--       end
+--     end
+--   end
+-- end
+
+addModel("Terrain",18.2,-4,-111.8); 
 --Add several predefined models to be rendered
 i = 1 --Lau is typically 1-indexed
 model = {}
-model[i] = addModel("Windmill",0,.5,0);
+model[i] = addModel("Windmill",0,.5,-5);
 setModelMaterial (model[i],"Aluminium")
 i = i+1
 model[i] = addModel("Bookcase",0,1,0); i = i+1
