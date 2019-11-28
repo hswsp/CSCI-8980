@@ -220,8 +220,8 @@ addModel("Terrain",18.2,-4,-111.8);
 --Add several predefined models to be rendered
 i = 1 --Lau is typically 1-indexed
 model = {}
-model[i] = addModel("Windmill",0,.5,-5);
-setModelMaterial (model[i],"Aluminium")
+model[i] = addModel("Windmill",-2,.5,-5);
+setModelMaterial (model[i],"Dark Polished Wood")
 i = i+1
 model[i] = addModel("Bookcase",0,1,0); i = i+1
 model[i] = addModel("Ring",0,0.5,0); 

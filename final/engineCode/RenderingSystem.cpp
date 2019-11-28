@@ -25,6 +25,7 @@ extern int targetScreenHeight;
 
 
 GLuint tex[1000];
+GLuint dudvTexture;
 
 bool xxx; //Just an unspecified bool that gets passed to shader for debugging
 
@@ -215,46 +216,45 @@ void loadTexturesToGPU(){
     
     stbi_image_free(pixelData);	
   }
-  int i = 999;
-  string noise = string("./textures/noise.jpg");
-  LOG_F(1, "Loading Texture %s", noise.c_str());
-  unsigned char *pixelData = stbi_load(noise.c_str(), &width, &height, &nrChannels, STBI_rgb);
-  CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", noise.c_str()); //TODO: Is there some way to get the error from STB image?
+  //int i = 999;
+  //string noise = string("./textures/noise.jpg");
+  //LOG_F(1, "Loading Texture %s", noise.c_str());
+  //unsigned char *pixelData = stbi_load(noise.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  //CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", noise.c_str()); //TODO: Is there some way to get the error from STB image?
 
-  //Load the texture into memory
-  glGenTextures(1, &tex[i]);
-  glBindTexture(GL_TEXTURE_2D, tex[i]);
-  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
-  glGenerateMipmap(GL_TEXTURE_2D);
+  ////Load the texture into memory
+  //glGenTextures(1, &tex[i]);
+  //glBindTexture(GL_TEXTURE_2D, tex[i]);
+  //glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+  //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+  //glGenerateMipmap(GL_TEXTURE_2D);
 
-  //What to do outside 0-1 range
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  stbi_image_free(pixelData);
+  ////What to do outside 0-1 range
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  //stbi_image_free(pixelData);
 
-  i = 998;
-  string flame = string("./textures/flame.png");
-  LOG_F(1, "Loading Texture %s", flame.c_str());
-  pixelData = stbi_load(flame.c_str(), &width, &height, &nrChannels, STBI_rgb);
-  CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", flame.c_str()); //TODO: Is there some way to get the error from STB image?
-
-  //Load the texture into memory
-  glGenTextures(1, &tex[i]);
-  glBindTexture(GL_TEXTURE_2D, tex[i]);
-  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
-  glGenerateMipmap(GL_TEXTURE_2D);
-
-  //What to do outside 0-1 range
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   
+  string dudvMapImg = string("./textures/waterDUDV.png");
+  LOG_F(1, "Loading Texture %s", dudvMapImg.c_str());
+  unsigned char * pixelData = stbi_load(dudvMapImg.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  CHECK_NOTNULL_F(pixelData, "Fail to load texture: %s", dudvMapImg.c_str()); //TODO: Is there some way to get the error from STB image?
 
+  //Load the texture into memory
+  glGenTextures(1, &dudvTexture);
+  glBindTexture(GL_TEXTURE_2D, dudvTexture);
+  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  //What to do outside 0-1 range
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
   stbi_image_free(pixelData);
 }
 
@@ -673,6 +673,11 @@ GLuint  reflectionDepthBuffer;
 GLuint  refractionFrameBuffer;
 GLuint  refractionTexture;
 GLuint  refractionDepthTexture;
+
+GLint dudvMapID , moveFactorID;
+
+const float WAVESPEED = 0.01f;
+static float moveFactor = 0.0f;
 void initWaterShading()
 {
 	WaterShader = Shader("shaders/water-vert.glsl", "shaders/water-frag.glsl");
@@ -704,7 +709,8 @@ void initWaterShading()
 
 	reflectionTextureID = glGetUniformLocation(WaterShader.ID, "reflectionTexture");
 	refractionTextureID = glGetUniformLocation(WaterShader.ID, "refractionTexture");
-	
+	dudvMapID = glGetUniformLocation(WaterShader.ID, "dudvMap");
+	moveFactorID = glGetUniformLocation(WaterShader.ID, "moveFactor");
 	glBindVertexArray(0); //Unbind the VAO once we have set all the attributes
 
 	
@@ -768,6 +774,13 @@ void PrepareWater()
 	glActiveTexture(GL_TEXTURE1);  //Set texture 0 as active texture
 	glBindTexture(GL_TEXTURE_2D, refractionTexture);
 	glUniform1i(refractionTextureID, 1);
+
+	glActiveTexture(GL_TEXTURE2);  //Set texture 0 as active texture
+	glBindTexture(GL_TEXTURE_2D, dudvTexture);
+	glUniform1i(dudvMapID, 2);
+
+	moveFactor = fmod((moveFactor + WAVESPEED * SDL_GetTicks() / 1000.0),1.0);
+	glUniform1f(moveFactorID, moveFactor);
 }
 GLuint createFrameBuffer()
 {
