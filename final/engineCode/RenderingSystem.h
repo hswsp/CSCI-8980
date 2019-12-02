@@ -42,7 +42,7 @@ static int REFLECTION_WIDTH = 1280;
 static int REFLECTION_HEIGHT = 720;
 static int REFRACTION_WIDTH = 960; 
 static int REFRACTION_HEIGHT = 600; 
-void displayWater(glm::mat4 view, glm::mat4 proj, float waterheight = 0);
+void displayWater(glm::mat4 view, glm::mat4 proj, glm::vec3 camePos, glm::vec3 lightPos, glm::vec3 lightColour, float waterheight = 0);
 
 
 

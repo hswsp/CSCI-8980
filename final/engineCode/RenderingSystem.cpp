@@ -21,11 +21,12 @@ extern bool useFlame;
 extern bool useDissolve;
 extern int targetScreenWidth;
 extern int targetScreenHeight;
-
+extern float cameraFar;
+extern float cameraNear;
 
 
 GLuint tex[1000];
-GLuint dudvTexture;
+GLuint dudvTexture, normalMapTexture;
 
 bool xxx; //Just an unspecified bool that gets passed to shader for debugging
 
@@ -216,30 +217,30 @@ void loadTexturesToGPU(){
     
     stbi_image_free(pixelData);	
   }
-  //int i = 999;
-  //string noise = string("./textures/noise.jpg");
-  //LOG_F(1, "Loading Texture %s", noise.c_str());
-  //unsigned char *pixelData = stbi_load(noise.c_str(), &width, &height, &nrChannels, STBI_rgb);
-  //CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", noise.c_str()); //TODO: Is there some way to get the error from STB image?
 
-  ////Load the texture into memory
-  //glGenTextures(1, &tex[i]);
-  //glBindTexture(GL_TEXTURE_2D, tex[i]);
-  //glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
-  //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
-  //glGenerateMipmap(GL_TEXTURE_2D);
+  string normalMapImg = string("./textures/normal.png");
+  LOG_F(1, "Loading Texture %s", normalMapImg.c_str());
+  unsigned char *pixelData = stbi_load(normalMapImg.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", normalMapImg.c_str()); //TODO: Is there some way to get the error from STB image?
 
-  ////What to do outside 0-1 range
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  //stbi_image_free(pixelData);
+  //Load the texture into memory
+  glGenTextures(1, &normalMapTexture);
+  glBindTexture(GL_TEXTURE_2D, normalMapTexture);
+  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  //What to do outside 0-1 range
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  stbi_image_free(pixelData);
 
   
   string dudvMapImg = string("./textures/waterDUDV.png");
   LOG_F(1, "Loading Texture %s", dudvMapImg.c_str());
-  unsigned char * pixelData = stbi_load(dudvMapImg.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  pixelData = stbi_load(dudvMapImg.c_str(), &width, &height, &nrChannels, STBI_rgb);
   CHECK_NOTNULL_F(pixelData, "Fail to load texture: %s", dudvMapImg.c_str()); //TODO: Is there some way to get the error from STB image?
 
   //Load the texture into memory
@@ -266,12 +267,12 @@ unsigned int pingpongFBO[2];
 unsigned int pingpongColorbuffers[2];
 
 void initHDRBuffers(){
-	//glGenFramebuffers(1, &fboHDR);
-	//glBindFramebuffer(GL_FRAMEBUFFER, fboHDR);
-	////Specify which color attachments we'll use (of this framebuffer) for rendering (both regular and bright pixels) 
-	//unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	//glDrawBuffers(2, attachments);
-	fboHDR = createFrameBuffer();
+	glGenFramebuffers(1, &fboHDR);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboHDR);
+	//Specify which color attachments we'll use (of this framebuffer) for rendering (both regular and bright pixels) 
+	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, attachments);
+	//fboHDR = createFrameBuffer();
 	glGenTextures(1, &baseTex);
 	glBindTexture(GL_TEXTURE_2D, baseTex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -674,9 +675,9 @@ GLuint  refractionFrameBuffer;
 GLuint  refractionTexture;
 GLuint  refractionDepthTexture;
 
-GLint dudvMapID , moveFactorID;
+GLint dudvMapID , depthMapID, moveFactorID, cameraPosID, lightPosID, lightColourID, normalMapID, nearPlaneID, farPlaneID;
 
-const float WAVESPEED = 0.01f;
+const float WAVESPEED = 0.0001f;
 static float moveFactor = 0.0f;
 void initWaterShading()
 {
@@ -710,27 +711,41 @@ void initWaterShading()
 	reflectionTextureID = glGetUniformLocation(WaterShader.ID, "reflectionTexture");
 	refractionTextureID = glGetUniformLocation(WaterShader.ID, "refractionTexture");
 	dudvMapID = glGetUniformLocation(WaterShader.ID, "dudvMap");
+	normalMapID = glGetUniformLocation(WaterShader.ID, "normalMap");
+	depthMapID = glGetUniformLocation(WaterShader.ID, "depthMap");
 	moveFactorID = glGetUniformLocation(WaterShader.ID, "moveFactor");
+	cameraPosID = glGetUniformLocation(WaterShader.ID, "cameraPos");
+	lightPosID = glGetUniformLocation(WaterShader.ID, "lightPos");
+	lightColourID = glGetUniformLocation(WaterShader.ID, "lightColour");
+	nearPlaneID = glGetUniformLocation(WaterShader.ID, "nearPlane");
+	farPlaneID = glGetUniformLocation(WaterShader.ID, "farPlane");
+
+	
+
 	glBindVertexArray(0); //Unbind the VAO once we have set all the attributes
 
 	
 }
 
-void displayWater(glm::mat4 view, glm::mat4 proj,float waterheight) {
+void displayWater(glm::mat4 view, glm::mat4 proj, glm::vec3 camePos, glm::vec3 lightPos, glm::vec3 lightColour, float waterheight) {
 	
 	WaterShader.bind();
 	PrepareWater();
 	glBindVertexArray(waterVAO);
 	glm::mat4 model = glm::mat4();
-	model = glm::scale(model, glm::vec3(5, 0, 5));
+	model = glm::scale(model, glm::vec3(15, 0, 15));
 	model = glm::translate(model, glm::vec3(0, waterheight, 0));
 	//model = glm::inverse(view)*model;
 	glUniformMatrix4fv(waterModel, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(waterProj, 1, GL_FALSE, glm::value_ptr(proj));
 	glUniformMatrix4fv(waterView, 1, GL_FALSE, glm::value_ptr(view));
-	//glUniform3fv(glGetUniformLocation(PBRShader.ID, "lightDir"), curScene.lights.size(), glm::value_ptr(lightDirections[0]));
-	glDrawArrays(GL_TRIANGLES, 0, 6);//GL_TRIANGLE_STRIP
+	glUniform3fv(cameraPosID, 1, glm::value_ptr(camePos));
+	glUniform3fv(lightPosID, 1, glm::value_ptr(lightPos));
+	glUniform3fv(lightColourID, 1, glm::value_ptr(lightColour));
 
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);//GL_TRIANGLE_STRIP
+	glDisable(GL_BLEND);
 }
 void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& lookatPoint, float waterheight)
 {
@@ -767,20 +782,35 @@ void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& 
 
 void PrepareWater()
 {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glActiveTexture(GL_TEXTURE0);  //Set texture 0 as active texture
 	glBindTexture(GL_TEXTURE_2D, reflectionTexture);//baseTex
 	glUniform1i(reflectionTextureID, 0);
 
-	glActiveTexture(GL_TEXTURE1);  //Set texture 0 as active texture
+	glActiveTexture(GL_TEXTURE1);  
 	glBindTexture(GL_TEXTURE_2D, refractionTexture);
 	glUniform1i(refractionTextureID, 1);
 
-	glActiveTexture(GL_TEXTURE2);  //Set texture 0 as active texture
+	glActiveTexture(GL_TEXTURE2);  
 	glBindTexture(GL_TEXTURE_2D, dudvTexture);
 	glUniform1i(dudvMapID, 2);
 
+	glActiveTexture(GL_TEXTURE3);  
+	glBindTexture(GL_TEXTURE_2D, normalMapTexture);
+	glUniform1i(normalMapID, 3);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, refractionDepthTexture);
+	glUniform1i(depthMapID, 4);
+
 	moveFactor = fmod((moveFactor + WAVESPEED * SDL_GetTicks() / 1000.0),1.0);
 	glUniform1f(moveFactorID, moveFactor);
+
+	glUniform1f(nearPlaneID, cameraNear);
+	glUniform1f(farPlaneID, cameraFar);
+
 }
 GLuint createFrameBuffer()
 {
@@ -789,8 +819,8 @@ GLuint createFrameBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	/*unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0};
 	glDrawBuffers(1, attachments);*/
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 };//
-	glDrawBuffers(2, attachments);
+	unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0  };//, GL_COLOR_ATTACHMENT1
+	glDrawBuffers(1, attachments);
 	
 	return frameBuffer;
 }
@@ -879,9 +909,8 @@ void initWaterFrameBuffers() {//call when loading the game
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	/*glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
-	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, reflectionTexture, 0);
-	GLuint texture1;
+
 
 	// create and attach depth buffer (renderbuffer)
 	glGenRenderbuffers(1, &reflectionDepthBuffer);
@@ -906,9 +935,9 @@ void initWaterFrameBuffers() {//call when loading the game
 	
 	glGenTextures(1, &refractionDepthTexture);
 	glBindTexture(GL_TEXTURE_2D, refractionDepthTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, REFRACTION_WIDTH, REFRACTION_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, REFRACTION_WIDTH, REFRACTION_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	/*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, refractionDepthTexture, 0);//none mip map

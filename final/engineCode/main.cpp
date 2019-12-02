@@ -296,15 +296,14 @@ int main(int argc, char *argv[]){
 
 		//------ PASS 1 - Shadow map ----------------------
 		static mat4 lightProjectionMatrix, lightViewMatrix;
-		
+		static vec3 lightDir, lightPos, lightUp;
+		static float lightDist;
 		if (useShadowMap && curScene.shadowLight.castShadow){
 			//TODO: We can re-use the lightViewMatrix and lightProjectionMatrix if the light doesn't move @performance
 			lightProjectionMatrix = glm::ortho(curScene.shadowLight.frustLeft, curScene.shadowLight.frustRight, 
 																					curScene.shadowLight.frustTop, curScene.shadowLight.frustBot,
 																					curScene.shadowLight.frustNear, curScene.shadowLight.frustFar);
 
-			static vec3 lightDir, lightPos, lightUp; 
-			static float lightDist;
 			lightDir = curScene.shadowLight.direction;  //TODO: Should the directional light always follow the user's lookat point?
 			lightDist = curScene.shadowLight.distance;
 			lightPos = lookatPoint - lightDir*lightDist; 
@@ -337,14 +336,14 @@ int main(int argc, char *argv[]){
 		unbindCurrentFrameBuffer();
 
 		//glEnable(GL_CLIP_DISTANCE0);
-		//std::cout << camUp.x << " " << camUp.y << " " << camUp.z << endl;
+		
 		SetRelectionView(camDir, camUp, camPos,lookatPoint, waterheight);
 		view = glm::lookAt(camPos, //Camera Position
 			lookatPoint, //Point to look at (camPos + camDir)
 			camUp);     //Camera Up direction
-		//std::cout << camUp.x << " "<< camUp.y << " " << camUp.z<< endl;
+		
 		bindReflectionFrameBuffer();
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -waterheight));
+		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -(waterheight-1e-5)));
 		updatePRBShaderSkybox(); 
 		RenderScene(FOV,false);
 
@@ -352,7 +351,7 @@ int main(int argc, char *argv[]){
 		view = glm::lookAt(camPos, //Camera Position
 			lookatPoint, //Point to look at (camPos + camDir)
 			camUp);     //Camera Up direction
-		//std::cout << camUp.x << " " << camUp.y << " " << camUp.z << endl;
+		
 		unbindCurrentFrameBuffer();
 
 		bindRefractionFrameBuffer();
@@ -363,7 +362,7 @@ int main(int argc, char *argv[]){
 		//glDisable(GL_CLIP_DISTANCE0);
 
 		bindHDRFrameBuffer();
-		displayWater(view, proj, waterheight);
+		displayWater(view, proj, camPos, lightPos, curScene.shadowLight.color,waterheight);
 
 
 		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
