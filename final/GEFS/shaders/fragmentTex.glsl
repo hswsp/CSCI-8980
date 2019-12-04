@@ -60,7 +60,8 @@ uniform bool useFog;
 uniform bool UseFlame;
 
 vec3 fogColor = 10* ambientLight; //vec3(0.5, 0.5,0.5) vec3(0,10,0)
-const float FogDensity = 0.5;
+const float FogDensity = 0.07;
+const float gradient = 1.5;
 
 uniform bool useDissolve;
 uniform sampler2D dataTexture;
@@ -322,11 +323,11 @@ void main() {
   
   if(useFog)
   {
-      //float f = exp(-FogDensity*length(pos));
-      //outColor = vec4(f*outColor.rgb+3*ambientLight*length(pos),1);
-      //f = clamp( f, 0.0, 1.0 );
-      vec3 dest = vec3(0,0,0);
-      float f = 1 - FogAmount (pos, dest);
+      float f = exp(-pow(FogDensity*length(pos),gradient));
+      //outcolor = vec4(f*outcolor.rgb+3*ambientlight*length(pos),1);
+      f = clamp( f, 0.0, 1.0 );
+      //vec3 dest = vec3(0,0,0);
+      //float f = 1 - FogAmount (pos, dest);
       outColor.rgb = mix(fogColor,outColor.rgb,f);
   }
 

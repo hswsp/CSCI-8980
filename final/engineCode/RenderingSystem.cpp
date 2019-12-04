@@ -13,7 +13,7 @@
 #include <math.h>
 #undef near
 #undef far
-
+#define FLARETEXTURENUM 9 
 using std::vector;
 using namespace std;
 extern bool useFog;
@@ -42,6 +42,9 @@ GLint xxxID, useDissolveID,useFogID, timeID, resolutionID, useFlameID;
 GLuint colliderVAO; //Build a Vertex Array Object for the collider
 GLuint planeID, reflectionTextureID, refractionTextureID;
 float waterquad[] = { -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1 };
+
+
+GLuint flaretex[FLARETEXTURENUM];
 void drawGeometry(Model& model, int matID, glm::mat4 transform = glm::mat4(), float cameraDist = 0, glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
 
 void drawGeometry(Model& model, int materialID, glm::mat4 transform, float cameraDist, glm::vec2 textureWrap, glm::vec3 modelColor){
@@ -217,6 +220,30 @@ void loadTexturesToGPU(){
     
     stbi_image_free(pixelData);	
   }
+  // glare
+  for (int i = 0; i < FLARETEXTURENUM; i++) {
+	  string textureName = string("./textures/LensFlare/") + string("tex") + std::to_string(i+1) +string(".png");
+	  LOG_F(1, "Loading Texture %s", textureName.c_str());
+	  unsigned char *pixelData = stbi_load(textureName.c_str(), &width, &height, &nrChannels, STBI_rgb);
+	  CHECK_NOTNULL_F(pixelData, "Fail to load model texture: %s", textureName.c_str()); //TODO: Is there some way to get the error from STB image?
+
+	  //Load the texture into memory
+	  glGenTextures(1, &flaretex[i]);
+	  glBindTexture(GL_TEXTURE_2D, flaretex[i]);
+	  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+	  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+	  glGenerateMipmap(GL_TEXTURE_2D);
+
+	  //What to do outside 0-1 range
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //TODO: Does this look better? I'm not sure
+	  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	  stbi_image_free(pixelData);
+  }
 
   string normalMapImg = string("./textures/normal.png");
   LOG_F(1, "Loading Texture %s", normalMapImg.c_str());
@@ -257,6 +284,8 @@ void loadTexturesToGPU(){
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
   stbi_image_free(pixelData);
+
+
 }
 
 
@@ -631,6 +660,7 @@ void drawCompositeImage(bool useBloom){
 	glUniform1f(glGetUniformLocation(compositeShader.ID, "bloomAmount"), bloomLevel);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);  //Draw Quad for final render
+	glUseProgram(0);
 }
 
 // --------- Fullscreen quad
@@ -746,6 +776,7 @@ void displayWater(glm::mat4 view, glm::mat4 proj, glm::vec3 camePos, glm::vec3 l
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);//GL_TRIANGLE_STRIP
 	glDisable(GL_BLEND);
+	glUseProgram(0);
 }
 void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& lookatPoint, float waterheight)
 {
@@ -765,19 +796,6 @@ void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& 
 	float distance = 2 * Pos.y - waterheight;
 	Pos.y -= distance;
 	lookatPoint = Pos + Dir;
-	// reset
-	//trans = glm::rotate(trans, 2.f*theta, camR);
-	//Dir4 = trans * glm::vec4(camera.Dir, 1);
-	//camera.Dir.x = Dir4.x;
-	//camera.Dir.y = Dir4.y;
-	//camera.Dir.z = Dir4.z;
-	//Up4 = trans * glm::vec4(camera.Up, 1);
-	//camera.Up.x = Up4.x;
-	//camera.Up.y = Up4.y;
-	//camera.Up.z = Up4.z;
-	//camera.Pos.y += distance;
-
-
 }
 
 void PrepareWater()
@@ -946,14 +964,135 @@ void initWaterFrameBuffers() {//call when loading the game
 	CHECK_F(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer not complete!");
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+ /*********************************************LensFlare*******************************************************/
+#define FLARENUM 11 
+const float flarequad[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f };
+Shader LensFlareShader;
+GLuint FlareVAO;
+GLuint transformID, flareTextureID, brightnessID;
+vector<FlareTexture*> flareTextures;
+void initLensFlareShading()
+{
+	LensFlareShader = Shader("shaders/flareVertex.glsl", "shaders/flareFragment.glsl");
+	LensFlareShader.init();
 
+	// Use a Vertex Array Object
+	glGenVertexArrays(1, &FlareVAO);
+	glBindVertexArray(FlareVAO);
 
+	// Create a Vector Buffer Object that will store the vertices on video memory
+	GLuint flareVBO;
+	glGenBuffers(1, &flareVBO);
 
+	// Allocate space and upload the data from CPU to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, flareVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(flarequad), flarequad, GL_STATIC_DRAW);
+
+	// Get the location of the attributes that enters in the vertex shader
+	GLint posAttrib = glGetAttribLocation(LensFlareShader.ID, "in_position");
+	// Specify how the data for position can be accessed
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+	// Enable the attribute
+	glEnableVertexAttribArray(posAttrib);
+
+	transformID = glGetUniformLocation(LensFlareShader.ID, "transform");
+	flareTextureID = glGetUniformLocation(LensFlareShader.ID, "flareTexture");
+	brightnessID = glGetUniformLocation(LensFlareShader.ID, "brightness");
+
+	glBindVertexArray(0);
+
+	flareTextures.push_back(new FlareTexture(flaretex[5], 0.1f));
+	flareTextures.push_back(new FlareTexture(flaretex[3], 0.23f));
+	flareTextures.push_back(new FlareTexture(flaretex[1], 0.1f));
+	flareTextures.push_back(new FlareTexture(flaretex[6], 0.05f));
+	flareTextures.push_back(new FlareTexture(flaretex[2], 0.06f));
+	flareTextures.push_back(new FlareTexture(flaretex[4], 0.07f));
+	flareTextures.push_back(new FlareTexture(flaretex[6], 0.2f));
+	flareTextures.push_back(new FlareTexture(flaretex[2], 0.07f));
+	flareTextures.push_back(new FlareTexture(flaretex[4], 0.3f));
+	flareTextures.push_back(new FlareTexture(flaretex[3], 0.4f));
+	flareTextures.push_back(new FlareTexture(flaretex[7], 0.6f));
+	
+
+}
+void renderFlare(FlareTexture* flare)
+{
+	glActiveTexture(GL_TEXTURE0);  //Set texture 0 as active texture
+	glBindTexture(GL_TEXTURE_2D, flare->texture);//baseTex
+	glUniform1i(flareTextureID, 0);
+	float xScale = flare->scale;
+	float yScale = xScale * (float)(screenWidth) / (float)(screenHeight);
+	glm::vec4 transfrom = glm::vec4(flare->screenPos.x, flare->screenPos.y, xScale, yScale);
+	//std::cout << flare->screenPos.x << " " << flare->screenPos.y << " " << xScale << " " << yScale << endl;
+	glUniform4fv(transformID, 1, glm::value_ptr(transfrom));
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+void LensFlarerender(glm::mat4 view, glm::mat4 proj, glm::vec3 sunWorldPos)
+{
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glDisable(GL_MULTISAMPLE);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE); // default is disable
+	glm::vec2 CENTER_SCREEN = glm::vec2(0.5f, 0.5f);
+	glm::vec2 sunCoords = convertToScreenSpace(sunWorldPos, view, proj);
+	
+	if (glm::all(glm::equal(sunCoords, glm::vec2(-1, -1))))
+	{
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glUseProgram(0);
+		return;
+	}
+	glm::vec2 sunToCenter = CENTER_SCREEN - sunCoords;
+	//std::cout << sunCoords.x << " " << sunCoords.y << endl;;
+	float brightness = 0.6 - (glm::length(sunToCenter) / 0.6f);
+	//std::cout << brightness << endl;
+	if (brightness > 0) {
+		
+		calcFlarePositions(sunToCenter, sunCoords,0.3f);
+		// Render
+		LensFlareShader.bind();
+		glBindVertexArray(FlareVAO);
+		glUniform1f(brightnessID, brightness);
+		for (FlareTexture* flare : flareTextures)
+		{
+			renderFlare(flare);
+		}
+	}
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
+	glUseProgram(0);
+}
+glm::vec2 convertToScreenSpace(glm::vec3 worldPos, glm::mat4 viewMat, glm::mat4 projectionMat)
+{
+	glm::vec4 coords = glm::vec4(worldPos.x, worldPos.y, worldPos.z, 1.0f);
+	coords = projectionMat*viewMat * coords;
+	if (coords.w <= 0) {
+		return glm::vec2(-1, -1);
+	}
+	float x = (coords.x / coords.w + 1) / 2.0f;
+	float y = 1 - ((coords.y / coords.w + 1) / 2.0f);
+	return glm::vec2(x, y);
+	
+}
+void calcFlarePositions(glm::vec2 sunToCenter, glm::vec2 sunCoords, float spacing)
+{
+	for (int i = 0; i < flareTextures.size(); i++) {
+		glm::vec2 direction = glm::vec2(sunToCenter);
+		direction = i * spacing * direction;
+		glm::vec2 flarePos = sunCoords + direction;
+		flareTextures[i]->setScreenPos(flarePos);
+	}
+	return;
+}
 void cleanupBuffers() {
 	glDeleteBuffers(1, &modelsVBO);
 	glDeleteVertexArrays(1, &modelsVAO);
 	glDeleteVertexArrays(1, &colliderVAO);
 	glDeleteVertexArrays(1, &waterVAO);
+	glDeleteTextures(1, &FlareVAO);
 	//TODO: Clearn up the other VAOs and VBOs
 	glDeleteFramebuffers(1,&reflectionFrameBuffer);
 	glDeleteTextures(1,&reflectionTexture);
@@ -961,4 +1100,6 @@ void cleanupBuffers() {
 	glDeleteFramebuffers(1,&refractionFrameBuffer);
 	glDeleteTextures(1,&refractionTexture);
 	glDeleteTextures(1,&refractionDepthTexture);
+	
+
 }

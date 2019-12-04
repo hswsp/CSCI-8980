@@ -38,4 +38,5 @@ void computeBloomBlur(){
 		if (first_iteration)
 				first_iteration = false;
 	}
+	glUseProgram(0);
 }

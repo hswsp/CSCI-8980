@@ -145,7 +145,7 @@ int main(int argc, char *argv[]){
 	initShadowBuffers();
 
 	initWaterShading();
-	
+	initLensFlareShading();
 	//Create a quad to be used for fullscreen rendering
 	createFullscreenQuad();
 
@@ -363,9 +363,10 @@ int main(int argc, char *argv[]){
 
 		bindHDRFrameBuffer();
 		displayWater(view, proj, camPos, lightPos, curScene.shadowLight.color,waterheight);
-
-
+		
 		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
+		
+		
 		unbindCurrentFrameBuffer();
 		
 
@@ -376,7 +377,7 @@ int main(int argc, char *argv[]){
 
 		//------ PASS 4 - HDR Tonemap & Composite -------------
 		drawCompositeImage(useBloom);
-
+		LensFlarerender(view, proj, lightPos);
 
 		
 
@@ -621,7 +622,7 @@ void RenderScene(float FOV, bool FrustumCull)
 		drawColliderGeometry(); //Pass 2B: Draw Colliders
 
 	glDisable(GL_CLIP_DISTANCE0);
-	
+	glUseProgram(0);
 }
 void Win2PPM(int width, int height){
 	char outdir[20] = "Screenshots/"; //Must be exist!

@@ -58,6 +58,38 @@ void initialiseReflectionFrameBuffer();
 void initialiseRefractionFrameBuffer();
 void initWaterFrameBuffers();
 void PrepareWater();
-void SetRelectionView(Camera& camera, float waterheight = 0);
 void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& lookatPoint, float waterheight = 0);
+
+
+void initLensFlareShading();
+void LensFlarerender(glm::mat4 view, glm::mat4 proj, glm::vec3 sunWorldPos); 
+glm::vec2 convertToScreenSpace(glm::vec3 worldPos, glm::mat4 view, glm::mat4 proj);
+void calcFlarePositions(glm::vec2 sunToCenter, glm::vec2 sunCoords, float spacing = 0.5);
+
+class FlareTexture {
+
+public:
+    GLuint texture;
+	float scale;
+	glm::vec2 screenPos;
+
+	FlareTexture()
+	{
+		this->texture = 0;
+		this->scale = 1;
+	}
+
+	FlareTexture(GLuint texture, float scale) {
+		this->texture = texture;
+		this->scale = scale;
+	}
+
+	void setScreenPos(glm::vec2 newPos) {
+		this->screenPos = glm::vec2(newPos);
+	}
+
+
+};
+
+void renderFlare(FlareTexture* flare);
 #endif //RENDERING_H
