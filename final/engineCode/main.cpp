@@ -146,6 +146,7 @@ int main(int argc, char *argv[]){
 
 	initWaterShading();
 	initLensFlareShading();
+	initFireShading();
 	//Create a quad to be used for fullscreen rendering
 	createFullscreenQuad();
 
@@ -362,8 +363,10 @@ int main(int argc, char *argv[]){
 		//glDisable(GL_CLIP_DISTANCE0);
 
 		bindHDRFrameBuffer();
+
+
 		displayWater(view, proj, camPos, lightPos, curScene.shadowLight.color,waterheight);
-		
+		//renderFlame(glm::normalize(glm::cross(camDir, camUp)), camUp, proj*view);
 		drawSkybox(view, proj); //Pass 2C: Draw Skybox / Sky color
 		
 		
@@ -377,8 +380,10 @@ int main(int argc, char *argv[]){
 
 		//------ PASS 4 - HDR Tonemap & Composite -------------
 		drawCompositeImage(useBloom);
+		
 		LensFlarerender(view, proj, lightPos);
 
+		
 		
 
 		// == Check for OpenGL Errors ===
@@ -615,7 +620,7 @@ void RenderScene(float FOV, bool FrustumCull)
 		drawSceneGeometry(curScene.toDraw, view, FOV * 3.14f / 180, screenWidth / (float)screenHeight, cameraNear, cameraFar);
 	}
 	else {
-		drawSceneGeometry(curScene.toDraw);
+		drawSceneGeometry(curScene.toDraw, view);
 	}
 	
 	if (drawColliders)

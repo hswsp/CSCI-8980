@@ -1,6 +1,6 @@
  #include "Models.h"
+#include <iostream>
 
-#include "GPU-Includes.h"
 
 #include <external/tinydir.h>
 
@@ -21,13 +21,16 @@ using std::copy;
 Model models[10000];
 int numModels = 0;
 
+int numnormalMaps = 0;
+string normalMaps[1000];
+
 void resetModels(){
   //TODO: It is probably best practices to unload the old models from where they are on the GPU
   //TODO: It is best practices to delete the old models explicitly
   numModels = 0;
 }
 
-void loadAllModelsTo1VBO(GLuint vbo){ 
+void loadAllModelsTo1VBO(GLuint vbo){
 	glBindBuffer(GL_ARRAY_BUFFER, vbo); //Set vbo i as the active array buffer (Only one buffer can be active at a time)
 	int vextexCount = 0;
 	for (int i = 0; i < numModels; i++){
@@ -36,14 +39,18 @@ void loadAllModelsTo1VBO(GLuint vbo){
 	}
 	int totalVertexCount = vextexCount;
 
-
+	
 	float* allModelData = new float[vextexCount*8];
 	copy(models[0].modelData, models[0].modelData + models[0].numVerts*8, allModelData);
 	for (int i = 0; i < numModels; i++){
 		copy(models[i].modelData, models[i].modelData + models[i].numVerts*8, allModelData + models[i].startVertex*8);
+		//std::cout << models[i].name << std::endl;
 	}
 	glBufferData(GL_ARRAY_BUFFER, totalVertexCount*8*sizeof(float), 
 		             allModelData, GL_STATIC_DRAW); //upload model data to the VBO
+
+	delete[] allModelData;
+	
 }
 
 int addModel(string modelName){
@@ -169,10 +176,11 @@ void loadObjModel(string modelDir, string objFile, int curModelID){
 	int objChild = 0;
 	string childName = objFile+string("-Child-")+std::to_string(objChild);
 	int childModelID = addModel(childName); //add Childs
+	
 	LOG_F(1,"Loading obj child model %s as IDs: %d", (childName).c_str(),childModelID);
 
 	std::vector<float> vertexData;
-
+	std::vector<float> TangentData;
 	// Loop over shapes
 	//TODO: The first object may have 0 verticies, we should fix this
 	for (size_t s = 0; s < objShapes.size(); s++) {
@@ -187,6 +195,7 @@ void loadObjModel(string modelDir, string objFile, int curModelID){
 			if (models[curModelID].materialID == -1) //Only use obj materials if the parent doesn't have it's own material
 				materialID = findMaterial(materialName.c_str());
 			LOG_F(1,"Binding material: '%s' (Material ID %d) to Model %d",materialName.c_str(),materialID,childModelID);
+			//printf("Binding material: '%s' (Material ID %d) to Model %d \n", materialName.c_str(), materialID, childModelID);
 			models[childModelID].materialID = materialID; 
 		}
 		// Loop over faces(polygon)
@@ -194,7 +203,7 @@ void loadObjModel(string modelDir, string objFile, int curModelID){
 		for (size_t f = 0; f < objShapes[s].mesh.num_face_vertices.size(); f++) {
 			size_t fv = objShapes[s].mesh.num_face_vertices[f];
 			assert(fv == 3); //tinyobj loader triangulates all faces by default
-
+			
 			lastMaterialID = curMaterialID;
 			curMaterialID = objShapes[s].mesh.material_ids[f];
 
@@ -206,6 +215,41 @@ void loadObjModel(string modelDir, string objFile, int curModelID){
 				models[childModelID].modelData = new float[numAttribs];
 				std::copy(vertexData.begin(),vertexData.end(),models[childModelID].modelData);
 				models[childModelID].numVerts = numAttribs/8;
+
+				// compute tangent
+				for (int i = 0; i < numAttribs / 8; i += 3)
+				{
+					// Shortcuts for vertices
+					glm::vec3 & v0 = glm::vec3(vertexData[(i + 0) * 8 + 0], vertexData[(i + 0) * 8 + 1], vertexData[(i + 0) * 8 + 2]);
+					glm::vec3 & v1 = glm::vec3(vertexData[(i + 1) * 8 + 0], vertexData[(i + 1) * 8 + 1], vertexData[(i + 1) * 8 + 2]);
+					glm::vec3 & v2 = glm::vec3(vertexData[(i + 2) * 8 + 0], vertexData[(i + 2) * 8 + 1], vertexData[(i + 2) * 8 + 2]);
+
+					// Shortcuts for UVs
+					glm::vec2 & uv0 = glm::vec2(vertexData[(i + 0) * 8 + 3], vertexData[(i + 0) * 8 + 4]);
+					glm::vec2 & uv1 = glm::vec2(vertexData[(i + 1) * 8 + 3], vertexData[(i + 1) * 8 + 4]);
+					glm::vec2 & uv2 = glm::vec2(vertexData[(i + 2) * 8 + 3], vertexData[(i + 2) * 8 + 4]);
+
+					// Edges of the triangle : position delta
+					glm::vec3 deltaPos1 = v1 - v0;
+					glm::vec3 deltaPos2 = v2 - v0;
+
+					// UV delta
+					glm::vec2 deltaUV1 = uv1 - uv0;
+					glm::vec2 deltaUV2 = uv2 - uv0;
+
+					float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
+					glm::vec3 tangent = (deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y)*r;
+					glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x)*r;
+
+					float tangentarray[3] = { tangent.x,tangent.y,tangent.z };
+					TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+					TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+					TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+
+				}
+				models[childModelID].TangentData = new float[numAttribs / 8 * 3];
+				std::copy(TangentData.begin(), TangentData.end(), models[childModelID].TangentData);
+
 				LOG_F(1,"Loaded %d vertices",models[childModelID].numVerts);
 				addChild(childName, curModelID);
 
@@ -215,7 +259,7 @@ void loadObjModel(string modelDir, string objFile, int curModelID){
 				LOG_F(1,"Loading obj child model %s as IDs: %d", (childName).c_str(),childModelID);
 				childModelID = addModel(childName);
 				vertexData.clear();
-
+				TangentData.clear();
 				//Bind the new material
 				int materialID = -1;
 				if (curMaterialID >= 0){
@@ -264,8 +308,45 @@ void loadObjModel(string modelDir, string objFile, int curModelID){
 	models[childModelID].modelData = new float[numAttribs];
 	std::copy(vertexData.begin(),vertexData.end(),models[childModelID].modelData);
 	models[childModelID].numVerts = numAttribs/8;
+	
+	// compute tangent
+	for (int i = 0; i < numAttribs / 8; i += 3)
+	{
+		// Shortcuts for vertices
+		glm::vec3 & v0 = glm::vec3(vertexData[(i + 0) * 8 + 0], vertexData[(i + 0) * 8 + 1], vertexData[(i + 0) * 8 + 2]);
+		glm::vec3 & v1 = glm::vec3(vertexData[(i + 1) * 8 + 0], vertexData[(i + 1) * 8 + 1], vertexData[(i + 1) * 8 + 2]);
+		glm::vec3 & v2 = glm::vec3(vertexData[(i + 2) * 8 + 0], vertexData[(i + 2) * 8 + 1], vertexData[(i + 2) * 8 + 2]);
+
+		// Shortcuts for UVs
+		glm::vec2 & uv0 = glm::vec2(vertexData[(i + 0) * 8 + 3], vertexData[(i + 0) * 8 + 4]);
+		glm::vec2 & uv1 = glm::vec2(vertexData[(i + 1) * 8 + 3], vertexData[(i + 1) * 8 + 4]);
+		glm::vec2 & uv2 = glm::vec2(vertexData[(i + 2) * 8 + 3], vertexData[(i + 2) * 8 + 4]);
+
+		// Edges of the triangle : position delta
+		glm::vec3 deltaPos1 = v1 - v0;
+		glm::vec3 deltaPos2 = v2 - v0;
+
+		// UV delta
+		glm::vec2 deltaUV1 = uv1 - uv0;
+		glm::vec2 deltaUV2 = uv2 - uv0;
+
+		float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
+		glm::vec3 tangent = (deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y)*r;
+		glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x)*r;
+
+		float tangentarray[3] = { tangent.x,tangent.y,tangent.z };
+		TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+		TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+		TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+		
+	}
+	models[childModelID].TangentData = new float[numAttribs / 8 * 3];
+	std::copy(TangentData.begin(), TangentData.end(), models[childModelID].TangentData);
+
 	LOG_F(1,"Loaded %d vertices",models[childModelID].numVerts);
 	computeBoundingRadius(childModelID);
+	
+
 	addChild(childName, curModelID);
 }
 
@@ -384,6 +465,42 @@ void loadModel(string fileName){
 				modelFile >> models[curModelID].modelData[i];
 				//if (i%8 == 3 || i%8 == 4) models[curModelID].modelData[i] *= 2; //texture wrap factor
 			}
+
+			// compute tangent
+			float*  vertexData = models[curModelID].modelData;
+			std::vector<float> TangentData;
+			for (int i = 0; i < numLines / 8; i += 3)
+			{
+				// Shortcuts for vertices
+				glm::vec3 & v0 = glm::vec3(vertexData[(i + 0) * 8 + 0], vertexData[(i + 0) * 8 + 1], vertexData[(i + 0) * 8 + 2]);
+				glm::vec3 & v1 = glm::vec3(vertexData[(i + 1) * 8 + 0], vertexData[(i + 1) * 8 + 1], vertexData[(i + 1) * 8 + 2]);
+				glm::vec3 & v2 = glm::vec3(vertexData[(i + 2) * 8 + 0], vertexData[(i + 2) * 8 + 1], vertexData[(i + 2) * 8 + 2]);
+
+				// Shortcuts for UVs
+				glm::vec2 & uv0 = glm::vec2(vertexData[(i + 0) * 8 + 3], vertexData[(i + 0) * 8 + 4]);
+				glm::vec2 & uv1 = glm::vec2(vertexData[(i + 1) * 8 + 3], vertexData[(i + 1) * 8 + 4]);
+				glm::vec2 & uv2 = glm::vec2(vertexData[(i + 2) * 8 + 3], vertexData[(i + 2) * 8 + 4]);
+
+				// Edges of the triangle : position delta
+				glm::vec3 deltaPos1 = v1 - v0;
+				glm::vec3 deltaPos2 = v2 - v0;
+
+				// UV delta
+				glm::vec2 deltaUV1 = uv1 - uv0;
+				glm::vec2 deltaUV2 = uv2 - uv0;
+
+				float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
+				glm::vec3 tangent = (deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y)*r;
+				glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x)*r;
+
+				float tangentarray[3] = { tangent.x,tangent.y,tangent.z };
+				TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+				TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+				TangentData.insert(TangentData.end(), tangentarray, tangentarray + 3);
+			}
+			models[curModelID].TangentData = new float[numLines / 8 * 3];
+			std::copy(TangentData.begin(), TangentData.end(), models[curModelID].TangentData);
+
 			LOG_F(1,"Loaded %d lines",numLines);
 			models[curModelID].numVerts = numLines/8;
 			modelFile.close();
@@ -444,6 +561,69 @@ void loadModel(string fileName){
 			LOG_F(1,"Binding material: '%s' (Material ID %d) to Model %d",materialName.c_str(),materialID,curModelID);
 			models[curModelID].materialID = materialID; 
     }
+		else if (commandStr == "texture") {
+		char textFile[1024];
+		sscanf(rawline, "texture = %s", textFile);
+		string textureName = modelDir + string(textFile);  // must be full path
+		int curMaterialID = numMaterials;
+		numMaterials++;
+		int foundTexture = -1;
+		for (int i = 0; i < numTextures; i++) {
+			if (textures[i] == textureName) {
+				foundTexture = i;
+				break;
+			}
+		}
+		if (foundTexture >= 0) {
+			LOG_F(1, "Reusing existing texture: %s", textures[foundTexture].c_str());
+			materials[curMaterialID].textureID = foundTexture;
+			for (int i = 0; i < models[curModelID].childModel.size(); ++i)
+			{
+				models[curModelID].childModel[i]->materialID = curMaterialID;
+			}
+		}
+		else {
+			textures[numTextures] = textureName;
+			materials[curMaterialID].textureID = numTextures;
+			for (int i = 0; i < models[curModelID].childModel.size(); ++i)
+			{
+				models[curModelID].childModel[i]->materialID = curMaterialID;
+			}
+			numTextures++;
+			LOG_F(1, "New texture named: %s", textureName.c_str());
+		}
+		
+		
+	}
+		else if (commandStr == "normalMap") {
+		char textFile[1024];
+		sscanf(rawline, "normalMap = %s", textFile);
+		string textureName = modelDir + string(textFile);  // must be full path
+		int curMaterialID = numMaterials;
+		numMaterials++;
+		int foundTexture = -1;
+		for (int i = 0; i < numnormalMaps; i++) {
+			if (normalMaps[i] == textureName) {
+				foundTexture = i;
+				break;
+			}
+		}
+		if (foundTexture >= 0) {
+			LOG_F(1, "Reusing existing normal map: %s", normalMaps[foundTexture].c_str());
+			models[curModelID].normalMapID = foundTexture;
+			setNormalChild(&models[curModelID], numnormalMaps);
+		}
+		else {
+			normalMaps[numnormalMaps] = textureName;
+			models[curModelID].normalMapID = numnormalMaps;
+			setNormalChild(&models[curModelID], numnormalMaps);
+
+			numnormalMaps++;
+			
+			LOG_F(1, "New normal map named: %s", textureName.c_str());
+		}
+
+	}
 		else if (commandStr == "modelColor"){ 
 			float r, g, b;
 			sscanf(rawline,"modelColor = %f %f %f", &r, &g, &b);
@@ -454,4 +634,16 @@ void loadModel(string fileName){
       LOG_F(WARNING,"WARNING. Unknown model command: %s",commandStr.c_str());
     }
   }
+}
+
+void setNormalChild(Model* model,int numnormalMaps)
+{
+	if (!model)
+		return;
+	model->normalMapID = numnormalMaps;
+	for (int i = 0; i < model->childModel.size(); ++i)
+	{
+		setNormalChild(model->childModel[i], numnormalMaps);
+	}
+	
 }

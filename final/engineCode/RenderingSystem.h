@@ -13,7 +13,7 @@ extern bool xxx; //
 void initPBRShading();
 void setPBRShaderUniforms(glm::mat4 view, glm::mat4 proj, glm::mat4 lightViewMatrix, glm::mat4 lightProjectionMatrix, bool useShadowMap,
 	glm::vec4 planefunc);
-void drawSceneGeometry(std::vector<Model*> toDraw);
+void drawSceneGeometry(std::vector<Model*> toDraw,glm::mat4 view);
 void drawSceneGeometry(std::vector<Model*> toDraw, glm::mat4 viewMat, float FOV, float aspect, float near, float far);
 
 //HDR render targets
@@ -92,4 +92,23 @@ public:
 };
 
 void renderFlare(FlareTexture* flare);
+
+void initFireShading();
+void renderFlame(glm::vec3 CameraRight_worldspace, glm::vec3 CameraUp_worldspace, glm::mat4 VP);
+
+class Terrain
+{
+	static float SIZE;
+	static float VERTEX_COUNT;
+	Model generateTerrain();
+public:
+	float x;
+	float z;
+	Model model;
+	Material texture;
+	
+
+
+};
+
 #endif //RENDERING_H

@@ -11,6 +11,7 @@ in vec3 interpolatedNormal; //TODO: Just call this normal?
 in vec3 pos;
 in vec3 lightDir[maxNumLights];
 in vec3 lightCol[maxNumLights];
+in mat3 TBN;
 //TODO: Support point lights
 
 uniform vec3 modelColor;
@@ -24,7 +25,7 @@ uniform float ior; //1.3-5? (stick ~1.3-1.5 unless gemstone or so)
 uniform bool xxx;
 
 uniform sampler2D colorTexture;
-
+uniform sampler2D NormalTextureSampler;
 uniform vec2 textureScaleing;
 uniform vec3 emissive;
 
@@ -37,6 +38,7 @@ uniform int pcfSize;
 uniform float shadowBias;
 
 uniform int useTexture;
+uniform int useNormalMap;
 
 uniform vec3 skyColor;
 uniform bool useSkyColor;
@@ -119,6 +121,7 @@ vec3 GGXSpec(vec3 N, vec3 V, vec3 L, float rough, vec3 F0){
   vec3 specular = vec3( D * F * vis);  //also a dotNL term here? I'm not sure
   return specular;
 }
+
 vec3 flame()
 {
    vec2 pos = -1. + 2.*gl_FragCoord.xy / resolution.xy;
@@ -167,39 +170,6 @@ vec3 flame()
    
    color = (color+dolor)/2.;
    return color;
-}
-
-vec4 flamefromnoise()
-{
-   vec2 uv = -1. + 2.*gl_FragCoord.xy / resolution.xy;
-  // Generate noisy x value
-  vec2 n0Uv = vec2(uv.x*1.4 + 0.01, uv.y + time*0.69);
-  vec2 n1Uv = vec2(uv.x*0.5 - 0.033, uv.y*2.0 + time*0.12);
-  vec2 n2Uv = vec2(uv.x*0.94 + 0.02, uv.y*3.0 + time*0.61);
-  float n0 = (texture2D(uDiffuseSampler, n0Uv).w-0.5)*2.0;
-  float n1 = (texture2D(uDiffuseSampler, n1Uv).w-0.5)*2.0;
-  float n2 = (texture2D(uDiffuseSampler, n2Uv).w-0.5)*2.0;
-  float noiseA = clamp(n0 + n1 + n2, -1.0, 1.0);
-
-  // Generate noisy y value
-  vec2 n0UvB = vec2(uv.x*0.7 - 0.01, uv.y + time*0.27);
-  vec2 n1UvB = vec2(uv.x*0.45 + 0.033, uv.y*1.9 + time*0.61);
-  vec2 n2UvB = vec2(uv.x*0.8 - 0.02, uv.y*2.5 + time*0.51);
-  float n0B = (texture2D(uDiffuseSampler, n0UvB).w-0.5)*2.0;
-  float n1B = (texture2D(uDiffuseSampler, n1UvB).w-0.5)*2.0;
-  float n2B = (texture2D(uDiffuseSampler, n2UvB).w-0.5)*2.0;
-  float noiseB = clamp(n0B + n1B + n2B, -1.0, 1.0);
-
-  vec2 finalNoise = vec2(noiseA, noiseB);
-  float perturb = (1.0 - uv.y) * 0.35 + 0.02;
-  finalNoise = (finalNoise * perturb) + uv - 0.02;
-
-  vec4 flamecolor = texture2D(uDiffuseSampler, finalNoise);
-  flamecolor = vec4(flamecolor.x*2.0, flamecolor.y*0.9, (flamecolor.y/flamecolor.x)*0.2, 1.0);
-  finalNoise = clamp(finalNoise, 0.05, 1.0);
-  flamecolor.w = texture2D(uDiffuseSampler, finalNoise).z*2.0;
-  flamecolor.w = flamecolor.w*texture2D(uDiffuseSampler, uv).z;
-  return flamecolor;
 }
 
 
@@ -258,7 +228,13 @@ void main() {
   vec3 normal = normalize(interpolatedNormal);
   vec3 ambC = color*ambientLight;
   vec3 oColor = ambC+emissive;
-   
+  if(useNormalMap>0)
+  {
+     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, texcoord*textureScaleing ).rgb*2.0 - 1.0); 
+	 normal = TextureNormal_tangentspace;//TBN*
+	 
+  }
+  
 
   for (int i = 0; i < numLights; i++){
     float shadow = 0;
@@ -285,8 +261,16 @@ void main() {
 
     vec3 specC;
     vec3 lDir = lightDir[i];
+	if(useNormalMap>0)
+    {
+	   lDir = TBN*lDir;
+    }
     vec3 diffuseC = (1-metallic)*color*max(dot(-lDir,normal),0.0); //This is a Hack? Is it a good idea? Is it true metals have no diffuse color?
     vec3 viewDir = normalize(-pos); //We know the eye is at (0,0)!
+	if(useNormalMap>0)
+	{
+	  viewDir = TBN*viewDir;
+	}
     vec3 reflectDir = reflect(viewDir,normal);
     
     /*float spec = max(dot(reflectDir,lDir),0.0);
@@ -316,9 +300,11 @@ void main() {
 
     oColor += (1-shadow)*(lightCol[i]*diffuseC+specC);
   }
-  if (xxx) oColor = oColor.gbr; //Just to demonstrate how to use the boolean for debugging
+  if (xxx) 
+    oColor = oColor.gbr; //Just to demonstrate how to use the boolean for debugging
   outColor = vec4(modelColor*oColor, 1.0);
-
+  //if(useNormalMap>0)
+   // outColor = vec4(transpose(TBN)*texture(NormalTextureSampler, texcoord).rgb,1.0); //vec4(transpose(TBN)*vec3(0,0,1),1.0);
   /******************fog *************************/
   
   if(useFog)
@@ -348,6 +334,7 @@ void main() {
     outColor.rgb+=glowColor;
       
   }
+  
   // Flame
   if(UseFlame)
   {

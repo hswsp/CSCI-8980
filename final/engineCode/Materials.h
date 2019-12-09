@@ -36,4 +36,6 @@ extern int numMaterials;
 extern string textures[1000];
 extern int numTextures;
 
+extern string normalMaps[1000];
+extern int numnormalMaps;
 #endif

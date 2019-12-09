@@ -23,9 +23,11 @@ extern int targetScreenWidth;
 extern int targetScreenHeight;
 extern float cameraFar;
 extern float cameraNear;
-
+//#define GL_CLAMP_TO_EDGE 0x812F
 
 GLuint tex[1000];
+GLuint normalTex[1000];
+
 GLuint dudvTexture, normalMapTexture;
 
 bool xxx; //Just an unspecified bool that gets passed to shader for debugging
@@ -34,10 +36,10 @@ int sphereVerts; //Number of verts in the colliders spheres
 
 int totalTriangles = 0;
 
-GLint uniColorID, uniEmissiveID, uniUseTextureID, modelColorID;
+GLint uniColorID, uniEmissiveID, uniUseTextureID, modelColorID,useNormalMapID;
 GLint metallicID, roughnessID, iorID, reflectivenessID;
-GLint uniModelMatrix, colorTextureID,dataTextureID, flameTextureID, texScaleID, biasID, pcfID, TimeValueID;
-GLint xxxID, useDissolveID,useFogID, timeID, resolutionID, useFlameID;
+GLint uniModelMatrix, colorTextureID,nomalMapID,dataTextureID, flameTextureID, texScaleID, biasID, pcfID, TimeValueID;
+GLint xxxID, useDissolveID,useFogID, timeID, resolutionID, useFlameID, ModelView3x3MatrixID;
 
 GLuint colliderVAO; //Build a Vertex Array Object for the collider
 GLuint planeID, reflectionTextureID, refractionTextureID;
@@ -45,12 +47,13 @@ float waterquad[] = { -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1 };
 
 
 GLuint flaretex[FLARETEXTURENUM];
-void drawGeometry(Model& model, int matID, glm::mat4 transform = glm::mat4(), float cameraDist = 0, glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
+GLuint flametex;
+void drawGeometry(Model& model, int matID, glm::mat4 view, glm::mat4 transform = glm::mat4(), float cameraDist = 0, glm::vec2 textureWrap=glm::vec2(1,1), glm::vec3 modelColor=glm::vec3(1,1,1));
 
-void drawGeometry(Model& model, int materialID, glm::mat4 transform, float cameraDist, glm::vec2 textureWrap, glm::vec3 modelColor){
+void drawGeometry(Model& model, int materialID, glm::mat4 view, glm::mat4 transform, float cameraDist, glm::vec2 textureWrap, glm::vec3 modelColor){
 	
 	//if (model.materialID >= 0) material = materials[model.materialID];
-
+	
 	Material material;
 	if (materialID < 0){
 		materialID = model.materialID; 
@@ -65,27 +68,31 @@ void drawGeometry(Model& model, int materialID, glm::mat4 transform, float camer
 	//textureWrap *= model.textureWrap; //TODO: Where best to apply textureWrap transform?
 	
 	if (cameraDist > model.lodDist && model.lodChild){
-		drawGeometry(*model.lodChild, materialID, transform, cameraDist,textureWrap, modelColor);
+		drawGeometry(*model.lodChild, materialID, view, transform, cameraDist,textureWrap, modelColor);
 		return;
 	}
 
 	if (model.selector >= 0 && model.selector < model.numChildren){
-		drawGeometry(*model.childModel[model.selector], materialID, transform, cameraDist, textureWrap, modelColor);
+		drawGeometry(*model.childModel[model.selector], materialID, view, transform, cameraDist, textureWrap, modelColor);
 	}
 	else{
 		for (int i = 0; i < model.numChildren; i++){
-			drawGeometry(*model.childModel[i], materialID, transform, cameraDist, textureWrap, modelColor);
+			drawGeometry(*model.childModel[i], materialID, view, transform, cameraDist, textureWrap, modelColor);
 		}
 	}
 	if (!model.modelData) return;
-	
+
+
 	transform *= model.modelOffset;
 	textureWrap *= model.textureWrap; //TODO: Should textureWrap stack like this?
 
 	glUniformMatrix4fv(uniModelMatrix, 1, GL_FALSE, glm::value_ptr(transform));
+	glm::mat4 ModelViewMatrix = view * transform;
+	glm::mat3 ModelView3x3Matrix = glm::mat3(ModelViewMatrix); // Take the upper-left part of ModelViewMatrix
+	glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
 
 	glUniform1i(uniUseTextureID, material.textureID >= 0); //textureID of -1 --> no texture
-
+	glUniform1i(useNormalMapID, model.normalMapID >= 0);
 	if (material.textureID >= 0){
 		glActiveTexture(GL_TEXTURE0);  //Set texture 0 as active texture
 		glBindTexture(GL_TEXTURE_2D, tex[material.textureID]); //Load bound texture
@@ -93,10 +100,16 @@ void drawGeometry(Model& model, int materialID, glm::mat4 transform, float camer
 		glUniform2fv(texScaleID, 1, glm::value_ptr(textureWrap));
 	}
 
+	if (model.normalMapID >= 0) {
+		glActiveTexture(GL_TEXTURE6);  //Set texture 0 as active texture
+		glBindTexture(GL_TEXTURE_2D, normalTex[model.normalMapID]); //Load bound texture
+		glUniform1i(nomalMapID, 6); //Use the texture we just loaded (texture 0) as material color
+	}
+
+	
 	glActiveTexture(GL_TEXTURE4);  //Set texture 4 as active texture
 	glBindTexture(GL_TEXTURE_2D, tex[999]); //Load bound texture
 	glUniform1i(dataTextureID, 4); //Use the texture we just loaded (texture 0) as material color
-	glUniform2fv(texScaleID, 1, glm::value_ptr(textureWrap));
 	static float t = 1;
 	static bool decrease = true;
 	glUniform1f(TimeValueID, t);
@@ -140,7 +153,7 @@ void drawGeometry(Model& model, int materialID, glm::mat4 transform, float camer
 	long long curTime_dt = SDL_GetTicks(); //TODO: is this really long long?
 	glUniform1f(timeID, curTime_dt/1000.0f);
 
-	//printf("%f\n",model.modelColor[0]);
+
 	glUniform3fv(modelColorID, 1, glm::value_ptr(modelColor*model.modelColor)); //multiply parent's color by your own
 
 	glUniform1f(metallicID, material.metallic); 
@@ -152,6 +165,8 @@ void drawGeometry(Model& model, int materialID, glm::mat4 transform, float camer
 
 	//printf("start/end %d %d\n",model.startVertex, model.numVerts);
 	totalTriangles += model.numVerts/3; //3 verts to a triangle
+	/*if(model.numVerts>0)
+		printf("draw models: '%s' (Material ID %d) to material %d \n", model.name.c_str(), model.normalMapID, material.textureID);*/
 	glDrawArrays(GL_TRIANGLES, model.startVertex, model.numVerts); //(Primitive Type, Start Vertex, End Vertex) //Draw only 1st object
 }
 
@@ -199,6 +214,7 @@ void loadTexturesToGPU(){
   int width, height, nrChannels;
   stbi_set_flip_vertically_on_load(true);
   for (int i = 0; i < numTextures; i++){
+
     LOG_F(1,"Loading Texture %s",textures[i].c_str());
     unsigned char *pixelData = stbi_load(textures[i].c_str(), &width, &height, &nrChannels, STBI_rgb);
 		CHECK_NOTNULL_F(pixelData,"Fail to load model texture: %s",textures[i].c_str()); //TODO: Is there some way to get the error from STB image?
@@ -215,11 +231,34 @@ void loadTexturesToGPU(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //TODO: Does this look better? I'm not sure
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     stbi_image_free(pixelData);	
   }
+  //normal map
+  for (int i = 0; i < numnormalMaps; i++) {
+
+	  LOG_F(1, "Loading Texture %s", normalMaps[i].c_str());
+	  unsigned char *pixelData = stbi_load(normalMaps[i].c_str(), &width, &height, &nrChannels, STBI_rgb);
+	  CHECK_NOTNULL_F(pixelData, "Fail to load model normal maps: %s", normalMaps[i].c_str()); //TODO: Is there some way to get the error from STB image?
+
+	  //Load the texture into memory
+	  glGenTextures(1, &normalTex[i]);
+	  glBindTexture(GL_TEXTURE_2D, normalTex[i]);
+	  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+	  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+	  glGenerateMipmap(GL_TEXTURE_2D);
+
+	  //What to do outside 0-1 range
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //TODO: Does this look better? I'm not sure
+	  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	  stbi_image_free(pixelData);
+  }
+
   // glare
   for (int i = 0; i < FLARETEXTURENUM; i++) {
 	  string textureName = string("./textures/LensFlare/") + string("tex") + std::to_string(i+1) +string(".png");
@@ -283,6 +322,25 @@ void loadTexturesToGPU(){
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
+  stbi_image_free(pixelData);
+
+  string flameImg = string("./textures/Flame/flame.png");
+  LOG_F(1, "Loading Texture %s", flameImg.c_str());
+  pixelData = stbi_load(flameImg.c_str(), &width, &height, &nrChannels, STBI_rgb);
+  CHECK_NOTNULL_F(pixelData, "Fail to load texture: %s", flameImg.c_str()); //TODO: Is there some way to get the error from STB image?
+
+  //Load the texture into memory
+  glGenTextures(1, &flametex);
+  glBindTexture(GL_TEXTURE_2D, flametex);
+  glTexStorage2D(GL_TEXTURE_2D, 2, GL_RGBA8, width, height); //Mipmap levels
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  //What to do outside 0-1 range
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   stbi_image_free(pixelData);
 
 
@@ -352,9 +410,9 @@ void initHDRBuffers(){
 //------------ PBR Shader ---------
 Shader PBRShader;
 
-GLint posAttrib, texAttrib, normAttrib;
+GLint posAttrib, texAttrib, normAttrib, tangentAttrib;
 GLint uniView,uniInvView, uniProj;
-GLuint modelsVAO, modelsVBO;
+GLuint modelsVAO, modelsVBO, tangentbuffer;
 
 void initPBRShading(){
 	PBRShader = Shader("shaders/vertexTex.glsl", "shaders/fragmentTex.glsl");
@@ -366,14 +424,38 @@ void initPBRShading(){
 
 	//We'll store all our models in one VBO //TODO: We should compare to 1 VBO/model?
 	glGenBuffers(1, &modelsVBO); 
+	glGenBuffers(1, &tangentbuffer);
 	loadAllModelsTo1VBO(modelsVBO);
 
+	
+	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+	int vextexCount = 0;
+	
+	for (int i = 0; i < numModels; i++) {
+		vextexCount += models[i].numVerts;
+	}
+	int totalVertexCount = vextexCount;
+	float* allModelData = new float[vextexCount * 3];
+	copy(models[0].TangentData, models[0].TangentData + models[0].numVerts * 3, allModelData);
+	
+	for (int i = 0; i < numModels; i++) {
+		copy(models[i].TangentData, models[i].TangentData + models[i].numVerts * 3, allModelData + models[i].startVertex * 3);
+		/*for (int j = 0; j < models[i].numVerts * 3; ++j)
+		{
+			std::cout << j<<" "<<models[i].TangentData[j] << std::endl;
+		}*/
+	}
+	
+	glBufferData(GL_ARRAY_BUFFER, totalVertexCount * 3 * sizeof(float), allModelData, GL_STATIC_DRAW); //upload model data to the VBO
+	
 	//Tell OpenGL how to set fragment shader input 
 	posAttrib = glGetAttribLocation(PBRShader.ID, "position");
+	glEnableVertexAttribArray(posAttrib);
+	//Binds to VBO current GL_ARRAY_BUFFER 
+	glBindBuffer(GL_ARRAY_BUFFER, modelsVBO);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
 	  //Attribute, vals/attrib., type, normalized?, stride, offset
-	  //Binds to VBO current GL_ARRAY_BUFFER 
-	glEnableVertexAttribArray(posAttrib);
+
 	
 	//GLint colAttrib = glGetAttribLocation(phongShader, "inColor");
 	//glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3*sizeof(float)));
@@ -381,17 +463,35 @@ void initPBRShading(){
 	
 	texAttrib = glGetAttribLocation(PBRShader.ID, "inTexcoord");
 	glEnableVertexAttribArray(texAttrib);
+	//Binds to VBO current GL_ARRAY_BUFFER 
+	glBindBuffer(GL_ARRAY_BUFFER, modelsVBO);
 	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3*sizeof(float)));
 
-	normAttrib = glGetAttribLocation(PBRShader.ID, "inNormal");
-	glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(5*sizeof(float)));
-	glEnableVertexAttribArray(normAttrib);
 	
+	normAttrib = glGetAttribLocation(PBRShader.ID, "inNormal");
+	glEnableVertexAttribArray(normAttrib);
+	//Binds to VBO current GL_ARRAY_BUFFER 
+	glBindBuffer(GL_ARRAY_BUFFER, modelsVBO);
+	glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(5*sizeof(float)));
+	
+
+
+	
+	//Tell OpenGL how to set fragment shader input 
+	tangentAttrib = glGetAttribLocation(PBRShader.ID, "inTangent");
+	glEnableVertexAttribArray(tangentAttrib);
+	//Binds to VBO current GL_ARRAY_BUFFER 
+	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+	glVertexAttribPointer(tangentAttrib, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), 0);
+	//Attribute, vals/attrib., type, normalized?, stride, offset
+	
+
+
 
 	uniView = glGetUniformLocation(PBRShader.ID, "view");
 	uniInvView  = glGetUniformLocation(PBRShader.ID, "invView"); //inverse of view matrix
 	uniProj = glGetUniformLocation(PBRShader.ID, "proj");
-
+	ModelView3x3MatrixID = glGetUniformLocation(PBRShader.ID, "MV3x3");
 
 	uniColorID = glGetUniformLocation(PBRShader.ID, "materialColor");
     uniEmissiveID = glGetUniformLocation(PBRShader.ID, "emissive");
@@ -405,6 +505,8 @@ void initPBRShading(){
 	reflectivenessID = glGetUniformLocation(PBRShader.ID, "reflectiveness");
 	uniModelMatrix = glGetUniformLocation(PBRShader.ID, "model");
 	colorTextureID = glGetUniformLocation(PBRShader.ID, "colorTexture");
+	nomalMapID = glGetUniformLocation(PBRShader.ID, "NormalTextureSampler");
+	useNormalMapID = glGetUniformLocation(PBRShader.ID, "useNormalMap");
 	dataTextureID = glGetUniformLocation(PBRShader.ID, "dataTexture");
 	flameTextureID = glGetUniformLocation(PBRShader.ID, "uDiffuseSampler");
 	TimeValueID = glGetUniformLocation(PBRShader.ID, "timeValue");
@@ -549,14 +651,14 @@ void updatePRBShaderSkybox(){
 	}
 }
 
-void drawSceneGeometry(vector<Model*> toDraw){
+void drawSceneGeometry(vector<Model*> toDraw, glm::mat4 viewMat){
 	glBindVertexArray(modelsVAO);
 
 	glm::mat4 I;
 	totalTriangles = 0;
 	for (size_t i = 0; i < toDraw.size(); i++){
 		//printf("%s - %d\n",toDraw[i]->name.c_str(),i);
-		drawGeometry(*toDraw[i], -1, I);
+		drawGeometry(*toDraw[i], -1, viewMat, I);
 	}
 }
 
@@ -619,7 +721,7 @@ void drawSceneGeometry(std::vector<Model*> toDraw, glm::mat4 viewMat, float FOVy
 		dist = glm::dot(topPlane,viewPos); if (dist < -radius) continue;
 		//dist = glm::dot(nearPlane,viewPos); if (dist < -radius) continue; //End with nearplane for LOD purposes!
 
-		drawGeometry(*toDraw[i], -1, I, dist+near);
+		drawGeometry(*toDraw[i], -1, viewMat, I, dist+near);
 	}
 }
 
@@ -1087,6 +1189,173 @@ void calcFlarePositions(glm::vec2 sunToCenter, glm::vec2 sunCoords, float spacin
 	}
 	return;
 }
+
+
+
+/************************fire shader***********************************************/
+static const GLfloat billboard[] =
+{
+	 -0.5f, -0.5f, 0.0f,
+	  0.5f, -0.5f, 0.0f,
+	 -0.5f,  0.5f, 0.0f,
+	  0.5f,  0.5f, 0.0f,
+};
+const int maxfirenum = 5;
+int firecount = 1;
+Shader flameShader;
+GLuint CameraRight_worldspaceID, CameraUp_worldspaceID, VPID, uDiffuseSamplerID, flametimeID;
+GLuint FlameVAO;
+GLuint position_buffer;
+static GLfloat* fire_position_size_data = new GLfloat[maxfirenum * 4]; //fire position
+void initFireShading()
+{
+	flameShader = Shader("shaders/flame-vert.glsl", "shaders/flame-frag.glsl");
+	flameShader.init();
+
+	// Use a Vertex Array Object
+	glGenVertexArrays(1, &FlameVAO);
+	glBindVertexArray(FlameVAO);
+
+	// The VBO containing the positions and sizes of the particles
+	glGenBuffers(1, &position_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
+	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
+	glBufferData(GL_ARRAY_BUFFER, maxfirenum * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+
+	// Create a Vector Buffer Object that will store the vertices on video memory
+	GLuint flameVBO;
+	glGenBuffers(1, &flameVBO);
+	// Allocate space and upload the data from CPU to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, flameVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(billboard), billboard, GL_STATIC_DRAW);
+
+
+	// Get the location of the attributes that enters in the vertex shader
+	GLint posAttrib = glGetAttribLocation(flameShader.ID, "squareVertices");
+	// Enable the attribute
+	glEnableVertexAttribArray(posAttrib);
+	// Specify how the data for position can be accessed
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	
+
+	
+
+	CameraRight_worldspaceID = glGetUniformLocation(flameShader.ID, "CameraRight_worldspace");
+	CameraUp_worldspaceID = glGetUniformLocation(flameShader.ID, "CameraUp_worldspace");
+	VPID = glGetUniformLocation(flameShader.ID, "VP");
+	uDiffuseSamplerID = glGetUniformLocation(flameShader.ID, "uDiffuseSampler");
+	flametimeID = glGetUniformLocation(flameShader.ID, "time");
+
+
+
+	glBindVertexArray(0);
+}
+
+void renderFlame(glm::vec3 CameraRight_worldspace, glm::vec3 CameraUp_worldspace, glm::mat4 VP)
+{
+	flameShader.bind();
+	fire_position_size_data[0] = 0;
+	fire_position_size_data[1] = 1.5;
+	fire_position_size_data[2] = 0;
+	fire_position_size_data[3] = 1.5;
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
+	glBufferData(GL_ARRAY_BUFFER, maxfirenum * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+	glBufferSubData(GL_ARRAY_BUFFER, 0, firecount * sizeof(GLfloat) * 4, fire_position_size_data);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBindVertexArray(FlameVAO);
+
+	glActiveTexture(GL_TEXTURE0);  //Set texture 0 as active texture
+	glBindTexture(GL_TEXTURE_2D, flametex);//baseTex
+	glUniform1i(uDiffuseSamplerID, 0);
+
+	float time  = SDL_GetTicks();//fmod( , 1.0)
+	glUniform1f(flametimeID, moveFactor);
+
+	glUniform3fv(CameraRight_worldspaceID, 1, glm::value_ptr(CameraRight_worldspace));
+	glUniform3fv(CameraUp_worldspaceID, 1, glm::value_ptr(CameraUp_worldspace));
+	glUniformMatrix4fv(VPID, 1, GL_FALSE, glm::value_ptr(VP));
+	
+	
+	
+	
+
+	// 2nd attribute buffer : positions of particles' centers
+
+	GLint posAttrib = glGetAttribLocation(flameShader.ID, "xyzs");
+	glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
+	glVertexAttribPointer(
+		1, // attribute. No particular reason for 1, but must match the layout in the shader.
+		4, // size : x + y + z + size => 4
+		GL_FLOAT, // type
+		GL_FALSE, // normalized?
+		0, // stride
+		(void*)0 // array buffer offset
+	);
+	glEnableVertexAttribArray(posAttrib);
+	// These functions are specific to glDrawArrays*Instanced*.
+	// The first parameter is the attribute buffer we're talking about.
+	// The second parameter is the "rate at which generic vertex attributes advance when rendering multiple instances"
+	glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
+	glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1                        -> 1
+
+	// Draw the billboards !
+	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, firecount);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	glDisable(GL_BLEND);
+	glDisableVertexAttribArray(posAttrib);
+	glUseProgram(0);
+}
+
+
+
+
+/******************************Terrain*************************************/
+//Model Terrain::generateTerrain(Loader loader)
+//{
+//	int count = VERTEX_COUNT * VERTEX_COUNT;
+//	float* vertices = new float[count * 3];
+//	float* normals = new float[count * 3];
+//	float* textureCoords = new float[count * 2];
+//	int* indices = new int[6 * (VERTEX_COUNT - 1)*(VERTEX_COUNT - 1)];
+//	int vertexPointer = 0;
+//	for (int i = 0; i < VERTEX_COUNT; i++) {
+//		for (int j = 0; j < VERTEX_COUNT; j++) {
+//			vertices[vertexPointer * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
+//			vertices[vertexPointer * 3 + 1] = 0;
+//			vertices[vertexPointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
+//			normals[vertexPointer * 3] = 0;
+//			normals[vertexPointer * 3 + 1] = 1;
+//			normals[vertexPointer * 3 + 2] = 0;
+//			textureCoords[vertexPointer * 2] = (float)j / ((float)VERTEX_COUNT - 1);
+//			textureCoords[vertexPointer * 2 + 1] = (float)i / ((float)VERTEX_COUNT - 1);
+//			vertexPointer++;
+//		}
+//	}
+//	int pointer = 0;
+//	for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
+//		for (int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
+//			int topLeft = (gz*VERTEX_COUNT) + gx;
+//			int topRight = topLeft + 1;
+//			int bottomLeft = ((gz + 1)*VERTEX_COUNT) + gx;
+//			int bottomRight = bottomLeft + 1;
+//			indices[pointer++] = topLeft;
+//			indices[pointer++] = bottomLeft;
+//			indices[pointer++] = topRight;
+//			indices[pointer++] = topRight;
+//			indices[pointer++] = bottomLeft;
+//			indices[pointer++] = bottomRight;
+//		}
+//	}
+//	return loader.loadToVAO(vertices, textureCoords, normals, indices);
+//}
+float Terrain::SIZE = 800;
+float Terrain::VERTEX_COUNT = 128;
+
 void cleanupBuffers() {
 	glDeleteBuffers(1, &modelsVBO);
 	glDeleteVertexArrays(1, &modelsVAO);

@@ -215,36 +215,38 @@ end
 --     end
 --   end
 -- end
-
+addModel("Barrel",0,1,0);
+addModel("Boulder",-1,1,0);
 addModel("Terrain",-91.83,-13.13,-96.19); --18.2,-4,-111.8
+
 --Add several predefined models to be rendered
-i = 1 --Lau is typically 1-indexed
-model = {}
-model[i] = addModel("Windmill",-2,.5,-3);
-setModelMaterial (model[i],"Dark Polished Wood")
-i = i+1
-model[i] = addModel("Bookcase",0,1,0); i = i+1
-model[i] = addModel("Ring",0,0.5,0); 
-i = i+1
-model[i] = addModel("Soccer Ball",0,1,0); i = i+1
-model[i] = addModel("Thonet S43 Chair",0,1,0); i = i+1
-model[i] = addModel("Silver Knot",0,1,0); i = i+1
-model[i] = addModel("Gold Knot",0,1,0); i = i+1
-model[i] = addModel("Frog",0,1,0); i = i+1
-model[i] = addModel("Copper Pan",0,1,0); i = i+1
-model[i] = addModel("Pool Table",0,1,0); i = i+1
+-- i = 1 --Lau is typically 1-indexed
+-- model = {}
+-- model[i] = addModel("Windmill",-2,.5,-3);
+-- setModelMaterial (model[i],"Dark Polished Wood")
+-- i = i+1
+-- model[i] = addModel("Bookcase",0,1,0); i = i+1
+-- model[i] = addModel("Ring",0,0.5,0); 
+-- i = i+1
+-- model[i] = addModel("Soccer Ball",0,1,0); i = i+1
+-- model[i] = addModel("Thonet S43 Chair",0,1,0); i = i+1
+-- model[i] = addModel("Silver Knot",0,1,0); i = i+1
+-- model[i] = addModel("Gold Knot",0,1,0); i = i+1
+-- model[i] = addModel("Frog",0,1,0); i = i+1
+-- model[i] = addModel("Copper Pan",0,1,0); i = i+1
+-- model[i] = addModel("Pool Table",0,1,0); i = i+1
 
 --Choose 1 model to be drawn at a time, the rest will be hidden
-drawModel = 1
-for i = 1,#model do
-  if drawModel ~= i then
-    hideModel(model[i])
-  end
-end
+-- drawModel = 1
+-- for i = 1,#model do
+--   if drawModel ~= i then
+--     hideModel(model[i])
+--   end
+-- end
 
---Set the 3rd model to rotate around it's the y-axis
-rotYVelModel[model[3]] = 0.2  --radians per second
-animatedModels[model[3]] = true
+-- --Set the 3rd model to rotate around it's the y-axis
+-- rotYVelModel[model[3]] = 0.2  --radians per second
+-- animatedModels[model[3]] = true
 
 
 

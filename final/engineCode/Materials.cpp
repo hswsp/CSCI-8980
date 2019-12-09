@@ -9,11 +9,14 @@ Material materials[1000];
 int numMaterials = 0;
 
 string textures[1000];
+
 int numTextures = 0;
+
 
 void resetMaterials(){
   numMaterials = 0;
   numTextures = 0;
+  numnormalMaps = 0;
 }
 
 
