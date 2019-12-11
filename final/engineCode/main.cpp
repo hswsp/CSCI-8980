@@ -26,8 +26,8 @@ float secondsPerFrame = 1.0f / (float)targetFrameRate;
 float cameraFar = 20;
 float cameraNear = 0.1;
 int timettt=0;
-float waterheight = 0;
-
+float waterheight = -0.5;
+extern bool Isnight;
 #include "luaSupport.h"
 
 #include "RenderingSystem.h"
@@ -344,7 +344,7 @@ int main(int argc, char *argv[]){
 			camUp);     //Camera Up direction
 		
 		bindReflectionFrameBuffer();
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -(waterheight-1e-5)));
+		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -(waterheight-0.1f)));
 		updatePRBShaderSkybox(); 
 		RenderScene(FOV,false);
 
@@ -356,7 +356,7 @@ int main(int argc, char *argv[]){
 		unbindCurrentFrameBuffer();
 
 		bindRefractionFrameBuffer();
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, -1, 0, waterheight));
+		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, -1, 0, (waterheight + 0.5f)));
 		updatePRBShaderSkybox(); 
 		RenderScene(FOV,false);
 		unbindCurrentFrameBuffer();
@@ -380,8 +380,8 @@ int main(int argc, char *argv[]){
 
 		//------ PASS 4 - HDR Tonemap & Composite -------------
 		drawCompositeImage(useBloom);
-		
-		LensFlarerender(view, proj, lightPos);
+		if(!Isnight)
+			LensFlarerender(view, proj, lightPos);
 
 		
 		

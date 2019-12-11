@@ -59,7 +59,7 @@ void main(void) {
 	
 	vec3 viewVector = normalize(tocameraVector);
 	float refravtiveFactor = dot(viewVector,normal);//vec3(0.0,1.0,0.0)
-	refravtiveFactor = pow(refravtiveFactor,1);
+	refravtiveFactor = pow(refravtiveFactor,2.0);
 	
 	
 	
@@ -72,7 +72,7 @@ void main(void) {
 	out_Color = mix(reflectionColor,refractionColor,refravtiveFactor);
 	out_Color = mix(out_Color,vec4(0,0.3,0.5,1.0),0.2)+ vec4(specularHighlights,0.0) ;
 	out_Color.a = clamp(waterDepth/5.0 ,0.0 ,1.0);//
-	//out_Color = vec4(vec3(waterDepth/50),1.0);//texture(depthMap,refractionTexCoords);
-	
+	//out_Color = vec4(vec3(floorDostance),1.0);//vec4(vec3(texture(depthMap,refractionTexCoords).r),1.0);
+	//out_Color = vec4(vec3(refravtiveFactor),1.0);
 
 }

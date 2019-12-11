@@ -865,7 +865,7 @@ void displayWater(glm::mat4 view, glm::mat4 proj, glm::vec3 camePos, glm::vec3 l
 	PrepareWater();
 	glBindVertexArray(waterVAO);
 	glm::mat4 model = glm::mat4();
-	model = glm::scale(model, glm::vec3(15, 0, 15));
+	model = glm::scale(model, glm::vec3(35, 0.5, 35));
 	model = glm::translate(model, glm::vec3(0, waterheight, 0));
 	//model = glm::inverse(view)*model;
 	glUniformMatrix4fv(waterModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -895,7 +895,7 @@ void SetRelectionView(glm::vec3& Dir, glm::vec3& Up, glm::vec3& Pos, glm::vec3& 
 	Up.x = Up4.x;
 	Up.y = Up4.y;
 	Up.z = Up4.z;
-	float distance = 2 * Pos.y - waterheight;
+	float distance = 2 * (Pos.y - waterheight);
 	Pos.y -= distance;
 	lookatPoint = Pos + Dir;
 }

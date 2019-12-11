@@ -230,10 +230,11 @@ void main() {
   vec3 oColor = ambC+emissive;
   if(useNormalMap>0)
   {
-     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, texcoord*textureScaleing ).rgb*2.0 - 1.0); 
-	 normal = TextureNormal_tangentspace;//TBN*
-	 
+    vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, texcoord*textureScaleing).rgb*2.0 - 1.0); 
+	normal = transpose(TBN)* TextureNormal_tangentspace;//
+	
   }
+	
   
 
   for (int i = 0; i < numLights; i++){
@@ -261,16 +262,16 @@ void main() {
 
     vec3 specC;
     vec3 lDir = lightDir[i];
-	if(useNormalMap>0)
-    {
-	   lDir = TBN*lDir;
-    }
+	//if(useNormalMap>0)
+    //{
+	//   lDir = TBN*lDir;
+    //}
     vec3 diffuseC = (1-metallic)*color*max(dot(-lDir,normal),0.0); //This is a Hack? Is it a good idea? Is it true metals have no diffuse color?
     vec3 viewDir = normalize(-pos); //We know the eye is at (0,0)!
-	if(useNormalMap>0)
-	{
-	  viewDir = TBN*viewDir;
-	}
+	//if(useNormalMap>0)
+	//{
+	//  viewDir = TBN*viewDir;
+	//}
     vec3 reflectDir = reflect(viewDir,normal);
     
     /*float spec = max(dot(reflectDir,lDir),0.0);
@@ -304,7 +305,7 @@ void main() {
     oColor = oColor.gbr; //Just to demonstrate how to use the boolean for debugging
   outColor = vec4(modelColor*oColor, 1.0);
   //if(useNormalMap>0)
-   // outColor = vec4(transpose(TBN)*texture(NormalTextureSampler, texcoord).rgb,1.0); //vec4(transpose(TBN)*vec3(0,0,1),1.0);
+  // outColor = vec4(transpose(TBN)*texture(NormalTextureSampler, texcoord).rgb,1.0); //vec4(transpose(TBN)*vec3(0,0,1),1.0);
   /******************fog *************************/
   
   if(useFog)

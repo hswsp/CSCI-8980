@@ -1,0 +1,55 @@
+
+modelDir = ./models/Socuwan/
+
+
+[Terrain]
+scale 2
+childDir = Terrain/
+
+[Windmill]
+scale 1.0
+rotate 100 0 1 0
+childDir = Windmill/
+#objModel = Normal_Mapped_Models/barrel.obj 
+#texture = Normal_Mapped_Models/barrel.png
+#normalMap = barrel/barrelNormal.png
+
+[Turtles]
+scale 0.3
+rotate 100 0 1 0
+childDir = Turtles/
+#normalMap = boulder/boulderNormal.png
+
+[Trees]
+scale 2.0
+rotate 100 0 1 0
+childDir = Trees/
+
+[Barrel]
+scale 0.1
+rotate 100 0 1 0
+childDir = barrel/
+normalMap = barrel/barrelNormal.png
+
+[Boulder]
+scale 0.2
+rotate 100 0 1 0
+childDir = boulder/
+normalMap = boulder/boulderNormal.png
+
+[Bridge]
+scale 1.0
+rotate 0 0 1 0
+childDir = Bridge/
+
+
+[Houses]
+scale 1.0
+rotate 0 0 1 0
+childDir = Houses/
+
+[Crate]
+scale 0.5
+rotate 100 0 1 0
+childDir = crate/
+normalMap = crate/crateNormal.png

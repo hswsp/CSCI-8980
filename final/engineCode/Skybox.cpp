@@ -12,6 +12,7 @@ GLuint skyboxVAO;
 
 vector<std::string> faces,Nightfaces;
 extern bool useFog;
+bool Isnight;
 unsigned int cubemapTexture, cubemapTexture2;
 
 
@@ -131,21 +132,25 @@ void drawSkybox(glm::mat4 view, glm::mat4 proj){
 			texture1 = cubemapTexture2;
 			texture2 = cubemapTexture2;
 			blendFactor = (skyboxTime - 0) / (5000 - 0);
+			Isnight = true;
 		}
-		else if (skyboxTime >= 5000 && skyboxTime < 8000) {
+		else if (skyboxTime >= 5000 && skyboxTime < 11000) {
 			texture1 = cubemapTexture2;
 			texture2 = cubemapTexture;
-			blendFactor = (skyboxTime - 5000) / (8000 - 5000);
+			blendFactor = (skyboxTime - 5000) / (11000 - 5000);
+			Isnight = true;
 		}
-		else if (skyboxTime >= 8000 && skyboxTime < 21000) {
+		else if (skyboxTime >= 11000 && skyboxTime < 21000) {
 			texture1 = cubemapTexture;
 			texture2 = cubemapTexture;
-			blendFactor = (skyboxTime - 8000) / (21000 - 8000);
+			blendFactor = (skyboxTime - 11000) / (21000 - 8000);
+			Isnight = false;
 		}
 		else {
 			texture1 = cubemapTexture;
 			texture2 = cubemapTexture2;
 			blendFactor = (skyboxTime - 21000) / (24000 - 21000);
+			Isnight = true;
 		}
 
 		glActiveTexture(GL_TEXTURE0);
