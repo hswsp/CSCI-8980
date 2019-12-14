@@ -45,6 +45,9 @@ useDissolve = false
 --   return out
 -- end
 omiga = 0;
+t = 0
+horsePos = {15,-1.8}
+theta = 0
 function frameUpdate(dt)
   for modelID,v in pairs(animatedModels) do
     --print("ID",modelID)
@@ -60,6 +63,23 @@ function frameUpdate(dt)
     end
 
   end
+  -- horsePos = horsePos + 1*dt*speed[curAction]
+  t = t + dt
+  if t > 1 then
+    t = t-1
+  end 
+  wHorse = 0.1
+  theta = theta+dt*wHorse
+  horsePos[1] = 13 + 3*speed[curAction]*math.cos(theta)
+  horsePos[2] = -2.5 + 3*speed[curAction]*math.sin(theta)
+  translateModel(horse[curAction],-3*wHorse*math.sin(theta)*dt,0,3*wHorse*math.cos(theta)*dt)
+  -- placeModel(horse[curAction],horsePos[1],0,horsePos[2])
+  selectChild(horse[curAction],t)
+  rotateModel(horse[curAction],-wHorse*dt, 0, 1, 0)
+
+
+
+  rotateModel(crateID,3*wHorse*dt, 0, 1, 0)
 end
 function computeCameraRight()
   CameraRtX = CameraDirY*CameraUpZ - CameraDirZ*CameraUpY
@@ -181,6 +201,20 @@ function keyHandler(keys)
     if keys.z then
       useFlame = false
     end
+
+     --When tab is pressed hide the current animation and unhide the next one
+    if keys.tab and not tabDownBefore then
+      t = 0
+      hideModel(horse[curAction])
+      curAction = (curAction % #horse) + 1
+      unhideModel(horse[curAction])
+    end
+    tabDownBefore = keys.tab --Needed so that single tab press only counts once
+
+    if keys.r then --Reset Position
+      horsePos = -5
+    end
+
   end
 end
 
@@ -196,42 +230,42 @@ scaleModel(RimID,1.5,1.5,1.5)
 addModel("Houses",-13,0.1,5);
 crateID = addModel("Crate",-10,1.5,-10);
 scaleModel(crateID,0.03,0.03,0.03)
+addModel("Bench",1.29,0.0,-3);
+addModel("Bushes",0.0,0.0,0.0);--11.29,0.0,-9
+CTID = addModel("CuteTrees",10.29,0.0,-5);
+scaleModel(CTID,2,2,2)
+addModel("Fences",8.29,0.0,-5);
+addModel("Foxes",16.29,0.0,-9.5);
+addModel("HerbStall",4.00,0.0,-9.5);
+addModel("Lanterns",-11,0.0,-0.5);
+addModel("LillyPads",-19,0.0,3);
+addModel("Mushrooms",2.20,0.0,0.0);
+addModel("Rocks",2.20,0.0,0.0);
+addModel("Statue",5.50,0.0,-5.8);
+addModel("Barrels",0,0.0,0);
 
-
---Add several predefined models to be rendered
--- i = 1 --Lau is typically 1-indexed
--- model = {}
--- model[i] = addModel("Windmill",-2,.5,-3);
--- setModelMaterial (model[i],"Dark Polished Wood")
--- i = i+1
--- model[i] = addModel("Bookcase",0,1,0); i = i+1
--- model[i] = addModel("Ring",0,0.5,0); 
--- i = i+1
--- model[i] = addModel("Soccer Ball",0,1,0); i = i+1
--- model[i] = addModel("Thonet S43 Chair",0,1,0); i = i+1
--- model[i] = addModel("Silver Knot",0,1,0); i = i+1
--- model[i] = addModel("Gold Knot",0,1,0); i = i+1
--- model[i] = addModel("Frog",0,1,0); i = i+1
--- model[i] = addModel("Copper Pan",0,1,0); i = i+1
--- model[i] = addModel("Pool Table",0,1,0); i = i+1
-
---Choose 1 model to be drawn at a time, the rest will be hidden
--- drawModel = 1
--- for i = 1,#model do
---   if drawModel ~= i then
---     hideModel(model[i])
---   end
--- end
 
 --Set the 3rd model to rotate around it's the y-axis
 rotYVelModel[TurtleID] = 0.2  --radians per second
--- velModel[TurtleID] = {}
--- velModel[TurtleID][1] = -0.1
--- velModel[TurtleID][2] = 0.0
--- velModel[TurtleID][3] = -0.1
 velModel[TurtleID] = -0.01
 animatedModels[TurtleID] = true
 
+--Load various animated models of horse actions
+i = 1 --Lau is typically 1-indexed
+horse = {}
+speed = {}
+horse[i] = addModel("Horse-Walk",13,0,-1.8); speed[i] = 1.1; i = i+1
+horse[i] = addModel("Horse-Dash",13,0,-1.8); speed[i] = 3.0; i = i+1
+horse[i] = addModel("Horse-Jump",13,0,-1.8); speed[i] = 1.2; i = i+1 --No one velocity is right!
+horse[i] = addModel("Horse-Fall",13,0,-1.8); speed[i] = 0.0; i = i+1
+
+--Only draw one of the actions
+curAction = 1
+for i = 1,#horse do
+  if curAction ~= i then
+    hideModel(horse[i])
+  end
+end
 
 
 

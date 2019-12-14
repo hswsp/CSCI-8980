@@ -1,6 +1,7 @@
 # Blender v2.67 (sub 0) OBJ File: 'Tutorial Sceen Separate.blend'
 # www.blender.org
 o Cube.019_Cube.034
+mtllib material.mtl
 v 0.303345 0.008169 8.441368
 v 0.309692 0.008169 8.394485
 v 0.506768 0.008169 8.421161
@@ -1014,6 +1015,7 @@ vn 0.040315 0.014527 0.999054
 vn 0.087374 0.016968 0.996002
 vn 0.088809 0.017060 0.995880
 s 1
+usemtl materialbe
 f 16/1/1 13/2/2 2/3/3
 f 47/4/4 14/5/5 44/6/4
 f 317/7/6 15/8/7 4/9/8

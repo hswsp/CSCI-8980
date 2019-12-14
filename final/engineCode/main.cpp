@@ -337,22 +337,25 @@ int main(int argc, char *argv[]){
 		unbindCurrentFrameBuffer();
 
 		//glEnable(GL_CLIP_DISTANCE0);
+		glm::vec3 camPosTemp = camPos;
+		glm::vec3 camDirTemp = camDir;
+		glm::vec3 camUpTemp = camUp;
+		vec3 lookatPointTemp = camPosTemp + camDirTemp;
+		SetRelectionView(camDirTemp, camUpTemp, camPosTemp, lookatPointTemp, waterheight);
+		glm::mat4 viewtemp= glm::lookAt(camPosTemp, //Camera Position
+			lookatPointTemp, //Point to look at (camPos + camDir)
+			camUpTemp);     //Camera Up direction
 		
-		SetRelectionView(camDir, camUp, camPos,lookatPoint, waterheight);
-		view = glm::lookAt(camPos, //Camera Position
-			lookatPoint, //Point to look at (camPos + camDir)
-			camUp);     //Camera Up direction
 		
 		bindReflectionFrameBuffer();
-		setPBRShaderUniforms(view, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -(waterheight-0.1f)));
+		setPBRShaderUniforms(viewtemp, proj, lightViewMatrix, lightProjectionMatrix, useShadowMap, glm::vec4(0, 1, 0, -(waterheight-0.1f)));
 		updatePRBShaderSkybox(); 
 		RenderScene(FOV,false);
 
-		SetRelectionView(camDir, camUp, camPos, lookatPoint, waterheight);
-		view = glm::lookAt(camPos, //Camera Position
-			lookatPoint, //Point to look at (camPos + camDir)
-			camUp);     //Camera Up direction
-		
+		//SetRelectionView(camDir, camUp, camPos, lookatPoint, waterheight);
+		//view = glm::lookAt(camPos, //Camera Position
+		//	lookatPoint, //Point to look at (camPos + camDir)
+		//	camUp);     //Camera Up direction
 		unbindCurrentFrameBuffer();
 
 		bindRefractionFrameBuffer();

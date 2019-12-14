@@ -12,15 +12,22 @@ ambientLight = .5 .5 .5
 [Sun]
 lightDir = 0 -1.0 0   #-4 -10 -1
 lightDist = 100
-lightCol = .9 .9 1
+lightCol = .9 .9 .9
 lightIntensity = 30
 lightCastShadow //only the one light can cast a shadow
 shadowBias = .004
 shadowFrustum = -6 6 -6 6 1 10 //left, right, bottom, top, near, far planes
 
-//[Left]
-//lightDir = 0 -1.0 1.0   #-4 -10 -1
-//lightDist = 15
-//lightCol = .9 .9 .1
-//lightIntensity = 5
-//shadowFrustum = -6 6 -6 6 1 10 //left, right, bottom, top, near, far planes
+[Left]
+lightDir = 0 -1.0 1.0   #-4 -10 -1
+lightDist = 30
+lightCol = .9 .9 .9
+lightIntensity = 5
+shadowFrustum = -6 6 -6 6 1 10 //left, right, bottom, top, near, far planes
+
+[Right]
+lightDir = 0 -1.0 -1.0   #-4 -10 -1
+lightDist = 30
+lightCol = .9 .9 .9
+lightIntensity = 5
+shadowFrustum = -6 6 -6 6 1 10 //left, right, bottom, top, near, far planes

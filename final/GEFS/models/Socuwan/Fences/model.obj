@@ -1,5 +1,6 @@
 # Blender v2.67 (sub 0) OBJ File: 'Tutorial Sceen Separate.blend'
 # www.blender.org
+mtllib material.mtl
 o Circle.002_Circle.009
 v 4.861371 -0.126812 6.362675
 v 4.912516 -0.126812 6.344958
@@ -2785,6 +2786,7 @@ vn 0.679006 0.000000 -0.734123
 vn 0.692587 0.033784 -0.720511
 vn 0.696646 0.034791 -0.716544
 s 1
+usemtl materialFe
 f 5/1/1 1/2/2 10/3/3
 f 4/4/4 5/1/1 9/5/5
 f 1/2/2 2/6/6 7/7/7

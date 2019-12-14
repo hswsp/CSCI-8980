@@ -10,9 +10,6 @@ childDir = Terrain/
 scale 1.0
 rotate 100 0 1 0
 childDir = Windmill/
-#objModel = Normal_Mapped_Models/barrel.obj 
-#texture = Normal_Mapped_Models/barrel.png
-#normalMap = barrel/barrelNormal.png
 
 [Turtles]
 scale 0.3
@@ -53,3 +50,79 @@ scale 0.5
 rotate 100 0 1 0
 childDir = crate/
 normalMap = crate/crateNormal.png
+
+[Bench]
+scale 0.5
+rotate 30 0 1 0
+childDir = Bench/
+
+[Bushes]
+scale 1.0
+rotate 30 0 1 0
+childDir = Bushes/
+
+[CuteTrees]
+scale 1.0
+rotate 30 0 1 0
+childDir = CuteTrees/
+
+[Fences]
+scale 1.0
+rotate 30 0 1 0
+childDir = Fences/
+
+[Foxes]
+scale 1.0
+rotate 30 0 1 0
+childDir = Foxes/
+
+[HerbStall]
+scale 1.0
+rotate 30 0 1 0
+childDir = HerbStall/
+
+[Lanterns]
+scale 1.0
+rotate 30 0 1 0
+childDir = Lanterns/
+
+[LillyPads]
+scale 1.0
+rotate 30 0 1 0
+childDir = LillyPads/
+
+[Mushrooms]
+scale 2.0
+rotate 30 0 1 0
+childDir = Mushrooms/
+
+[Rocks]
+scale 2.0
+rotate 0 0 1 0
+childDir = Rocks/
+
+[Statue]
+material [Gold]
+scale 1.0
+rotate 0 0 1 0
+childDir = Statue/
+
+[Barrels]
+scale 2.0
+rotate 0 0 1 0
+childDir = Barrels/
+
+[Horse-Walk]
+scale .2
+childDir = Horse/Walk/
+[Horse-Dash]
+scale .2
+childDir = Horse/Dash/
+
+[Horse-Jump]
+scale .2
+childDir = Horse/Jump/
+
+[Horse-Fall]
+scale .2
+childDir = Horse/Fall/
