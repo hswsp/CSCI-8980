@@ -23,7 +23,7 @@ uniform float farPlane;
 
 const float waveStrength = 0.04;
 const float shineDamper = 20.0;
-const float reflectivity = 0.5;
+const float reflectivity = 15;
 void main(void) {
 
     vec2 ndc = (clipSpace.xy/clipSpace.w)/2.0 + 0.5;
@@ -74,5 +74,6 @@ void main(void) {
 	out_Color.a = clamp(waterDepth/5.0 ,0.0 ,1.0);//
 	//out_Color = vec4(vec3(floorDostance),1.0);//vec4(vec3(texture(depthMap,refractionTexCoords).r),1.0);
 	//out_Color = vec4(vec3(refravtiveFactor),1.0);
+	//out_Color  = vec4(specularHighlights,1.0);
 
 }

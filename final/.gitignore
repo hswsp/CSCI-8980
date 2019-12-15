@@ -5,3 +5,5 @@ build/
 engine/
 .DS_Store
 *.bk
+GEFE/Release/
+GEFE/Debug/

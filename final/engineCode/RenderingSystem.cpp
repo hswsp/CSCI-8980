@@ -1148,7 +1148,7 @@ void LensFlarerender(glm::mat4 view, glm::mat4 proj, glm::vec3 sunWorldPos)
 	}
 	glm::vec2 sunToCenter = CENTER_SCREEN - sunCoords;
 	//std::cout << sunCoords.x << " " << sunCoords.y << endl;;
-	float brightness = 0.6 - (glm::length(sunToCenter) / 0.6f);
+	float brightness = 1 - (glm::length(sunToCenter) / 0.8f);
 	//std::cout << brightness << endl;
 	if (brightness > 0) {
 		
